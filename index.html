@@ -52,9 +52,22 @@
     </header>
 
     <div class="container">
-      <div class="alert alert-primary" role="alert">
-        A simple primary alert—check it out!
+      <!-- Mensagem a ser exibida para o usuário -->
+      <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        Usuário adicionado com sucesso
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
+
+      <!-- breadcrumb -->
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">Library</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Data</li>
+        </ol>
+      </nav>
 
       <!-- <div id="map" style="width:400px;height:400px;background:yellow"></div>
 
@@ -70,11 +83,11 @@
       </script>
       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeD2CzlTtQLuNPLaRg6XQBbpZhIm1P66Q&callback=myMap"></script> -->
     </div>
-    <nav class="navbar fixed-bottom navbar-expand-sm bg-dark">
-      <p text-align="center">
+    <nav class="navbar fixed-bottom navbar-expand-sm bg-dark navbar-dark">
+      <span class="navbar-text mx-auto">
         <i class="fas fa-pencil-alt"></i> com <i class="fas fa-heart"></i>.
         Copyright <i class="fas fa-copyright"></i> 2018 - Todos os direitos reservados
-      </p>
+      </span>
     </nav>
 	  <!-- <footer class="fixed-bottom bg-dark">
       <div class="container">
