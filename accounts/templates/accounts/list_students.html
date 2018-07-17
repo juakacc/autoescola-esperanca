@@ -1,0 +1,37 @@
+{% extends "accounts/dashboard.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item">Alunos</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  Alunos cadastrados
+{% endblock %}
+
+{% block dashboard_container %}
+<a href="{% url 'accounts:register_student' %}" class="btn btn-dark"><i class="fas fa-plus"></i> Adicionar aluno</a>
+  <table class="table list">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Nome de usuário</th>
+        <th>E-mail</th>
+        <th>Opções</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for v in students %}
+        <tr>
+          <td>{{ v.name }}</td>
+          <td>{{ v.username }}</td>
+          <td>{{ v.email }}</td>
+          <td>
+            <a href="{% url 'accounts:update_secretary' v.pk %}"><i class="fas fa-pencil-alt"></i> Editar</a><br>
+            <a href="{% url 'accounts:delete_secretary' v.pk %}"><i class="fas fa-trash-alt"></i> Remover</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

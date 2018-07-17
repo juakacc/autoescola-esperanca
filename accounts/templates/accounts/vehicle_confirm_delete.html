@@ -1,0 +1,18 @@
+{% extends "accounts/dashboard.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item">Remoção de veículo</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  Remoção de veículo
+{% endblock %}
+
+{% block dashboard_container %}
+<form method="post">{% csrf_token %}
+  <p>Deseja realmente remover o veículo: {{ object }} ?</p>
+  <input type="submit" value="Sim" class="btn btn-dark"/>
+  <a href="{% url 'accounts:list_vehicles' %}" class="btn btn-light">Não</a>
+</form>
+{% endblock %}

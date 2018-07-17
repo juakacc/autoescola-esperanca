@@ -1,0 +1,56 @@
+{% extends "accounts/dashboard.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item">Funcionário</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  Listagem de funcionários
+{% endblock %}
+
+{% block dashboard_container %}
+<div class="row">
+    <div class="col-6">
+      <a href="{% url 'accounts:list_employees' %}" class="btn btn-dark"><i class="fas fa-align-justify"></i> Tudo</a>
+      <a href="{% url 'accounts:list_employees' 'secretario' %}" class="btn btn-dark"><i class="fas fa-user-friends"></i> Secretários</a>
+      <a href="{% url 'accounts:list_employees' 'instrutor' %}" class="btn btn-dark"><i class="fas fa-user-friends"></i> Instrutores</a>
+    </div>
+    <div class="col-6">
+      <a href="{% url 'accounts:register_secretary' %}" class="btn btn-dark"><i class="fas fa-plus"></i> Adicionar secretário</a>
+      <a href="{% url 'accounts:register_instructor' %}" class="btn btn-dark"><i class="fas fa-plus"></i> Adicionar instrutor</a>
+    </div>
+</div>
+
+  <table class="table list">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Função</th>
+        <th>Nome de usuário</th>
+        <th>E-mail</th>
+        <th>Salário</th>
+        <th>Opções</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for v in secretaries %}
+        <tr>
+          <td>{{ v.name }}</td>
+          <td>{{ v.get_function_display }}</td>
+          <td>{{ v.username }}</td>
+          <td>{{ v.email }}</td>
+          <td>R$ {{ v.salary }}</td>
+          <td>
+            {% if v.function == 'instrutor' %}
+              <a href="{% url 'accounts:update_instructor' v.pk %}"><i class="fas fa-pencil-alt"></i> Editar</a><br>
+            {% else %}
+              <a href="{% url 'accounts:update_secretary' v.pk %}"><i class="fas fa-pencil-alt"></i> Editar</a><br>
+            {% endif %}
+            <a href="{% url 'accounts:delete_employee' v.pk %}"><i class="fas fa-trash-alt"></i> Remover</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "accounts/dashboard.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item">Atualização de funcionário</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  Atualização de funcionário
+{% endblock %}
+
+{% block dashboard_container %}
+  <form method="post">
+    {% include "_form.html" %}
+    <button type="submit" class="btn btn-dark">Salvar</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "accounts/dashboard.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item">Contatos</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  Contatos recebidos
+{% endblock %}
+
+{% block dashboard_container %}
+  <table class="table table-bordered table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th></th>
+        <th>Nome</th>
+        <th>Assunto</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for contact in contacts %}
+      <a href="#">
+
+        <tr>
+          <td>
+            {% if not contact.visualized %}
+              <i class="far fa-envelope"></i>
+            {% else %}
+              <i class="far fa-envelope-open"></i>
+            {% endif %}
+          </td>
+          <td>
+            {% if not contact.visualized %}<strong>{% endif %}
+              {{ contact.name }}
+            {% if not contact.visualized %}</strong>{% endif %}
+          </td>
+          <td>
+            {% if not contact.visualized %}<strong>{% endif %}
+            <a href="{% url 'accounts:message' contact.pk %}" class="">{{ contact.subject }}</a>
+            {% if not contact.visualized %}</strong>{% endif %}
+          </td>
+          <td>
+            {% if not contact.visualized %}<strong>{% endif %}
+            {{ contact.created }}
+            {% if not contact.visualized %}</strong>{% endif %}
+          </td>
+        </tr>
+
+        </a>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}

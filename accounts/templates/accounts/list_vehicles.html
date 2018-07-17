@@ -1,0 +1,63 @@
+{% extends "accounts/dashboard.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item">Veículos</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  Listagem de veículos
+{% endblock %}
+
+{% block dashboard_container %}
+<div class="row">
+    <div class="col-6">
+      <a href="{% url 'accounts:list_vehicles' %}" class="btn btn-dark"><i class="fas fa-align-justify"></i> Tudo</a>
+      <a href="{% url 'accounts:list_vehicles' 'car' %}" class="btn btn-dark"><i class="fas fa-car"></i> Carros</a>
+      <a href="{% url 'accounts:list_vehicles' 'motorcycle' %}" class="btn btn-dark"><i class="fas fa-motorcycle"></i> Motocicletas</a>
+    </div>
+    <div class="col-4 offset-md-2">
+      <a href="{% url 'accounts:register_vehicle' %}" class="btn btn-dark"><i class="fas fa-plus"></i> Adicionar veículo</a>
+    </div>
+</div>
+<div class="row">
+  <div class="col">
+    <table class="table list">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Modelo</th>
+          <th>Marca</th>
+          <th>Placa</th>
+          <th>Situação</th>
+          <th>Foto</th>
+          <th>Opções</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in vehicles %}
+          <tr>
+            <td>
+            {% if v.type == 'car' %}
+              <i class="fas fa-car"></i>
+            {% else %}
+              <i class="fas fa-motorcycle"></i>
+            {% endif %}
+            </td>
+            <td>{{ v.model }}</td>
+            <td>{{ v.fabricator }}</td>
+            <td>{{ v.plate }}</td>
+            <td><span class="badge badge-{% if v.state == 'em conserto' %}danger{% else %}success{% endif %}">
+              {{ v.get_state_display }}</span></td>
+            <td>...</td>
+            <td>
+              <a href="{% url 'accounts:update_vehicle' v.pk %}"><i class="fas fa-pencil-alt"></i> Editar</a><br>
+              <a href="{% url 'accounts:delete_vehicle' v.pk %}"><i class="fas fa-trash-alt"></i> Remover</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
