@@ -2,17 +2,17 @@
 
 {% block breadcrumb %}
   {{ block.super }}
-  <li class="breadcrumb-item">Remoção de veículo</li>
+  <li class="breadcrumb-item">Remoção de aluno</li>
 {% endblock %}
 
 {% block dashboard_title %}
-  Remoção de veículo
+  Remoção de aluno
 {% endblock %}
 
 {% block dashboard_container %}
 <form method="post">{% csrf_token %}
-  <p>Deseja realmente remover o veículo: {{ object }} ?</p>
+  <p>Deseja realmente remover o aluno: {{ object }} ?</p>
   <input type="submit" value="Sim" class="btn btn-dark"/>
-  <a href="{% url 'accounts:list_vehicles' %}" class="btn btn-light">Não</a>
+  <a href="{% url 'accounts:list_students' %}" class="btn btn-light">Não</a>
 </form>
 {% endblock %}

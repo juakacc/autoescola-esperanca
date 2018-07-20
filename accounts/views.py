@@ -5,8 +5,9 @@ from django.views.generic import (CreateView, TemplateView, ListView,
     DetailView, UpdateView, FormView, DeleteView)
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages as msgs
-from core.models import Student, Employee, Contact
-from .models import Vehicle
+
+from core.models import Vehicle
+from .models import Student, Employee
 from .forms import RegisterSecretaryForm, RegisterStudentForm, RegisterInstructorForm
 
 from rolepermissions.mixins import HasPermissionsMixin
@@ -14,13 +15,14 @@ from rolepermissions.roles import assign_role
 
 class IndexView(HasPermissionsMixin, TemplateView):
     required_permission = 'secretary'
-    template_name = 'accounts/dashboard.html'
+    template_name = 'dashboard.html'
 
 class VehiclesListView(HasPermissionsMixin, ListView):
     # required_permission = 'secretary'
     template_name = 'accounts/list_vehicles.html'
     context_object_name = 'vehicles'
     model = Vehicle
+    paginate_by = 10
 
     def get_queryset(self):
         type = self.kwargs.get('type', '')
@@ -30,25 +32,6 @@ class VehiclesListView(HasPermissionsMixin, ListView):
         else:
             query = Vehicle.objects.all()
         return query
-
-class MessagesView(HasPermissionsMixin, ListView):
-    # required_permission = 'secretary'
-    template_name = 'accounts/messages.html'
-    context_object_name = 'contacts'
-    model = Contact
-
-class MessageView(HasPermissionsMixin, DetailView):
-    # required_permission = 'secretary'
-    template_name = 'accounts/message.html'
-    model = Contact
-
-    def get_context_data(self, **kwargs):
-        # Tornando a msg lida
-        context = super(DetailView, self).get_context_data(**kwargs)
-        message = get_object_or_404(Contact, pk=self.kwargs['pk'])
-        message.visualized = True
-        message.save()
-        return context
 
 class RegisterSecretaryView(SuccessMessageMixin, CreateView):
     model = Employee
@@ -68,13 +51,19 @@ class EmployeesListView(ListView):
     template_name = 'accounts/list_employees.html'
     context_object_name = 'secretaries'
     model = Employee
+    paginate_by = 10
 
     def get_queryset(self):
-        f = self.kwargs.get('function', '')
-        if f:
-            queryset = Employee.objects.filter(function=f)
+        q = self.request.GET.get('q', '')
+        queryset = Employee.objects.all()
+
+        if q:
+            queryset = queryset.filter(name__icontains=q)
         else:
-            queryset = Employee.objects.all()
+            f = self.kwargs.get('function', '')
+            if f:
+                queryset = queryset.filter(function=f)
+
         return queryset
 
 class RegisterInstructorView(SuccessMessageMixin, CreateView):
@@ -123,10 +112,36 @@ class RegisterStudentView(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('accounts:list_students')
     success_message = 'Aluno adicionado com sucesso'
 
+class UpdateStudentView(SuccessMessageMixin, UpdateView):
+    model = Student
+    template_name = 'accounts/update_student.html'
+    fields = ['username', 'name', 'cpf', 'date_of_birth', 'email', 'telephone',
+        'street', 'number', 'district', 'city', 'state']
+    success_url = reverse_lazy('accounts:list_students')
+    success_message = 'Aluno atualizado com sucesso'
+
 class StudentsListView(ListView):
     template_name = 'accounts/list_students.html'
     context_object_name = 'students'
     model = Student
+    paginate_by = 10
+
+    def get_queryset(self):
+        q = self.request.GET.get('q', '')
+        queryset = Student.objects.all()
+
+        if q:
+            queryset = queryset.filter(name__icontains=q)
+        return queryset
+
+class DeleteStudentView(DeleteView):
+    model = Student
+    template_name = 'accounts/student_confirm_delete.html'
+    success_url = reverse_lazy('accounts:list_students')
+
+    def delete(self, request, *args, **kwargs):
+        msgs.success(request, 'Aluno {} removido com sucesso'.format(self.get_object()))
+        return super().delete(request, *args, **kwargs)
 
 class RegisterVehicleView(SuccessMessageMixin, CreateView):
     model = Vehicle
@@ -153,12 +168,12 @@ class DeleteVehicleView(DeleteView):
 class UpdateView(SuccessMessageMixin, UpdateView):
     model = Employee
     template_name = 'accounts/update.html'
-    fields = ['first_name', 'last_name', 'email', 'salary']
+    fields = ['username', 'first_name', 'last_name', 'email', 'salary']
     success_url = reverse_lazy('accounts:index')
     success_message = 'Dados atualizados com sucesso'
 
     def get_object(self):
-        return self.request.user.employee
+        return self.request.user
 
 class UpdatePasswordView(SuccessMessageMixin, FormView):
     template_name = 'accounts/update_password.html'
@@ -168,20 +183,21 @@ class UpdatePasswordView(SuccessMessageMixin, FormView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user.employee
+        kwargs['user'] = self.request.user
         return kwargs
 
     def form_valid(self, form):
         form.save()
         return super(UpdatePasswordView, self).form_valid(form)
 
-index = IndexView.as_view()
+class ChooseRegisterEmployeeView(TemplateView):
+    template_name = 'accounts/register_type_employee.html'
 
-messages = MessagesView.as_view()
-message = MessageView.as_view()
+index = IndexView.as_view()
 
 delete_employee = DeleteEmployeeView.as_view()
 list_employees = EmployeesListView.as_view()
+choose_register_employee = ChooseRegisterEmployeeView.as_view()
 
 register_secretary = RegisterSecretaryView.as_view()
 update_secretary = UpdateSecretaryView.as_view()
@@ -190,7 +206,9 @@ register_instructor = RegisterInstructorView.as_view()
 update_instructor = UpdateInstructorView.as_view()
 
 register_student = RegisterStudentView.as_view()
+update_student = UpdateStudentView.as_view()
 list_students = StudentsListView.as_view()
+delete_student = DeleteStudentView.as_view()
 
 register_vehicle = RegisterVehicleView.as_view()
 update_vehicle = UpdateVehicleView.as_view()

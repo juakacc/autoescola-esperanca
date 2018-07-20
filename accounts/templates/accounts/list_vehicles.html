@@ -1,4 +1,5 @@
-{% extends "accounts/dashboard.html" %}
+{% extends "dashboard.html" %}
+{% load pagination %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -10,16 +11,17 @@
 {% endblock %}
 
 {% block dashboard_container %}
-<div class="row">
+<div class="row justify-content-between">
     <div class="col-6">
       <a href="{% url 'accounts:list_vehicles' %}" class="btn btn-dark"><i class="fas fa-align-justify"></i> Tudo</a>
       <a href="{% url 'accounts:list_vehicles' 'car' %}" class="btn btn-dark"><i class="fas fa-car"></i> Carros</a>
       <a href="{% url 'accounts:list_vehicles' 'motorcycle' %}" class="btn btn-dark"><i class="fas fa-motorcycle"></i> Motocicletas</a>
     </div>
-    <div class="col-4 offset-md-2">
+    <div class="col-3" align="right">
       <a href="{% url 'accounts:register_vehicle' %}" class="btn btn-dark"><i class="fas fa-plus"></i> Adicionar veículo</a>
     </div>
 </div>
+
 <div class="row">
   <div class="col">
     <table class="table list">
@@ -58,6 +60,7 @@
         {% endfor %}
       </tbody>
     </table>
+    {% pagination request paginator page_obj %}
   </div>
 </div>
 {% endblock %}

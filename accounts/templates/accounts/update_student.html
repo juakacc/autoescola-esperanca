@@ -2,18 +2,16 @@
 
 {% block breadcrumb %}
   {{ block.super }}
-  <li class="breadcrumb-item">Cadastro de Secretário</li>
+  <li class="breadcrumb-item">Atualização de aluno</li>
 {% endblock %}
 
 {% block dashboard_title %}
-  Cadastro de secretário
+  Atualização de aluno
 {% endblock %}
 
 {% block dashboard_container %}
   <form method="post">
     {% include "_form.html" %}
-    <div class="form-group">
-      <button type="submit" class="btn btn-dark">Enviar</button>
-    </div>
+    <button type="submit" class="btn btn-dark">Salvar</button>
   </form>
 {% endblock %}

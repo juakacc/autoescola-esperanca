@@ -1,4 +1,4 @@
-{% extends "accounts/dashboard.html" %}
+{% extends "dashboard.html" %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -24,5 +24,9 @@
     <dt class="col-2">Mensagem</dt>
     <dd class="col-10">{{ contact.message }}</dd>
   </dl>
-  <a href="#" class="btn btn-dark">Responder</a>
+  <form method="post">
+    {% include "_form.html" %}
+    <button type="submit" class="btn btn-dark" name="button">Responder</button>
+    <a href="{% url 'accounts:messages' %}" class="btn btn-ligth">Voltar</a>
+  </form>
 {% endblock %}

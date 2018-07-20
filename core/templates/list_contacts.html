@@ -1,4 +1,5 @@
-{% extends "accounts/dashboard.html" %}
+{% extends "dashboard.html" %}
+{% load pagination %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -21,8 +22,6 @@
     </thead>
     <tbody>
       {% for contact in contacts %}
-      <a href="#">
-
         <tr>
           <td>
             {% if not contact.visualized %}
@@ -47,10 +46,8 @@
             {% if not contact.visualized %}</strong>{% endif %}
           </td>
         </tr>
-
-        </a>
       {% endfor %}
     </tbody>
   </table>
-
+  {% pagination request paginator page_obj %}
 {% endblock %}

@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col">
+    <nav>
+      <ul class="pagination justify-content-center">
+        {% for page in paginator.page_range %}
+          <li class="page-item {% if page == page_obj.number %}active{% endif %}">
+            <a href="?page={{ page }}{{ getvars }}" class="page-link">{{ page }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </div>
+</div>

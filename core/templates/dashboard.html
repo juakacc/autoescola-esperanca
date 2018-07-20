@@ -16,11 +16,13 @@
 <div class="row">
   <!-- Menu lateral -->
   <div class="col-3 list-group">
+    <a class="list-group-item list-group-item-action" href="{% url 'process:list_processes' %}"><i class="fas fa-tasks"></i> Processos</a>
+
     <a class="list-group-item list-group-item-action" data-toggle="collapse" href="#menu-cadastros">
       <i class="fas fa-plus-square"></i> Cadastros <i class="fas fa-caret-down"></i>
     </a>
     <div id="menu-cadastros"class="panel-collapse collapse">
-      <a href="{% url 'accounts:register_secretary' %}" class="list-group-item list-group-item-action"><i class="fas fa-user-tie"></i> Funcionário</a>
+      <a href="{% url 'accounts:choose_register_employee' %}" class="list-group-item list-group-item-action"><i class="fas fa-user-tie"></i> Funcionário</a>
       <a href="{% url 'accounts:register_student' %}" class="list-group-item list-group-item-action"><i class="fas fa-user"></i> Aluno</a>
       <a href="{% url 'accounts:register_vehicle' %}" class="list-group-item list-group-item-action"><i class="fas fa-shuttle-van"></i> Veículo</a>
     </div>
@@ -30,7 +32,7 @@
     </a>
     <div id="menu-pessoal"class="panel-collapse collapse">
       <a href="{% url 'accounts:list_employees' %}" class="list-group-item list-group-item-action"><i class="fas fa-user-friends"></i> Funcionários</a>
-      <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-user-friends"></i> Alunos</a>
+      <a href="{% url 'accounts:list_students' %}" class="list-group-item list-group-item-action"><i class="fas fa-user-friends"></i> Alunos</a>
     </div>
 
     <a class="list-group-item list-group-item-action" href="{% url 'accounts:list_vehicles' %}"><i class="fas fa-shuttle-van"></i> Veículos</a>

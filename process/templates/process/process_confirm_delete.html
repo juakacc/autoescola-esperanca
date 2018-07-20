@@ -2,17 +2,17 @@
 
 {% block breadcrumb %}
   {{ block.super }}
-  <li class="breadcrumb-item">Remoção de veículo</li>
+  <li class="breadcrumb-item">Remoção de processo</li>
 {% endblock %}
 
 {% block dashboard_title %}
-  Remoção de veículo
+  Remoção de processo
 {% endblock %}
 
 {% block dashboard_container %}
 <form method="post">{% csrf_token %}
-  <p>Deseja realmente remover o veículo: {{ object }} ?</p>
+  <p>Deseja realmente remover o processo de {{ object.student }} ? (Essa ação não pode ser desfeita)</p>
   <input type="submit" value="Sim" class="btn btn-dark"/>
-  <a href="{% url 'accounts:list_vehicles' %}" class="btn btn-light">Não</a>
+  <a href="{% url 'process:list_processes' %}" class="btn btn-light">Não</a>
 </form>
 {% endblock %}

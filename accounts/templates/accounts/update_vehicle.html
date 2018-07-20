@@ -1,8 +1,12 @@
-{% extends "accounts/dashboard.html" %}
+{% extends "dashboard.html" %}
 
 {% block breadcrumb %}
   {{ block.super }}
   <li class="breadcrumb-item">Atualização de veículo</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  Atualização de veículo
 {% endblock %}
 
 {% block dashboard_container %}
