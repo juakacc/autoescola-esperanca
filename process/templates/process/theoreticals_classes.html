@@ -1,0 +1,40 @@
+{% extends "dashboard.html" %}
+
+{% block dashboard_title %}
+  Aulas do processo #
+{% endblock %}
+
+{% block dashboard_container %}
+<div class="row">
+  <div class="col" align="right">
+    <a href="{% url 'process:register_class_theoretical' theoretical_course.pk %}" class="btn btn-dark"><i class="fas fa-plus"></i> Registar aula</a>
+  </div>
+</div>
+
+  <div class="row">
+    <div class="col">
+      <table class="table list">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Instrutor</th>
+            <th>Data</th>
+            <th>Início</th>
+            <th>Fim</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for class in classes %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ class.instructor }}</td>
+              <td>{{ class.day }}</td>
+              <td>{{ class.start_time|time:'H:i' }}</td>
+              <td>{{ class.end_time|time:"H:i" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

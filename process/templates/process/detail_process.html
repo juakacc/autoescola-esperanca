@@ -1,4 +1,5 @@
 {% extends "dashboard.html" %}
+{% load get_status_class_css %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -32,10 +33,12 @@
   <div class="col">
   <div class="card-deck mb-3 text-center list">
     <!-- Exames -->
-    <div class="card mb-4 bg-success text-white">
+    <div class="card mb-4 bg-{{ process.exams.status|get_class_css }} text-white">
       <div class="card-header">
         <h4 class="my-0 font-weight-normal">
-          <a href="#" class="btn btn-block btn-lg btn-dark"><i class="fas fa-heartbeat"></i> Exames</a>
+          <a href="{% url 'process:update_exams' process.pk %}" class="btn btn-block btn-lg btn-dark">
+            <i class="fas fa-heartbeat"></i> Exames
+          </a>
         </h4>
       </div>
       <div class="card-body">
@@ -63,15 +66,15 @@
     </div><!-- Fim de exames -->
 
     <!-- Curso teórico -->
-    <div class="card mb-4 bg-secondary text-white">
+    <div class="card mb-4 bg-{{ process.theoretical_course.status|get_class_css }} text-white">
       <div class="card-header">
         <h4 class="my-0 font-weight-normal">
-          <a href="#" class="btn btn-block btn-lg btn-dark"><i class="fas fa-pen-alt"></i> Curso teórico</a>
+          <a href="{% url 'process:theoreticals_courses' process.theoretical_course.pk %}" class="btn btn-block btn-lg btn-dark"><i class="fas fa-pen-alt"></i> Curso teórico</a>
         </h4>
       </div>
       <div class="card-body">
         <h5 class="card-title mt-1"><i class="fas fa-list-ol"></i> 45 horas/aula</h5>
-        <p>{{ process.theoretical_course.count_classes }} / 45 realizadas</p>
+        <p>{{ process.theoretical_course.count_classes|floatformat:'1' }} / 45 realizadas</p>
         <p>Prova teória: Não realizada</p>
       </div>
       <div class="card-footer">
@@ -80,7 +83,7 @@
     </div><!-- Fim de curso teórico -->
 
     <!-- Curso prático -->
-    <div class="card mb-4 bg-info text-white">
+    <div class="card mb-4 bg-{{ process.practical_course.status|get_class_css }} text-white">
       <div class="card-header">
         <h4 class="my-0 font-weight-normal">
           <a href="#" class="btn btn-block btn-lg btn-dark"><i class="fas fa-shuttle-van"></i> Curso prático</a>

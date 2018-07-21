@@ -1,0 +1,17 @@
+{% extends "dashboard.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item">Atualização de Exames</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  Atualização de Exames
+{% endblock %}
+
+{% block dashboard_container %}
+  <form method="post">
+    {% include "_form.html" %}
+    <button type="submit" class="btn btn-dark">Salvar</button>
+  </form>
+{% endblock %}

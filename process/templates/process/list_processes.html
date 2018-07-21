@@ -1,5 +1,6 @@
 {% extends "dashboard.html" %}
 {% load pagination %}
+{% load get_status_class_css %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -11,20 +12,20 @@
 {% endblock %}
 
 {% block dashboard_container %}
-<!-- <div class="row">
+<div class="row">
   <div class="col">
     <form class="form-inline" method="get">
       <div class="form-group">
-        <input type="text" class="form-control" name="q" placeholder="Procurar" col="2">
+        <input type="text" class="form-control" name="q" placeholder="Aluno" col="2">
       </div>
       <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
     </form>
   </div>
 
   <div class="col" align="right">
-    <a href="{% url 'accounts:register_student' %}" class="btn btn-dark"><i class="fas fa-plus"></i> Adicionar aluno</a>
+    <a href="{% url 'process:register_process' %}" class="btn btn-dark"><i class="fas fa-plus"></i> Adicionar processo</a>
   </div>
-</div> -->
+</div>
 
 <div class="row">
   <div class="col">
@@ -43,8 +44,8 @@
         {% for v in processes %}
           <tr>
             <td>{{ v.student }}</td>
-            <td>{{ v.status }}</td>
-            <td>{{ v.type_cnh }}</td>
+            <td><span class="badge badge-{{ v.status|get_class_css }}">{{ v.get_status_display }}</span></td>
+            <td>{{ v.get_type_cnh_display }}</td>
             <td>{{ v.date_start }}</td>
             <td>{{ v.date_end }}</td>
             <td>
