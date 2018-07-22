@@ -1,0 +1,84 @@
+{% extends "dashboard.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item"><a href="{% url 'process:list_processes' %}">Processos</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'process:detail_process' num_process %}">Processo #{{ num_process }}</a></li>
+  <li class="breadcrumb-item">Aulas práticas</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  Aulas práticas do processo #{{ num_process }}
+{% endblock %}
+
+{% block dashboard_container %}
+<div class="row">
+  <div class="col" align="right">
+    <a href="{% url 'process:register_practical_class' practical_course.pk %}" class="btn btn-dark"><i class="fas fa-plus"></i> Registar aula</a>
+  </div>
+</div>
+
+  <div class="row">
+    <div class="col">
+      <h4>Aulas no simulador</h4>
+      <table class="table list">
+        <thead>
+          <tr>
+            <th>Aula</th>
+            <th>Instrutor</th>
+            <th>Data</th>
+            <th>Início</th>
+            <th>Fim</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for class in classes_simulator %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ class.instructor }}</td>
+              <td>{{ class.day }}</td>
+              <td>{{ class.start_time|time:'H:i' }}</td>
+              <td>{{ class.end_time|time:"H:i" }}</td>
+            </tr>
+          {% endfor %}
+          <tr>
+            <td></td><td></td><td></td>
+            <td>Total de horas:</td>
+            <td>{{ practical_course.count_classes_simulator|floatformat:"1" }}h</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Aulas no carro</h4>
+      <table class="table list">
+        <thead>
+          <tr>
+            <th>Aula</th>
+            <th>Instrutor</th>
+            <th>Veículo</th>
+            <th>Data</th>
+            <th>Início</th>
+            <th>Fim</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for class in classes_car %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ class.instructor }}</td>
+              <td>{{ class.vehicle }}</td>
+              <td>{{ class.day }}</td>
+              <td>{{ class.start_time|time:'H:i' }}</td>
+              <td>{{ class.end_time|time:"H:i" }}</td>
+            </tr>
+          {% endfor %}
+          <tr>
+            <td></td><td></td><td></td>
+            <td>Total de horas:</td>
+            <td>{{ practical_course.count_classes_car|floatformat:"1" }}h</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

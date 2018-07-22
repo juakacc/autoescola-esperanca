@@ -3,6 +3,7 @@
 
 {% block breadcrumb %}
   {{ block.super }}
+  <li class="breadcrumb-item"><a href="{% url 'process:list_processes' %}">Processos</a></li>
   <li class="breadcrumb-item">Processo #{{ process.pk }}</li>
 {% endblock %}
 
@@ -13,16 +14,11 @@
 {% block dashboard_container %}
 <div class="row">
   <div class="col">
+    <h4>Informações sobre o processo</h4>
     Progresso: {{ process.get_percent }}%
     <div class="progress" style="height: 20px;">
       <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: {{ process.get_percent }}%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col">
-    <h4>Informações sobre o processo</h4>
     <strong>Aluno: </strong>{{ process.student }}<br>
     <strong>Data do início: </strong>{{ process.date_start }}<br>
     <strong>Data do término: </strong> {{ process.date_end }}<br>
@@ -69,7 +65,7 @@
     <div class="card mb-4 bg-{{ process.theoretical_course.status|get_class_css }} text-white">
       <div class="card-header">
         <h4 class="my-0 font-weight-normal">
-          <a href="{% url 'process:theoreticals_courses' process.theoretical_course.pk %}" class="btn btn-block btn-lg btn-dark"><i class="fas fa-pen-alt"></i> Curso teórico</a>
+          <a href="{% url 'process:theoretical_course' process.pk %}" class="btn btn-block btn-lg btn-dark"><i class="fas fa-pen-alt"></i> Curso teórico</a>
         </h4>
       </div>
       <div class="card-body">
@@ -86,7 +82,7 @@
     <div class="card mb-4 bg-{{ process.practical_course.status|get_class_css }} text-white">
       <div class="card-header">
         <h4 class="my-0 font-weight-normal">
-          <a href="#" class="btn btn-block btn-lg btn-dark"><i class="fas fa-shuttle-van"></i> Curso prático</a>
+          <a href="{% url 'process:practical_course' process.pk %}" class="btn btn-block btn-lg btn-dark"><i class="fas fa-shuttle-van"></i> Curso prático</a>
         </h4>
       </div>
       <div class="card-body">

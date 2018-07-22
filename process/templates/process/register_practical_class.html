@@ -3,17 +3,19 @@
 {% block breadcrumb %}
   {{ block.super }}
   <li class="breadcrumb-item"><a href="{% url 'process:list_processes' %}">Processos</a></li>
-  <li class="breadcrumb-item"><a href="{% url 'process:detail_process' object.process.pk %}">Processo #{{ object.process.pk }}</a></li>
-  <li class="breadcrumb-item">Atualização de Exames</li>
+  <li class="breadcrumb-item"><a href="{% url 'process:detail_process' pk_process %}">Processo #{{ pk_process }}</a></li>
+  <li class="breadcrumb-item">Aulas práticas</li>
 {% endblock %}
 
 {% block dashboard_title %}
-  Atualização de Exames
+  Registrar aula prática
 {% endblock %}
 
 {% block dashboard_container %}
   <form method="post">
     {% include "_form.html" %}
-    <button type="submit" class="btn btn-dark">Salvar</button>
+    <div class="form-group">
+      <button type="submit" class="btn btn-dark">Registrar</button>
+    </div>
   </form>
 {% endblock %}

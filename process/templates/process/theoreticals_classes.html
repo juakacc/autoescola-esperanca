@@ -1,13 +1,20 @@
 {% extends "dashboard.html" %}
 
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item"><a href="{% url 'process:list_processes' %}">Processos</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'process:detail_process' num_process %}">Processo #{{ num_process }}</a></li>
+  <li class="breadcrumb-item">Aulas teóricas</li>
+{% endblock %}
+
 {% block dashboard_title %}
-  Aulas do processo #
+  Aulas teóricas do processo #{{ num_process }}
 {% endblock %}
 
 {% block dashboard_container %}
 <div class="row">
   <div class="col" align="right">
-    <a href="{% url 'process:register_class_theoretical' theoretical_course.pk %}" class="btn btn-dark"><i class="fas fa-plus"></i> Registar aula</a>
+    <a href="{% url 'process:register_theoretical_class' theoretical_course.pk %}" class="btn btn-dark"><i class="fas fa-plus"></i> Registar aula</a>
   </div>
 </div>
 
@@ -16,7 +23,7 @@
       <table class="table list">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>Aula</th>
             <th>Instrutor</th>
             <th>Data</th>
             <th>Início</th>
@@ -33,6 +40,11 @@
               <td>{{ class.end_time|time:"H:i" }}</td>
             </tr>
           {% endfor %}
+          <tr>
+            <td></td><td></td><td></td>
+            <td>Total de horas:</td>
+            <td>{{ theoretical_course.count_classes|floatformat:"1" }}h</td>
+          </tr>
         </tbody>
       </table>
     </div>

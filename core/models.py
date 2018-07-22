@@ -45,5 +45,12 @@ class Contact(models.Model):
         verbose_name_plural = 'Contatos'
         ordering = ['-created']
 
-# class SiteSettings(models.Model):
-#     basic_salary = models.DecimalField('Salário Mínimo', max_digits=8, decimal_places=2)
+class SystemSettings(models.Model):
+    basic_salary = models.DecimalField('Salário Mínimo', max_digits=8, decimal_places=2)
+
+    hours_theoretical = models.PositiveIntegerField('Horas teóricas')
+    hours_practical_simulator = models.PositiveIntegerField('Horas práticas no simulador')
+    hours_practical_vehicle = models.PositiveIntegerField('Horas práticas no veículo')
+
+    def __str__(self):
+        return 'Configurações do sistema'

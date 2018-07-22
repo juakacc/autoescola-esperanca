@@ -26,7 +26,6 @@ class VehiclesListView(HasPermissionsMixin, ListView):
 
     def get_queryset(self):
         type = self.kwargs.get('type', '')
-        print('a' + type)
         if type:
             query = Vehicle.objects.filter(type=type)
         else:

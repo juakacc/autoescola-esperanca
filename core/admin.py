@@ -15,3 +15,6 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 # admin.site.register(User, UserAdmin)
 # admin.site.register(Person, UserAdmin)
 # admin.site.register(Employee, UserAdmin)
+from .models import SystemSettings
+
+admin.site.register(SystemSettings)

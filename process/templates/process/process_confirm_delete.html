@@ -11,7 +11,7 @@
 
 {% block dashboard_container %}
 <form method="post">{% csrf_token %}
-  <p>Deseja realmente remover o processo de {{ object.student }} ? (Essa ação não pode ser desfeita)</p>
+  <p>Deseja realmente remover o processo de {{ object.student }} ? <span class="text-danger">(Essa ação não pode ser desfeita)</span></p>
   <input type="submit" value="Sim" class="btn btn-dark"/>
   <a href="{% url 'process:list_processes' %}" class="btn btn-light">Não</a>
 </form>

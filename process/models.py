@@ -2,7 +2,7 @@ from django.shortcuts import reverse
 from django.db import models
 from datetime import datetime, date
 from accounts.models import Student, Employee
-from core.models import Vehicle
+from core.models import Vehicle, SystemSettings
 
 NAO_INICIADO = 'nao_iniciado'
 INICIADO = 'iniciado'
@@ -34,14 +34,15 @@ class TheoreticalCourse(models.Model):
 
     # Retorna a quantidade de horas já realizadas
     def count_classes(self):
-        aulas = self.aulas.all()
-        horas = 0
+        aulas, horas = self.aulas.all(), 0
 
         for aula in aulas:
             hora_aula = datetime.combine(date.min, aula.end_time) - datetime.combine(date.min, aula.start_time)
-            hora_aula = hora_aula.seconds / 3600
-            horas += hora_aula
+            horas += (hora_aula.seconds / 3600)
         return horas
+
+    def get_absolute_url(self):
+        return reverse('process:theoretical_course', kwargs={'pk_process': self.process.pk})
 
     class Meta:
         verbose_name = 'Curso teórico'
@@ -51,14 +52,24 @@ class TheoreticalCourse(models.Model):
         return 'Curso teórico de ' + self.process.student.__str__()
 
 class PracticalCourse(models.Model):
-    vehicle = models.ForeignKey(Vehicle, verbose_name='Veículo', on_delete=models.SET_NULL, null=True, default=None)
     status = models.CharField('Status', max_length=20, default=NAO_INICIADO, choices=STATUS_CHOICES)
 
     def count_classes_car(self):
-        return len(self.aulas.filter(simulator=False))
+        aulas, horas = self.aulas.filter(simulator=False), 0
+        for aula in aulas:
+            hora_aula = datetime.combine(date.min, aula.end_time) - datetime.combine(date.min, aula.start_time)
+            horas += (hora_aula.seconds / 3600)
+        return horas
 
     def count_classes_simulator(self):
-        return len(self.aulas.filter(simulator=True))
+        aulas, horas = self.aulas.filter(simulator=True), 0
+        for aula in aulas:
+            hora_aula = datetime.combine(date.min, aula.end_time) - datetime.combine(date.min, aula.start_time)
+            horas += (hora_aula.seconds / 3600)
+        return horas
+
+    def get_absolute_url(self):
+        return reverse('process:practical_course', kwargs={'pk_process': self.process.pk})
 
     class Meta:
         verbose_name = 'Curso prático'
@@ -87,7 +98,7 @@ class Process(models.Model):
         return 'Proc. de ' + self.student.__str__()
 
     def get_absolute_url(self):
-        return reverse('process:detail_process', kwargs={'pk': self.pk})
+        return reverse('process:detail_process', kwargs={'pk_process': self.pk})
 
     class Meta:
         verbose_name = 'Processo'
@@ -108,15 +119,16 @@ class TheoreticalClass(models.Model):
 class PracticalClass(models.Model):
     practical_course = models.ForeignKey(PracticalCourse, related_name='aulas', verbose_name='Curso prático', on_delete=models.CASCADE)
     instructor = models.ForeignKey(Employee, verbose_name='Instrutor', on_delete=models.SET_NULL, null=True)
-    simulator = models.BooleanField('Aula de simulador', default=False)
-    # vehicle = models.ForeignKey(Vehicle, verbose_name='Veículo', on_delete=models.SET_NULL, null=True, default=None)
-    day = models.DateField('Dia da aula')
-    start_time = models.DateTimeField('Hora do início')
-    end_time = models.DateTimeField('Hora do fim')
+    simulator = models.BooleanField('Aula de simulador', default=False, choices=((True, 'Sim'), (False, 'Não')))
+    vehicle = models.ForeignKey(Vehicle, verbose_name='Veículo', on_delete=models.SET_NULL, null=True, blank=True)
+    day = models.DateField('Dia da aula', default=datetime.now)
+    start_time = models.TimeField('Hora do início')
+    end_time = models.TimeField('Hora do fim')
 
     class Meta:
         verbose_name = 'Aula prática'
         verbose_name_plural = 'Aulas práticas'
+        # unique_together = (('practical_course', 'day', 'start_time', 'end_time'), ('practical_course', 'day', 'start_time'))
 
 # Signals
 
@@ -139,6 +151,31 @@ def update_status_exams(instance, **kwargs):
     else:
         instance.status = NAO_INICIADO
 
+def update_status_theoretical(instance, **kwargs):
+    settings = SystemSettings.objects.all()[0]
+    course = instance.theoretical_course
+
+    if course.count_classes() >= settings.hours_theoretical:
+        course.status = CONCLUIDO
+    elif course.count_classes() > 0:
+        course.status = INICIADO
+    else:
+        course.status = NAO_INICIADO
+    course.save()
+
+def update_status_practical(instance, **kwargs):
+    settings = SystemSettings.objects.all()[0]
+    course = instance.practical_course
+
+    if (course.count_classes_simulator() >= settings.hours_practical_simulator) and \
+        (course.count_classes_car() >= settings.hours_practical_vehicle):
+        course.status = CONCLUIDO
+    elif (course.count_classes_simulator() > 0) or (course.count_classes_car() > 0):
+        course.status = INICIADO
+    else:
+        course.status = NAO_INICIADO
+    course.save()
+
 models.signals.post_save.connect(
     create_process, sender=Process, dispatch_uid='create_process'
 )
@@ -147,4 +184,16 @@ models.signals.pre_save.connect(
 )
 models.signals.pre_save.connect(
     update_status_exams, sender=Exam, dispatch_uid='update_status_exams'
+)
+models.signals.post_save.connect(
+    update_status_theoretical, sender=TheoreticalClass, dispatch_uid='update_status_theoretical'
+)
+models.signals.post_delete.connect(
+    update_status_theoretical, sender=TheoreticalClass, dispatch_uid='update_status_theoretical'
+)
+models.signals.post_save.connect(
+    update_status_practical, sender=PracticalClass, dispatch_uid='update_status_practical'
+)
+models.signals.post_delete.connect(
+    update_status_practical, sender=PracticalClass, dispatch_uid='update_status_practical'
 )
