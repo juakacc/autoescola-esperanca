@@ -17,21 +17,6 @@ class IndexView(HasPermissionsMixin, TemplateView):
     required_permission = 'secretary'
     template_name = 'dashboard.html'
 
-class VehiclesListView(HasPermissionsMixin, ListView):
-    # required_permission = 'secretary'
-    template_name = 'accounts/list_vehicles.html'
-    context_object_name = 'vehicles'
-    model = Vehicle
-    paginate_by = 10
-
-    def get_queryset(self):
-        type = self.kwargs.get('type', '')
-        if type:
-            query = Vehicle.objects.filter(type=type)
-        else:
-            query = Vehicle.objects.all()
-        return query
-
 class RegisterSecretaryView(SuccessMessageMixin, CreateView):
     model = Employee
     template_name = 'accounts/register_secretary.html'
@@ -83,7 +68,7 @@ class UpdateInstructorView(SuccessMessageMixin, UpdateView):
     model = Employee
     template_name = 'accounts/update_employee.html'
     fields = ['username', 'name', 'cpf', 'date_of_birth', 'email', 'telephone',
-        'salary', 'cnh', 'type_cnh', 'street', 'number', 'district', 'city', 'state']
+        'salary', 'cnh', 'street', 'number', 'district', 'city', 'state']
     success_url = reverse_lazy('accounts:list_employees')
     success_message = 'Instrutor atualizado com sucesso'
 
@@ -142,28 +127,6 @@ class DeleteStudentView(DeleteView):
         msgs.success(request, 'Aluno {} removido com sucesso'.format(self.get_object()))
         return super().delete(request, *args, **kwargs)
 
-class RegisterVehicleView(SuccessMessageMixin, CreateView):
-    model = Vehicle
-    template_name = 'accounts/register_vehicle.html'
-    fields = '__all__'
-    success_url = reverse_lazy('accounts:list_vehicles')
-    success_message = 'Veículo adicionado com sucesso'
-
-class UpdateVehicleView(SuccessMessageMixin, UpdateView):
-    model = Vehicle
-    template_name = 'accounts/update_vehicle.html'
-    fields = ['fabricator', 'model', 'year', 'plate', 'state']
-    success_url = reverse_lazy('accounts:list_vehicles')
-    success_message = 'Veículo atualizado com sucesso'
-
-class DeleteVehicleView(DeleteView):
-    model = Vehicle
-    success_url = reverse_lazy('accounts:list_vehicles')
-
-    def delete(self, request, *args, **kwargs):
-        msgs.success(request, 'Veículo removido com sucesso')
-        return super(DeleteVehicleView, self).delete(request, *args, **kwargs)
-
 class UpdateView(SuccessMessageMixin, UpdateView):
     model = Employee
     template_name = 'accounts/update.html'
@@ -208,11 +171,6 @@ register_student = RegisterStudentView.as_view()
 update_student = UpdateStudentView.as_view()
 list_students = StudentsListView.as_view()
 delete_student = DeleteStudentView.as_view()
-
-register_vehicle = RegisterVehicleView.as_view()
-update_vehicle = UpdateVehicleView.as_view()
-delete_vehicle = DeleteVehicleView.as_view()
-list_vehicles = VehiclesListView.as_view()
 
 update = UpdateView.as_view()
 update_password = UpdatePasswordView.as_view()

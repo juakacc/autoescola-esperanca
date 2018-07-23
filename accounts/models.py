@@ -60,20 +60,7 @@ class Employee(Person):
     salary = models.DecimalField(verbose_name='Salário', max_digits=8, decimal_places=2, default=950.00)
     registry = models.CharField('Matrícula', max_length=10)
 
-    TYPE_CHOICES = (
-        ('ACC', 'ACC'),
-        ('A', 'A'),
-        ('B', 'B'),
-        ('AB', 'A/B'),
-        ('C', 'C'),
-        ('AC', 'A/C'),
-        ('D', 'D'),
-        ('AD', 'A/D'),
-        ('E', 'E'),
-        ('AE', 'A/E'),
-    )
     cnh = models.CharField('CNH', max_length=20, null=True)
-    type_cnh = models.CharField('Tipo da CNH', max_length=3, choices=TYPE_CHOICES, null=True, default='AB')
 
     class Meta:
         verbose_name = 'Funcionário'

@@ -23,11 +23,11 @@ urlpatterns = [
     path('alunos/', views.list_students, name='list_students'),
     path('deletar-aluno/<int:pk>', views.delete_student, name='delete_student'),
 
-    path('registro-veiculo/', views.register_vehicle, name='register_vehicle'),
-    path('atualizar-veiculo/<int:pk>', views.update_vehicle, name='update_vehicle'),
-    path('deletar-veiculo/<int:pk>', views.delete_vehicle, name='delete_vehicle'),
-    path('veiculos/', views.list_vehicles, name='list_vehicles'),
-    path('veiculos/<str:type>', views.list_vehicles, name='list_vehicles'),
+    path('registro-veiculo/', core_views.register_vehicle, name='register_vehicle'),
+    path('atualizar-veiculo/<int:pk>', core_views.update_vehicle, name='update_vehicle'),
+    path('deletar-veiculo/<int:pk>', core_views.delete_vehicle, name='delete_vehicle'),
+    path('veiculos/', core_views.list_vehicles, name='list_vehicles'),
+    path('veiculos/<str:type>', core_views.list_vehicles, name='list_vehicles'),
 
     path('alterar-dados/', views.update, name='update'),
     path('alterar-senha/', views.update_password, name='update_password'),

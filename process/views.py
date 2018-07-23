@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DeleteView, DetailView, UpdateView
+from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 
 from .models import (Process, Exam, TheoreticalClass,
@@ -17,6 +18,16 @@ class RegisterProcessView(SuccessMessageMixin, CreateView):
         process = self.object
         self.success_message = 'Processo cadastrado. Prazo final {}'.format(process.date_end)
         return super().get_success_url()
+
+class UpdateProcessView(SuccessMessageMixin, UpdateView):
+    model = Process
+    template_name = 'process/update_process.html'
+    success_message = 'Processo atualizado com sucesso'
+    success_url = reverse_lazy('process:list_processes')
+    fields = ['type_cnh', 'date_start']
+
+    def get_object(self):
+        return get_object_or_404(Process, pk=self.kwargs['pk_process'])
 
 class ProcessListView(ListView):
     model = Process
@@ -38,12 +49,12 @@ class ProcessDetailView(DetailView):
     def get_object(self, **kwargs):
         return get_object_or_404(Process, pk=self.kwargs['pk_process'])
 
-class DeleteProcessView(SuccessMessageMixin, DeleteView):
+class DeleteProcessView(DeleteView):
     model = Process
     success_url = reverse_lazy('process:list_processes')
 
     def delele(self, request, *args, **kwargs):
-        self.success_message = 'Processo removido com sucesso'
+        messages.success(self.request, 'Processo removido com sucesso')
         return super().delete(request, *args, **kwargs)
 
 class ExamsUpdateView(SuccessMessageMixin, UpdateView):
@@ -133,13 +144,39 @@ class RegisterPracticalClass(SuccessMessageMixin, CreateView):
         self.object.save()
         return super().form_valid(form)
 
+class RemoveTheoreticalClassView(DeleteView):
+    model = TheoreticalClass
+    template_name = 'process/class_confirm_delete.html'
+
+    def get_object(self):
+        return get_object_or_404(TheoreticalClass, pk=self.kwargs['pk_class'])
+
+    def get_success_url(self):
+        messages.success(self.request, 'Aula excluída com sucesso')
+        return self.object.theoretical_course.get_absolute_url()
+
+class RemovePracticalClassView(DeleteView):
+    model = PracticalClass
+    template_name = 'process/class_confirm_delete.html'
+
+    def get_object(self):
+        return get_object_or_404(PracticalClass, pk=self.kwargs['pk_class'])
+
+    def get_success_url(self):
+        messages.success(self.request, 'Aula excluída com sucesso')
+        return self.object.practical_course.get_absolute_url()
+
 register_process = RegisterProcessView.as_view()
+update_process = UpdateProcessView.as_view()
 list_processes = ProcessListView.as_view()
 delete_process = DeleteProcessView.as_view()
 detail_process = ProcessDetailView.as_view()
 
 register_theoretical_class = RegisterTheoreticalClass.as_view()
+remove_theoretical_class = RemoveTheoreticalClassView.as_view()
+
 register_practical_class = RegisterPracticalClass.as_view()
+remove_practical_class = RemovePracticalClassView.as_view()
 
 update_exams = ExamsUpdateView.as_view()
 theoretical_course = ListTheoreticalCourse.as_view()

@@ -28,6 +28,7 @@
             <th>Data</th>
             <th>Início</th>
             <th>Fim</th>
+            <th>Opções</th>
           </tr>
         </thead>
         <tbody>
@@ -38,6 +39,7 @@
               <td>{{ class.day }}</td>
               <td>{{ class.start_time|time:'H:i' }}</td>
               <td>{{ class.end_time|time:"H:i" }}</td>
+              <td><a href="{% url 'process:remove_theoretical_class' class.pk %}"><i class="fas fa-trash-alt"></i></a></td>
             </tr>
           {% endfor %}
           <tr>

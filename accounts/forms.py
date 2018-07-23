@@ -36,10 +36,11 @@ class RegisterInstructorForm(UserCreationForm):
         if not is_date_of_birth_valid(born):
             raise forms.ValidationError('Um funcionário não pode ser menor de idade')
         return born
+        # tem q ser maior q 21
 
     class Meta:
         model = Employee
-        fields = ['username', 'name', 'cpf', 'date_of_birth', 'email', 'telephone', 'salary', 'cnh', 'type_cnh',
+        fields = ['username', 'name', 'cpf', 'date_of_birth', 'email', 'telephone', 'salary', 'cnh',
             'street', 'number', 'district', 'city', 'state']
 
 def is_date_of_birth_valid(born):

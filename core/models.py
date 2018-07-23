@@ -16,6 +16,7 @@ class Vehicle(models.Model):
         ('motorcycle', 'Moto')
     )
     type = models.CharField('Tipo', max_length=20, choices=TYPE_CHOICES, default='motorcycle')
+    slug = models.SlugField('Apelido', unique=True)
     fabricator = models.CharField('Fabricante', max_length=20)
     model = models.CharField('Modelo', max_length=20)
     year = models.PositiveIntegerField('Ano')

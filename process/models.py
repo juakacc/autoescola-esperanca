@@ -26,20 +26,33 @@ class Exam(models.Model):
 
     status = models.CharField('Status', max_length=20, default=INICIADO, choices=STATUS_CHOICES)
 
+    def get_percent(self):
+        if self.status == CONCLUIDO:
+            return 100
+        elif self.exam_medical or self.exam_psychological:
+            return 50
+        else:
+            return 0
+
     def __str__(self):
         return 'Exames de ' + self.process.student.__str__()
 
 class TheoreticalCourse(models.Model):
     status = models.CharField('Status', max_length=20, default=NAO_INICIADO, choices=STATUS_CHOICES)
 
-    # Retorna a quantidade de horas já realizadas
     def count_classes(self):
+        '''Retorna a quantidate de horas já concluídas'''
         aulas, horas = self.aulas.all(), 0
 
         for aula in aulas:
             hora_aula = datetime.combine(date.min, aula.end_time) - datetime.combine(date.min, aula.start_time)
             horas += (hora_aula.seconds / 3600)
         return horas
+
+    def get_percent(self):
+        ''' Percentual do curso teórico concluído '''
+        total_hours = SystemSettings.objects.all()[0].hours_theoretical
+        return self.count_classes() / total_hours * 100
 
     def get_absolute_url(self):
         return reverse('process:theoretical_course', kwargs={'pk_process': self.process.pk})
@@ -54,7 +67,10 @@ class TheoreticalCourse(models.Model):
 class PracticalCourse(models.Model):
     status = models.CharField('Status', max_length=20, default=NAO_INICIADO, choices=STATUS_CHOICES)
 
+    total_hours = models.PositiveIntegerField('Horas práticas necessárias', default=20)
+
     def count_classes_car(self):
+        ''' Calcula o total de horas realizadas no veículo '''
         aulas, horas = self.aulas.filter(simulator=False), 0
         for aula in aulas:
             hora_aula = datetime.combine(date.min, aula.end_time) - datetime.combine(date.min, aula.start_time)
@@ -62,11 +78,17 @@ class PracticalCourse(models.Model):
         return horas
 
     def count_classes_simulator(self):
+        ''' Calcula o total de horas realizadas no simulador '''
         aulas, horas = self.aulas.filter(simulator=True), 0
         for aula in aulas:
             hora_aula = datetime.combine(date.min, aula.end_time) - datetime.combine(date.min, aula.start_time)
             horas += (hora_aula.seconds / 3600)
         return horas
+
+    def get_percent(self):
+        ''' Percentual de curso prático concluído, 50% simulador + 50% no veículo '''
+        total_hours_simulator = SystemSettings.objects.all()[0].hours_practical_simulator
+        return (self.count_classes_simulator() / total_hours_simulator * 50) + (self.count_classes_car() / self.total_hours * 50)
 
     def get_absolute_url(self):
         return reverse('process:practical_course', kwargs={'pk_process': self.process.pk})
@@ -78,10 +100,34 @@ class PracticalCourse(models.Model):
     def __str__(self):
         return 'Curso prático de ' + self.process.student.__str__()
 
-class Process(models.Model):
+type_hours = {
+    'ACC': 20,
+    'A': 20,
+    'B': 20,
+    'AB': 40,
+    'C': 20,
+    'AC': 40,
+    'D': 20,
+    'AD': 40,
+    'E': 20,
+    'AE': 40
+}
 
+class Process(models.Model):
+    TYPE_CHOICES = (
+        ('ACC', 'ACC'),
+        ('A', 'A'),
+        ('B', 'B'),
+        ('AB', 'A/B'),
+        ('C', 'C'),
+        ('AC', 'A/C'),
+        ('D', 'D'),
+        ('AD', 'A/D'),
+        ('E', 'E'),
+        ('AE', 'A/E'),
+    )
     student = models.ForeignKey(Student, verbose_name='Aluno', on_delete=models.CASCADE)
-    type_cnh = models.CharField('Tipo da CNH', choices=Employee.TYPE_CHOICES, max_length=3)
+    type_cnh = models.CharField('Tipo da CNH', choices=TYPE_CHOICES, max_length=3)
 
     date_start = models.DateField('Início', default=datetime.now)
     date_end = models.DateField('Fim', blank=True, null=True, default=None)
@@ -92,7 +138,8 @@ class Process(models.Model):
     practical_course = models.OneToOneField(PracticalCourse, verbose_name='Curso prático', on_delete=models.CASCADE, blank=True, default=None, null=True)
 
     def get_percent(self):
-        return 50
+        '''Calcula o percentual do processo que o aluno já completou'''
+        return int(round(self.exams.get_percent() * 0.2 + self.theoretical_course.get_percent() * 0.3 + self.practical_course.get_percent() * 0.3))
 
     def __str__(self):
         return 'Proc. de ' + self.student.__str__()
@@ -112,6 +159,9 @@ class TheoreticalClass(models.Model):
     start_time = models.TimeField('Hora do início')
     end_time = models.TimeField('Hora do fim')
 
+    def get_absolute_url(self):
+        return self.theoretical_course.get_absolute_url()
+
     class Meta:
         verbose_name = 'Aula teórica'
         verbose_name_plural = 'Aulas teóricas'
@@ -124,6 +174,9 @@ class PracticalClass(models.Model):
     day = models.DateField('Dia da aula', default=datetime.now)
     start_time = models.TimeField('Hora do início')
     end_time = models.TimeField('Hora do fim')
+
+    def get_absolute_url(self):
+        return self.practical_course.get_absolute_url()
 
     class Meta:
         verbose_name = 'Aula prática'
@@ -142,6 +195,9 @@ def create_process(instance, created, **kwargs):
 def update_end_date(instance, **kwargs):
     # Atualizando a data final do processo: 1 ano
     instance.date_end = date.fromordinal(instance.date_start.toordinal()+365)
+    # Atualizando o total de horas práticas necessárias
+    instance.practical_course.total_hours = type_hours[instance.type_cnh]
+    instance.practical_course.save()
 
 def update_status_exams(instance, **kwargs):
     if instance.exam_medical and instance.exam_psychological:
@@ -168,7 +224,7 @@ def update_status_practical(instance, **kwargs):
     course = instance.practical_course
 
     if (course.count_classes_simulator() >= settings.hours_practical_simulator) and \
-        (course.count_classes_car() >= settings.hours_practical_vehicle):
+        (course.count_classes_car() >= course.total_hours):
         course.status = CONCLUIDO
     elif (course.count_classes_simulator() > 0) or (course.count_classes_car() > 0):
         course.status = INICIADO
