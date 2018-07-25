@@ -5,15 +5,15 @@ class RegisterProcessForm(forms.ModelForm):
 
     class Meta:
         model = Process
-        fields = ['student', 'type_cnh', 'date_start']
+        fields = ['student', 'type_cnh', 'begin_date']
 
 class RegisterTheoreticalClassForm(forms.ModelForm):
 
     class Meta:
         model = TheoreticalClass
-        fields = ['instructor', 'day', 'start_time', 'end_time']
+        fields = ['instructor', 'day', 'begin_time', 'end_time']
         widgets = {
-            'start_time': forms.TextInput(attrs={'placeholder': 'HH:mm'}),
+            'begin_time': forms.TextInput(attrs={'placeholder': 'HH:mm'}),
             'end_time': forms.TextInput(attrs={'placeholder': 'HH:mm'}),
         }
 
@@ -24,16 +24,16 @@ class RegisterPracticalClassForm(forms.ModelForm):
         simulator = self.cleaned_data['simulator']
 
         if simulator:
-            vehicle = None
+            return None
         else:
-            if vehicle == None:
+            if not vehicle:
                 raise forms.ValidationError('Escolha um veículo')
-        return vehicle
+            return vehicle
 
     class Meta:
         model = PracticalClass
-        fields = ['instructor', 'simulator', 'vehicle', 'day', 'start_time', 'end_time']
+        fields = ['instructor', 'simulator', 'vehicle', 'day', 'begin_time', 'end_time']
         widgets = {
-            'start_time': forms.TextInput(attrs={'placeholder': 'HH:mm'}),
+            'begin_time': forms.TextInput(attrs={'placeholder': 'HH:mm'}),
             'end_time': forms.TextInput(attrs={'placeholder': 'HH:mm'}),
         }

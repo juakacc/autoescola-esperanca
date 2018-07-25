@@ -24,7 +24,7 @@ class UpdateProcessView(SuccessMessageMixin, UpdateView):
     template_name = 'process/update_process.html'
     success_message = 'Processo atualizado com sucesso'
     success_url = reverse_lazy('process:list_processes')
-    fields = ['type_cnh', 'date_start']
+    fields = ['type_cnh', 'begin_date']
 
     def get_object(self):
         return get_object_or_404(Process, pk=self.kwargs['pk_process'])
@@ -96,8 +96,8 @@ class ListPracticalCourse(ListView):
         context['num_process'] = self.kwargs['pk_process']
         context['practical_course'] = get_object_or_404(PracticalCourse, process__pk=self.kwargs['pk_process'])
 
-        context['classes_car'] = PracticalClass.objects.filter(simulator=False)
-        context['classes_simulator'] = PracticalClass.objects.filter(simulator=True)
+        context['classes_car'] = self.get_queryset().filter(simulator=False)
+        context['classes_simulator'] = self.get_queryset().filter(simulator=True)
         return context
 
 class RegisterTheoreticalClass(SuccessMessageMixin, CreateView):

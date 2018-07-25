@@ -1,0 +1,20 @@
+{% extends "dashboard.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item"><a href="{% url 'diary:list_diaries' %}">Agendamentos</a></li>
+  <li class="breadcrumb-item">Agendar</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  Registrar agendamento
+{% endblock %}
+
+{% block dashboard_container %}
+  <form method="post">
+    {% include "_form.html" %}
+    <div class="form-group">
+      <button type="submit" class="btn btn-dark">Enviar</button>
+    </div>
+  </form>
+{% endblock %}

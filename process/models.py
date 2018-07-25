@@ -45,7 +45,7 @@ class TheoreticalCourse(models.Model):
         aulas, horas = self.aulas.all(), 0
 
         for aula in aulas:
-            hora_aula = datetime.combine(date.min, aula.end_time) - datetime.combine(date.min, aula.start_time)
+            hora_aula = datetime.combine(date.min, aula.end_time) - datetime.combine(date.min, aula.begin_time)
             horas += (hora_aula.seconds / 3600)
         return horas
 
@@ -73,7 +73,7 @@ class PracticalCourse(models.Model):
         ''' Calcula o total de horas realizadas no veículo '''
         aulas, horas = self.aulas.filter(simulator=False), 0
         for aula in aulas:
-            hora_aula = datetime.combine(date.min, aula.end_time) - datetime.combine(date.min, aula.start_time)
+            hora_aula = datetime.combine(date.min, aula.end_time) - datetime.combine(date.min, aula.begin_time)
             horas += (hora_aula.seconds / 3600)
         return horas
 
@@ -81,7 +81,7 @@ class PracticalCourse(models.Model):
         ''' Calcula o total de horas realizadas no simulador '''
         aulas, horas = self.aulas.filter(simulator=True), 0
         for aula in aulas:
-            hora_aula = datetime.combine(date.min, aula.end_time) - datetime.combine(date.min, aula.start_time)
+            hora_aula = datetime.combine(date.min, aula.end_time) - datetime.combine(date.min, aula.begin_time)
             horas += (hora_aula.seconds / 3600)
         return horas
 
@@ -129,8 +129,8 @@ class Process(models.Model):
     student = models.ForeignKey(Student, verbose_name='Aluno', on_delete=models.CASCADE)
     type_cnh = models.CharField('Tipo da CNH', choices=TYPE_CHOICES, max_length=3)
 
-    date_start = models.DateField('Início', default=datetime.now)
-    date_end = models.DateField('Fim', blank=True, null=True, default=None)
+    begin_date = models.DateField('Início', default=datetime.now)
+    end_date = models.DateField('Fim', blank=True, null=True, default=None)
     status = models.CharField('Status', max_length=20, default=INICIADO, choices=STATUS_CHOICES)
 
     exams = models.OneToOneField(Exam, verbose_name='Exames', on_delete=models.CASCADE, blank=True, default=None, null=True)
@@ -142,7 +142,7 @@ class Process(models.Model):
         return int(round(self.exams.get_percent() * 0.2 + self.theoretical_course.get_percent() * 0.3 + self.practical_course.get_percent() * 0.3))
 
     def __str__(self):
-        return 'Proc. de ' + self.student.__str__()
+        return 'Proc. #{} -> {}'.format(self.pk, self.student.__str__())
 
     def get_absolute_url(self):
         return reverse('process:detail_process', kwargs={'pk_process': self.pk})
@@ -150,13 +150,13 @@ class Process(models.Model):
     class Meta:
         verbose_name = 'Processo'
         verbose_name_plural = 'Processos'
-        ordering = ['-date_start']
+        ordering = ['-begin_date']
 
 class TheoreticalClass(models.Model):
     theoretical_course = models.ForeignKey(TheoreticalCourse, related_name='aulas', verbose_name='Curso teórico', on_delete=models.CASCADE)
     instructor = models.ForeignKey(Employee, verbose_name='Instrutor', on_delete=models.SET_NULL, null=True)
     day = models.DateField('Dia da aula', default=datetime.now)
-    start_time = models.TimeField('Hora do início')
+    begin_time = models.TimeField('Hora do início')
     end_time = models.TimeField('Hora do fim')
 
     def get_absolute_url(self):
@@ -172,7 +172,7 @@ class PracticalClass(models.Model):
     simulator = models.BooleanField('Aula de simulador', default=False, choices=((True, 'Sim'), (False, 'Não')))
     vehicle = models.ForeignKey(Vehicle, verbose_name='Veículo', on_delete=models.SET_NULL, null=True, blank=True)
     day = models.DateField('Dia da aula', default=datetime.now)
-    start_time = models.TimeField('Hora do início')
+    begin_time = models.TimeField('Hora do início')
     end_time = models.TimeField('Hora do fim')
 
     def get_absolute_url(self):
@@ -194,7 +194,7 @@ def create_process(instance, created, **kwargs):
 
 def update_end_date(instance, **kwargs):
     # Atualizando a data final do processo: 1 ano
-    instance.date_end = date.fromordinal(instance.date_start.toordinal()+365)
+    instance.end_date = date.fromordinal(instance.begin_date.toordinal()+365)
     # Atualizando o total de horas práticas necessárias
     instance.practical_course.total_hours = type_hours[instance.type_cnh]
     instance.practical_course.save()

@@ -1,0 +1,19 @@
+{% extends "dashboard.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item"><a href="{% url 'diary:list_diaries' %}">Agendamentos</a></li>
+  <li class="breadcrumb-item">Remoção de agendamento</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  Remoção de agendamento
+{% endblock %}
+
+{% block dashboard_container %}
+<form method="post">{% csrf_token %}
+  <p>Deseja realmente remover o agendamento de {{ object.process.student }}? <span class="text-danger">(Essa ação não pode ser desfeita)</span></p>
+  <input type="submit" value="Sim" class="btn btn-dark"/>
+  <a href="{% url 'diary:list_diaries' %}" class="btn btn-light">Não</a>
+</form>
+{% endblock %}

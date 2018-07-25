@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block breadcrumb %}
-  {{ block.super }}
+  {# {{ block.super }} #}
   <li class="breadcrumb-item">
     <a href="{% url 'accounts:index' %}">Minha conta</a>
   </li>
@@ -17,6 +17,7 @@
   <!-- Menu lateral -->
   <div class="col-3 list-group">
     <a class="list-group-item list-group-item-action" href="{% url 'process:list_processes' %}"><i class="fas fa-tasks"></i> Processos</a>
+    <a class="list-group-item list-group-item-action" href="{% url 'diary:list_diaries' %}"><i class="fas fa-calendar-alt"></i> Agendamentos</a>
 
     <a class="list-group-item list-group-item-action" data-toggle="collapse" href="#menu-cadastros">
       <i class="fas fa-plus-square"></i> Cadastros <i class="fas fa-caret-down"></i>

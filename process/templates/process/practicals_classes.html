@@ -38,7 +38,7 @@
               <td>{{ forloop.counter }}</td>
               <td>{{ class.instructor }}</td>
               <td>{{ class.day }}</td>
-              <td>{{ class.start_time|time:'H:i' }}</td>
+              <td>{{ class.begin_time|time:'H:i' }}</td>
               <td>{{ class.end_time|time:"H:i" }}</td>
               <td><a href="{% url 'process:remove_practical_class' class.pk %}"><i class="fas fa-trash-alt"></i></a></td>
             </tr>
@@ -71,7 +71,7 @@
               <td>{{ class.instructor }}</td>
               <td>{{ class.vehicle.slug }}</td>
               <td>{{ class.day }}</td>
-              <td>{{ class.start_time|time:'H:i' }}</td>
+              <td>{{ class.begin_time|time:'H:i' }}</td>
               <td>{{ class.end_time|time:"H:i" }}</td>
               <td><a href="{% url 'process:remove_practical_class' class.pk %}"><i class="fas fa-trash-alt"></i></a></td>
             </tr>

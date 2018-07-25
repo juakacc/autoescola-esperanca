@@ -24,7 +24,8 @@ class Vehicle(models.Model):
     state = models.CharField('Estado', max_length=20, choices=STATE_CHOICES, default='funcionando')
 
     def __str__(self):
-        return "{}: [{}]".format(self.model, self.plate)
+        # return "{}: [{}]".format(self.model, self.plate)
+        return self.slug
 
     class Meta:
         verbose_name = 'Veículo'
@@ -52,6 +53,10 @@ class SystemSettings(models.Model):
     hours_theoretical = models.PositiveIntegerField('Horas teóricas')
     hours_practical_simulator = models.PositiveIntegerField('Horas práticas no simulador')
     hours_practical_vehicle = models.PositiveIntegerField('Horas práticas no veículo')
+
+    # Para controle do agendamento
+    begin_expedient = models.TimeField('Início do expediente', default='07:00')
+    end_expedient = models.TimeField('Fim do expediente', default='18:00')
 
     def __str__(self):
         return 'Configurações do sistema'
