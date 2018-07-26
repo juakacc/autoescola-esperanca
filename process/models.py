@@ -2,11 +2,8 @@ from django.shortcuts import reverse
 from django.db import models
 from datetime import datetime, date
 from accounts.models import Student, Employee
-from core.models import Vehicle, SystemSettings
-
-NAO_INICIADO = 'nao_iniciado'
-INICIADO = 'iniciado'
-CONCLUIDO = 'concluido'
+from core.models import Vehicle, SystemSettings, HORARY
+from core.constantes import *
 
 STATUS_CHOICES = (
     (NAO_INICIADO, 'Não iniciado'),
@@ -66,7 +63,6 @@ class TheoreticalCourse(models.Model):
 
 class PracticalCourse(models.Model):
     status = models.CharField('Status', max_length=20, default=NAO_INICIADO, choices=STATUS_CHOICES)
-
     total_hours = models.PositiveIntegerField('Horas práticas necessárias', default=20)
 
     def count_classes_car(self):
@@ -156,8 +152,8 @@ class TheoreticalClass(models.Model):
     theoretical_course = models.ForeignKey(TheoreticalCourse, related_name='aulas', verbose_name='Curso teórico', on_delete=models.CASCADE)
     instructor = models.ForeignKey(Employee, verbose_name='Instrutor', on_delete=models.SET_NULL, null=True)
     day = models.DateField('Dia da aula', default=datetime.now)
-    begin_time = models.TimeField('Hora do início')
-    end_time = models.TimeField('Hora do fim')
+    begin_time = models.TimeField('Hora do início', choices=HORARY)
+    end_time = models.TimeField('Hora do fim', choices=HORARY)
 
     def get_absolute_url(self):
         return self.theoretical_course.get_absolute_url()
@@ -172,8 +168,8 @@ class PracticalClass(models.Model):
     simulator = models.BooleanField('Aula de simulador', default=False, choices=((True, 'Sim'), (False, 'Não')))
     vehicle = models.ForeignKey(Vehicle, verbose_name='Veículo', on_delete=models.SET_NULL, null=True, blank=True)
     day = models.DateField('Dia da aula', default=datetime.now)
-    begin_time = models.TimeField('Hora do início')
-    end_time = models.TimeField('Hora do fim')
+    begin_time = models.TimeField('Hora do início', choices=HORARY)
+    end_time = models.TimeField('Hora do fim', choices=HORARY)
 
     def get_absolute_url(self):
         return self.practical_course.get_absolute_url()

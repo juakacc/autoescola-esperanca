@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView, CreateView, DeleteView, FormView
+from django.views.generic import ListView, CreateView, DeleteView, DetailView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -72,11 +72,12 @@ class RemoveAppointmentView(DeleteView):
         messages.success(request, 'Agendamento removido com sucesso')
         return super().delete(request, *args, **kwargs)
 
-class ConfirmAppointmentView(CreateView):
+class ConfirmAppointmentView(SuccessMessageMixin, CreateView):
     model = PracticalClass
     form_class = RegisterPracticalClassForm
     template_name = 'diary/confirm_appointment.html'
     success_url = reverse_lazy('diary:list_diaries')
+    success_message = 'Aula registrada com sucesso'
 
     def get_initial(self):
         a = get_object_or_404(Appointment, pk=self.kwargs['pk'])
@@ -94,10 +95,13 @@ class ConfirmAppointmentView(CreateView):
         self.object = form.save(commit=False)
         self.object.practical_course = course
         self.object.save()
-        messages.success(self.request, 'Aula registrada com sucesso')
         return super().form_valid(form)
 
+class DetailAppointmentView(DetailView):
+    model = Appointment
+
 list_diaries = ListDiariesView.as_view()
+detail_appointment = DetailAppointmentView.as_view()
 register_appointment = RegisterAppointmentView.as_view()
 remove_appointment = RemoveAppointmentView.as_view()
 confirm_appointment = ConfirmAppointmentView.as_view()

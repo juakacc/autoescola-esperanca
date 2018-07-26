@@ -47,6 +47,7 @@
   <div class="col">
     <table class="table list">
       <tr>
+        <th>Nº</th>
         <th>Proc</th>
         <th><i class="fas fa-desktop"></i> / <i class="fas fa-shuttle-van"></i></th>
         <th>Data</th>
@@ -58,6 +59,7 @@
       </tr>
       {% for a in appointments %}
       <tr>
+        <td><a href="{% url 'diary:detail_appointment' a.pk %}">{{ a.pk }}</a></td>
         <td><a href="{% url 'process:detail_process' a.process.pk %}">#{{ a.process.pk }}</a></td>
         <td>
           {% if a.simulator %}

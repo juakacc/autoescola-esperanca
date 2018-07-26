@@ -12,11 +12,13 @@
 {% endblock %}
 
 {% block dashboard_container %}
-<div class="row">
-  <div class="col" align="right">
-    <a href="{% url 'process:register_theoretical_class' theoretical_course.pk %}" class="btn btn-dark"><i class="fas fa-plus"></i> Registar aula</a>
+  {% if theoretical_course.process.exams.status == 'concluido' %}
+  <div class="row">
+    <div class="col" align="right">
+      <a href="{% url 'process:register_theoretical_class' theoretical_course.pk %}" class="btn btn-dark"><i class="fas fa-plus"></i> Registar aula</a>
+    </div>
   </div>
-</div>
+  {% endif %}
 
   <div class="row">
     <div class="col">
@@ -37,7 +39,7 @@
               <td>{{ forloop.counter }}</td>
               <td>{{ class.instructor }}</td>
               <td>{{ class.day }}</td>
-              <td>{{ class.start_time|time:'H:i' }}</td>
+              <td>{{ class.begin_time|time:'H:i' }}</td>
               <td>{{ class.end_time|time:"H:i" }}</td>
               <td><a href="{% url 'process:remove_theoretical_class' class.pk %}"><i class="fas fa-trash-alt"></i></a></td>
             </tr>

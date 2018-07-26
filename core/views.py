@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy
-from .models import Contact, Vehicle
+from .models import Contact, Vehicle, SystemSettings
 from .forms import ResponseContactForm, RegisterVehicleForm
 
 from rolepermissions.mixins import HasPermissionsMixin
@@ -83,9 +83,27 @@ class ContactView(SuccessMessageMixin, CreateView):
 
     success_message = 'Obrigado pelo contato'
 
+class UpdateSettingsView(SuccessMessageMixin, UpdateView):
+    model = SystemSettings
+    template_name = 'update_settings.html'
+    fields = '__all__'
+    success_url = reverse_lazy('accounts:index')
+    success_message = 'Configurações atualizadas com sucesso'
+
+    def get_object(self):
+        return SystemSettings.objects.all()[0]
+
+class QuemSomosView(TemplateView):
+    template_name = 'quem_somos.html'
+
+
 contact = ContactView.as_view()
 messages = MessagesView.as_view()
 message = MessageView.as_view()
+
+update_settings = UpdateSettingsView.as_view()
+
+quem_somos = QuemSomosView.as_view()
 
 register_vehicle = RegisterVehicleView.as_view()
 update_vehicle = UpdateVehicleView.as_view()

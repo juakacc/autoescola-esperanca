@@ -31,6 +31,7 @@
     <table class="table list">
       <thead>
         <tr>
+          <th>Nº</th>
           <th>Nome</th>
           <th>Nome de usuário</th>
           <th>E-mail</th>
@@ -40,7 +41,8 @@
       <tbody>
         {% for v in students %}
           <tr>
-            <td>{{ v.name }}</td>
+            <td>#{{ v.pk }}</td>
+            <td><a href="{% url 'accounts:detail_student' v.pk %}">{{ v.name }}</a></td>
             <td>{{ v.username }}</td>
             <td>{{ v.email }}</td>
             <td>

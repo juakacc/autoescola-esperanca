@@ -48,8 +48,8 @@
             <td>{{ v.student }}</td>
             <td><span class="badge badge-{{ v.status|get_class_css }}">{{ v.get_status_display }}</span></td>
             <td>{{ v.get_type_cnh_display }}</td>
-            <td>{{ v.date_start }}</td>
-            <td>{{ v.date_end }}</td>
+            <td>{{ v.begin_date }}</td>
+            <td>{{ v.end_date }}</td>
             <td>
               <a href="{% url 'process:detail_process' v.pk %}"><i class="fas fa-info-circle"></i> Detalhes</a><br>
               <a href="{% url 'process:update_process' v.pk %}"><i class="fas fa-pencil-alt"></i> Editar</a><br>

@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from datetime import datetime
+from .constantes import *
 
 class User(AbstractUser):
     pass
@@ -8,8 +10,8 @@ class User(AbstractUser):
 
 class Vehicle(models.Model):
     STATE_CHOICES = (
-        ('funcionando', 'Funcionando'),
-        ('em conserto', 'Em conserto')
+        (FUNCIONANDO, 'Funcionando'),
+        (EM_CONSERTO, 'Em conserto')
     )
     TYPE_CHOICES = (
         ('car', 'Carro'),
@@ -19,12 +21,11 @@ class Vehicle(models.Model):
     slug = models.SlugField('Apelido', unique=True)
     fabricator = models.CharField('Fabricante', max_length=20)
     model = models.CharField('Modelo', max_length=20)
-    year = models.PositiveIntegerField('Ano')
+    year = models.PositiveIntegerField('Ano', default=datetime.now().year)
     plate = models.CharField('Placa', max_length=8, unique=True)
     state = models.CharField('Estado', max_length=20, choices=STATE_CHOICES, default='funcionando')
 
     def __str__(self):
-        # return "{}: [{}]".format(self.model, self.plate)
         return self.slug
 
     class Meta:
@@ -55,8 +56,8 @@ class SystemSettings(models.Model):
     hours_practical_vehicle = models.PositiveIntegerField('Horas práticas no veículo')
 
     # Para controle do agendamento
-    begin_expedient = models.TimeField('Início do expediente', default='07:00')
-    end_expedient = models.TimeField('Fim do expediente', default='18:00')
+    begin_expedient = models.TimeField('Início do expediente', default='07:00', choices=HORARY)
+    end_expedient = models.TimeField('Fim do expediente', default='18:00', choices=HORARY)
 
     def __str__(self):
         return 'Configurações do sistema'

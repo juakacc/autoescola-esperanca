@@ -12,11 +12,13 @@
 {% endblock %}
 
 {% block dashboard_container %}
-<div class="row">
-  <div class="col" align="right">
-    <a href="{% url 'process:register_practical_class' practical_course.pk %}" class="btn btn-dark"><i class="fas fa-plus"></i> Registar aula</a>
+  {% if practical_course.process.theoretical_course.status == 'concluido' %}
+  <div class="row">
+    <div class="col" align="right">
+      <a href="{% url 'process:register_practical_class' practical_course.pk %}" class="btn btn-dark"><i class="fas fa-plus"></i> Registar aula</a>
+    </div>
   </div>
-</div>
+  {% endif %}
 
   <div class="row">
     <div class="col">

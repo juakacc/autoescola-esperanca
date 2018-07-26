@@ -1,0 +1,47 @@
+{% extends "dashboard.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item"><a href="{% url 'diary:list_diaries' %}">Agendamentos</a></li>
+  <li class="breadcrumb-item">Agendamento #{{ object.pk }}</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  Detalhes do agendamento #{{ object.pk }}
+{% endblock %}
+
+{% block dashboard_container %}
+  <!-- <div class="page-header">
+    <h1><strong>Assunto: </strong>{{ contact.subject }}</h1>
+  </div>-->
+
+  <dl class="row">
+    <dt class="col-2">Processo</dt>
+    <dd class="col-10"><a href="{{ object.process.get_absolute_url }}">#{{ object.process.pk }}</a></dd>
+
+    <dt class="col-2">Aluno</dt>
+    <dd class="col-10">{{ object.process.student }}</dd>
+
+    <dt class="col-2">Instrutor</dt>
+    <dd class="col-10">{{ object.instructor }}</dd>
+
+    <dt class="col-2">Simulador?</dt>
+    <dd class="col-10">{{ object.get_simulator_display }}</dd>
+
+    <dt class="col-2">Data</dt>
+    <dd class="col-10">{{ object.day }}</dd>
+
+    <dt class="col-2">Início</dt>
+    <dd class="col-10">{{ object.begin_time }}</dd>
+
+    <dt class="col-2">Fim</dt>
+    <dd class="col-10">{{ object.end_time }}</dd>
+  </dl>
+
+  <div class="row">
+    <div class="col">
+      <a href="{% url 'diary:list_diaries' %}" class="btn btn-dark"><i class="fas fa-reply"></i> Voltar</a>
+      <a href="{% url 'diary:confirm_appointment' object.pk %}" class="btn btn-dark"><i class="fas fa-calendar-check"></i> Confirmar agendamento</a>
+    </div>
+  </div>
+{% endblock %}

@@ -1,7 +1,9 @@
-from django.db import models
 from datetime import datetime
+from django.db import models
+from django.urls import reverse
 from accounts.models import Employee
 from process.models import Process
+from core.models import HORARY
 
 class Appointment(models.Model):
 
@@ -11,8 +13,14 @@ class Appointment(models.Model):
         choices=((True, 'Sim'), (False, 'Não'))
     )
     day = models.DateField('Dia', default=datetime.now)
-    begin_time = models.TimeField('Início')
-    end_time = models.TimeField('Fim')
+    begin_time = models.TimeField('Início', choices=HORARY)
+    end_time = models.TimeField('Fim', choices=HORARY)
+
+    def get_absolute_url(self):
+        return reverse('diary:detail_appointment', kwargs={'pk': self.pk})
+
+    def __str__(self):
+        return 'Agendamento do processo #{}'.format(self.process.pk)
 
     class Meta:
         verbose_name = 'Agendamento'

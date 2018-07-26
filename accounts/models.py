@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 from core.models import User
 
 class Person(User):
@@ -48,6 +50,9 @@ class Person(User):
     def __str__(self):
         return self.name
 
+    def get_cpf_display(self):
+        return '{}.{}.{}-{}'.format(self.cpf[:3], self.cpf[3:6], self.cpf[6:9], self.cpf[9:])
+
     class Meta:
         verbose_name = 'Pessoa'
 
@@ -56,11 +61,14 @@ class Employee(Person):
         ('secretario', 'Secretário'),
         ('instrutor', 'Instrutor')
     )
+    registry = models.CharField('Matrícula', max_length=10) # Automaticamente
     function = models.CharField('Função', max_length=20, choices=FUNCTION_CHOICES)
     salary = models.DecimalField(verbose_name='Salário', max_digits=8, decimal_places=2, default=950.00)
-    registry = models.CharField('Matrícula', max_length=10)
-
+    # Instrutores
     cnh = models.CharField('CNH', max_length=20, null=True)
+
+    def get_absolute_url(self):
+        return reverse('accounts:detail_employee', kwargs={'pk': self.pk})
 
     class Meta:
         verbose_name = 'Funcionário'
@@ -69,6 +77,10 @@ class Employee(Person):
 
 class Student(Person):
     pass
+
+    def get_absolute_url(self):
+        return reverse('accounts:detail_student', kwargs={'pk': self.pk})
+
     class Meta:
         verbose_name = 'Aluno'
         verbose_name_plural = 'Alunos'

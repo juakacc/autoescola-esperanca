@@ -3,7 +3,7 @@
 
 {% block breadcrumb %}
   {{ block.super }}
-  <li class="breadcrumb-item">Funcionário</li>
+  <li class="breadcrumb-item">Funcionários</li>
 {% endblock %}
 
 {% block dashboard_title %}
@@ -50,6 +50,7 @@
   <table class="table list">
     <thead>
       <tr>
+        <th>Nº</th>
         <th>Nome</th>
         <th>Função</th>
         <th>Nome de usuário</th>
@@ -61,7 +62,8 @@
     <tbody>
       {% for v in secretaries %}
         <tr>
-          <td>{{ v.name }}</td>
+          <td>#{{ v.pk }}</td>
+          <td><a href="{{ v.get_absolute_url }}">{{ v.name }}</a></td>
           <td>{{ v.get_function_display }}</td>
           <td>{{ v.username }}</td>
           <td>{{ v.email }}</td>

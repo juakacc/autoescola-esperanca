@@ -2,17 +2,16 @@
 
 {% block breadcrumb %}
   {{ block.super }}
-  <li class="breadcrumb-item"><a href="{% url 'accounts:list_students' %}">Alunos</a></li>
-  <li class="breadcrumb-item">Cadastro de aluno</li>
+  <li class="breadcrumb-item">Configurações gerais</li>
 {% endblock %}
 
 {% block dashboard_title %}
-  Cadastro de aluno
+  Configurações gerais
 {% endblock %}
 
 {% block dashboard_container %}
   <form method="post">
     {% include "_form.html" %}
-    <button type="submit" class="btn btn-dark">Enviar</button>
+    <button type="submit" class="btn btn-dark">Salvar</button>
   </form>
 {% endblock %}

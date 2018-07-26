@@ -1,0 +1,65 @@
+{% extends "dashboard.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item"><a href="{% url 'accounts:list_employees' %}">Funcionários</a></li>
+  <li class="breadcrumb-item">Funcionário</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  Detalhes do funcionário {{ object.name }}
+{% endblock %}
+
+{% block dashboard_container %}
+
+  <dl class="row">
+    <dt class="col-3">Nome de usuário</dt>
+    <dd class="col-9">{{ object.username }}</dd>
+
+    <dt class="col-3">Nome</dt>
+    <dd class="col-9">{{ object.name }}</dd>
+
+    <dt class="col-3">CPF</dt>
+    <dd class="col-9">{{ object.get_cpf_display }}</dd>
+
+    <dt class="col-3">Data de nascimento</dt>
+    <dd class="col-9">{{ object.date_of_birth }}</dd>
+
+    <dt class="col-3">Telefone</dt>
+    <dd class="col-9">{{ object.telephone }}</dd>
+
+    {% if object.function == 'instrutor' %}
+      <dt class="col-3">Nº CNH</dt>
+      <dd class="col-9">{{ object.cnh }}</dd>
+    {% endif %}
+
+    <dt class="col-3">Rua</dt>
+    <dd class="col-9">{{ object.street }}</dd>
+
+    <dt class="col-3">Número</dt>
+    <dd class="col-9">{{ object.number }}</dd>
+
+    <dt class="col-3">Bairro</dt>
+    <dd class="col-9">{{ object.district }}</dd>
+
+    <dt class="col-3">Cidade</dt>
+    <dd class="col-9">{{ object.city }}</dd>
+
+    <dt class="col-3">Estado</dt>
+    <dd class="col-9">{{ object.get_state_display }}</dd>
+
+    <dt class="col-3">Cadastrado em</dt>
+    <dd class="col-9">{{ object.created }}</dd>
+  </dl>
+
+  <div class="row">
+    <div class="col">
+      <a href="{% url 'accounts:list_employees' %}" class="btn btn-dark"><i class="fas fa-reply"></i> Voltar</a>
+      {% if object.function == 'instrutor' %}
+        <a href="{% url 'accounts:update_instructor' object.pk %}" class="btn btn-dark"><i class="fas fa-pencil-alt"></i> Editar dados</a>
+      {% else %}
+        <a href="{% url 'accounts:update_secretary' object.pk %}" class="btn btn-dark"><i class="fas fa-pencil-alt"></i> Editar dados</a>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

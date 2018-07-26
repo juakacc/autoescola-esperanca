@@ -17,5 +17,6 @@ class RegisterVehicleForm(forms.ModelForm):
         model = Vehicle
         fields = ['type', 'slug', 'fabricator', 'model', 'year', 'plate']
         widgets = {
-            'slug': forms.TextInput(attrs={'placeholder': 'carro-01, moto-01...'})
+            'slug': forms.TextInput(attrs={'placeholder': 'carro-01, moto-01...'}),
+            'plate': forms.TextInput(attrs={'placeholder': 'AAA-1111'})
         }

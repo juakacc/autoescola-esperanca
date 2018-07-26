@@ -8,6 +8,7 @@ urlpatterns = [
 
     path('funcionarios/', views.list_employees, name='list_employees'),
     path('funcionarios/<str:function>', views.list_employees, name='list_employees'),
+    path('funcionario/<int:pk>', views.detail_employee, name='detail_employee'),
     path('deletar-funcionario/<int:pk>', views.delete_employee, name='delete_employee'),
     path('registro-funcionario/', views.choose_register_employee, name='choose_register_employee'),
 
@@ -20,6 +21,7 @@ urlpatterns = [
     path('registro-aluno/', views.register_student, name='register_student'),
     path('atualizar-aluno/<int:pk>', views.update_student, name='update_student'),
     path('alunos/', views.list_students, name='list_students'),
+    path('aluno/<int:pk>', views.detail_student, name='detail_student'),
     path('deletar-aluno/<int:pk>', views.delete_student, name='delete_student'),
 
     path('registro-veiculo/', core_views.register_vehicle, name='register_vehicle'),

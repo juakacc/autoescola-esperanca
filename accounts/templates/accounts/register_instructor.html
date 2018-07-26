@@ -2,6 +2,7 @@
 
 {% block breadcrumb %}
   {{ block.super }}
+  <li class="breadcrumb-item"><a href="{% url 'accounts:list_employees' %}">Funcionários</a></li>
   <li class="breadcrumb-item">Cadastro de Instrutor</li>
 {% endblock %}
 

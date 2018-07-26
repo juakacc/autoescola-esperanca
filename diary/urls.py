@@ -3,7 +3,8 @@ from . import views
 
 app_name='diary'
 urlpatterns = [
-    path('listar-agendamento/', views.list_diaries, name='list_diaries'),
+    path('', views.list_diaries, name='list_diaries'),
+    path('<int:pk>/', views.detail_appointment, name='detail_appointment'),
     path('listar-agendamento/<str:filter>', views.list_diaries, name='list_diaries'),
 
     path('registrar-agendamento/', views.register_appointment, name='register_appointment'),

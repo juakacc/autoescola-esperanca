@@ -31,6 +31,9 @@ class RegisterSecretaryView(SuccessMessageMixin, CreateView):
         secretary.save()
         return super(CreateView, self).get_success_url()
 
+class DetailEmployeeView(DetailView):
+    model = Employee
+
 class EmployeesListView(ListView):
     template_name = 'accounts/list_employees.html'
     context_object_name = 'secretaries'
@@ -104,7 +107,7 @@ class UpdateStudentView(SuccessMessageMixin, UpdateView):
     success_url = reverse_lazy('accounts:list_students')
     success_message = 'Aluno atualizado com sucesso'
 
-class StudentsListView(ListView):
+class ListStudentsView(ListView):
     template_name = 'accounts/list_students.html'
     context_object_name = 'students'
     model = Student
@@ -117,6 +120,9 @@ class StudentsListView(ListView):
         if q:
             queryset = queryset.filter(name__icontains=q)
         return queryset
+
+class DetailStudentView(DetailView):
+    model = Student
 
 class DeleteStudentView(DeleteView):
     model = Student
@@ -159,6 +165,7 @@ index = IndexView.as_view()
 
 delete_employee = DeleteEmployeeView.as_view()
 list_employees = EmployeesListView.as_view()
+detail_employee = DetailEmployeeView.as_view()
 choose_register_employee = ChooseRegisterEmployeeView.as_view()
 
 register_secretary = RegisterSecretaryView.as_view()
@@ -169,7 +176,8 @@ update_instructor = UpdateInstructorView.as_view()
 
 register_student = RegisterStudentView.as_view()
 update_student = UpdateStudentView.as_view()
-list_students = StudentsListView.as_view()
+list_students = ListStudentsView.as_view()
+detail_student = DetailStudentView.as_view()
 delete_student = DeleteStudentView.as_view()
 
 update = UpdateView.as_view()
