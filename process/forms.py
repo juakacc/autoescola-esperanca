@@ -1,8 +1,11 @@
 from django import forms
 from .models import Process, TheoreticalClass, PracticalClass
-from accounts.models import Employee
+from accounts.models import Person
 
 class RegisterProcessForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['student'].queryset = Person.objects.filter(role_student=True)
 
     class Meta:
         model = Process
@@ -11,7 +14,7 @@ class RegisterProcessForm(forms.ModelForm):
 class RegisterTheoreticalClassForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['instructor'].queryset = Employee.objects.filter(function='instrutor')
+        self.fields['instructor'].queryset = Process.objects.filter(role_instructor=True)
 
     def clean_end_time(self):
         begin = self.cleaned_data['begin_time']
@@ -31,7 +34,7 @@ class RegisterTheoreticalClassForm(forms.ModelForm):
 class RegisterPracticalClassForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['instructor'].queryset = Employee.objects.filter(function='instrutor')
+        self.fields['instructor'].queryset = Person.objects.filter(role_instructor=True)
 
     def clean_vehicle(self):
         vehicle = self.cleaned_data['vehicle']

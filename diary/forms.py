@@ -1,12 +1,12 @@
 from django import forms
 from .models import Appointment
-from accounts.models import Employee
+from accounts.models import Person
 from core.constantes import *
 
 class RegisterAppointmentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['instructor'].queryset = Employee.objects.filter(function='instrutor')
+        self.fields['instructor'].queryset = Person.objects.filter(role_instructor=True)
 
     def clean_process(self):
         process = self.cleaned_data['process']

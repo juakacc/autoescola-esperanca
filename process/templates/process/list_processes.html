@@ -1,4 +1,4 @@
-{% extends "dashboard.html" %}
+{% extends template_base %}
 {% load pagination %}
 {% load get_status_class_css %}
 
@@ -32,7 +32,7 @@
     <table class="table list">
       <thead>
         <tr>
-          <th>Número</th>
+          <th>Nº</th>
           <th>Aluno</th>
           <th>Status</th>
           <th>Tipo</th>
@@ -51,9 +51,12 @@
             <td>{{ v.begin_date }}</td>
             <td>{{ v.end_date }}</td>
             <td>
-              <a href="{% url 'process:detail_process' v.pk %}"><i class="fas fa-info-circle"></i> Detalhes</a><br>
-              <a href="{% url 'process:update_process' v.pk %}"><i class="fas fa-pencil-alt"></i> Editar</a><br>
-              <a href="{% url 'process:delete_process' v.pk %}"><i class="fas fa-trash-alt"></i> Remover</a>
+              <a href="{% url 'process:detail_process' v.pk %}">
+                <i class="fas fa-info-circle"></i> Detalhes</a><br>
+              <a href="{% url 'process:update_process' v.pk %}">
+                <i class="fas fa-pencil-alt"></i> Editar</a><br>
+              <a href="{% url 'process:delete_process' v.pk %}">
+                <i class="fas fa-trash-alt"></i> Remover</a>
             </td>
           </tr>
         {% endfor %}

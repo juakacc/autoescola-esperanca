@@ -1,15 +1,9 @@
 from django.shortcuts import reverse
 from django.db import models
 from datetime import datetime, date
-from accounts.models import Student, Employee
+from accounts.models import Person
 from core.models import Vehicle, SystemSettings, HORARY
 from core.constantes import *
-
-STATUS_CHOICES = (
-    (NAO_INICIADO, 'Não iniciado'),
-    (INICIADO, 'Iniciado'),
-    (CONCLUIDO, 'Concluído'),
-)
 
 class Exam(models.Model):
     APTO_CHOICES = (
@@ -21,7 +15,7 @@ class Exam(models.Model):
     exam_psychological = models.BooleanField('Exame psicológico', default=False, choices=APTO_CHOICES)
     date_exam = models.DateField('Data do exame', null=True, default=None)
 
-    status = models.CharField('Status', max_length=20, default=INICIADO, choices=STATUS_CHOICES)
+    status = models.CharField('Status', max_length=20, default=INICIADO, choices=COURSE_STATUS)
 
     def get_percent(self):
         if self.status == CONCLUIDO:
@@ -35,7 +29,7 @@ class Exam(models.Model):
         return 'Exames de ' + self.process.student.__str__()
 
 class TheoreticalCourse(models.Model):
-    status = models.CharField('Status', max_length=20, default=NAO_INICIADO, choices=STATUS_CHOICES)
+    status = models.CharField('Status', max_length=20, default=NAO_INICIADO, choices=COURSE_STATUS)
 
     def count_classes(self):
         '''Retorna a quantidate de horas já concluídas'''
@@ -62,7 +56,7 @@ class TheoreticalCourse(models.Model):
         return 'Curso teórico de ' + self.process.student.__str__()
 
 class PracticalCourse(models.Model):
-    status = models.CharField('Status', max_length=20, default=NAO_INICIADO, choices=STATUS_CHOICES)
+    status = models.CharField('Status', max_length=20, default=NAO_INICIADO, choices=COURSE_STATUS)
     total_hours = models.PositiveIntegerField('Horas práticas necessárias', default=20)
 
     def count_classes_car(self):
@@ -96,38 +90,13 @@ class PracticalCourse(models.Model):
     def __str__(self):
         return 'Curso prático de ' + self.process.student.__str__()
 
-type_hours = {
-    'ACC': 20,
-    'A': 20,
-    'B': 20,
-    'AB': 40,
-    'C': 20,
-    'AC': 40,
-    'D': 20,
-    'AD': 40,
-    'E': 20,
-    'AE': 40
-}
-
 class Process(models.Model):
-    TYPE_CHOICES = (
-        ('ACC', 'ACC'),
-        ('A', 'A'),
-        ('B', 'B'),
-        ('AB', 'A/B'),
-        ('C', 'C'),
-        ('AC', 'A/C'),
-        ('D', 'D'),
-        ('AD', 'A/D'),
-        ('E', 'E'),
-        ('AE', 'A/E'),
-    )
-    student = models.ForeignKey(Student, verbose_name='Aluno', on_delete=models.CASCADE)
-    type_cnh = models.CharField('Tipo da CNH', choices=TYPE_CHOICES, max_length=3)
+    student = models.ForeignKey(Person, verbose_name='Aluno', on_delete=models.CASCADE)
+    type_cnh = models.CharField('Tipo da CNH', choices=TYPE_CNH_CHOICES, max_length=3)
 
     begin_date = models.DateField('Início', default=datetime.now)
     end_date = models.DateField('Fim', blank=True, null=True, default=None)
-    status = models.CharField('Status', max_length=20, default=INICIADO, choices=STATUS_CHOICES)
+    status = models.CharField('Status', max_length=20, default=INICIADO, choices=COURSE_STATUS)
 
     exams = models.OneToOneField(Exam, verbose_name='Exames', on_delete=models.CASCADE, blank=True, default=None, null=True)
     theoretical_course = models.OneToOneField(TheoreticalCourse, verbose_name='Curso teórico', on_delete=models.CASCADE, blank=True, default=None, null=True)
@@ -150,7 +119,7 @@ class Process(models.Model):
 
 class TheoreticalClass(models.Model):
     theoretical_course = models.ForeignKey(TheoreticalCourse, related_name='aulas', verbose_name='Curso teórico', on_delete=models.CASCADE)
-    instructor = models.ForeignKey(Employee, verbose_name='Instrutor', on_delete=models.SET_NULL, null=True)
+    instructor = models.ForeignKey(Person, verbose_name='Instrutor', on_delete=models.SET_NULL, null=True)
     day = models.DateField('Dia da aula', default=datetime.now)
     begin_time = models.TimeField('Hora do início', choices=HORARY)
     end_time = models.TimeField('Hora do fim', choices=HORARY)
@@ -164,7 +133,7 @@ class TheoreticalClass(models.Model):
 
 class PracticalClass(models.Model):
     practical_course = models.ForeignKey(PracticalCourse, related_name='aulas', verbose_name='Curso prático', on_delete=models.CASCADE)
-    instructor = models.ForeignKey(Employee, verbose_name='Instrutor', on_delete=models.SET_NULL, null=True)
+    instructor = models.ForeignKey(Person, verbose_name='Instrutor', on_delete=models.SET_NULL, null=True)
     simulator = models.BooleanField('Aula de simulador', default=False, choices=((True, 'Sim'), (False, 'Não')))
     vehicle = models.ForeignKey(Vehicle, verbose_name='Veículo', on_delete=models.SET_NULL, null=True, blank=True)
     day = models.DateField('Dia da aula', default=datetime.now)
@@ -179,6 +148,19 @@ class PracticalClass(models.Model):
         verbose_name_plural = 'Aulas práticas'
         # unique_together = (('practical_course', 'day', 'start_time', 'end_time'), ('practical_course', 'day', 'start_time'))
 
+type_hours = {
+    ACC: 20,
+    A: 20,
+    B: 20,
+    AB: 40,
+    C: 20,
+    AC: 40,
+    D: 20,
+    AD: 40,
+    E: 20,
+    AE: 40
+}
+
 # Signals
 
 def create_process(instance, created, **kwargs):
@@ -192,8 +174,9 @@ def update_end_date(instance, **kwargs):
     # Atualizando a data final do processo: 1 ano
     instance.end_date = date.fromordinal(instance.begin_date.toordinal()+365)
     # Atualizando o total de horas práticas necessárias
-    instance.practical_course.total_hours = type_hours[instance.type_cnh]
-    instance.practical_course.save()
+    if instance.practical_course:
+        instance.practical_course.total_hours = type_hours[instance.type_cnh]
+        instance.practical_course.save()
 
 def update_status_exams(instance, **kwargs):
     if instance.exam_medical and instance.exam_psychological:

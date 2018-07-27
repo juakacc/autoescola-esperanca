@@ -3,19 +3,53 @@ from django import forms
 from datetime import date
 
 from core.models import Vehicle
-from .models import Employee, Student
+from .models import Person
 
-class RegisterSecretaryForm(UserCreationForm):
+class RegisterEmployeeForm(UserCreationForm):
     def clean_date_of_birth(self):
         born = self.cleaned_data['date_of_birth']
         if not is_date_of_birth_valid(born):
             raise forms.ValidationError('Um funcionário não pode ser menor de idade')
         return born
 
+    def clean_cnh(self):
+        cnh = self.cleaned_data['cnh']
+        instructor = self.cleaned_data['role_instructor']
+
+        if instructor:
+            if not cnh:
+                raise forms.ValidationError('O número da CNH é obrigatório para um instrutor')
+        return cnh
+
     class Meta:
-        model = Employee
-        fields = ['username', 'name', 'cpf', 'date_of_birth', 'email', 'telephone', 'salary',
-            'street', 'number', 'district', 'city', 'state']
+        model = Person
+        fields = ['cpf', 'username', 'name', 'date_of_birth', 'email', 'telephone', 'admission',
+            'role_admin', 'role_secretary', 'role_instructor', 'salary', 'cnh', 'street', 'number',
+            'district', 'city', 'state']
+        widgets = {
+            'cnh': forms.TextInput(attrs={'placeholder': 'Caso seja um instrutor'})
+        }
+
+class UpdateEmployeeForm(forms.ModelForm):
+    def clean_date_of_birth(self):
+        born = self.cleaned_data['date_of_birth']
+        if not is_date_of_birth_valid(born):
+            raise forms.ValidationError('Um funcionário não pode ser menor de idade')
+        return born
+
+    def clean_cnh(self):
+        cnh = self.cleaned_data['cnh']
+        instructor = self.cleaned_data['role_instructor']
+
+        if instructor:
+            if not cnh:
+                raise forms.ValidationError('O número da CNH é obrigatório para um instrutor')
+        return cnh
+    class Meta:
+        model = Person
+        fields = ['cpf', 'username', 'name', 'date_of_birth', 'email', 'telephone', 'admission',
+            'role_secretary', 'role_instructor', 'salary', 'cnh', 'street', 'number',
+            'district', 'city', 'state']
 
 class RegisterStudentForm(UserCreationForm):
 
@@ -26,21 +60,8 @@ class RegisterStudentForm(UserCreationForm):
         return born
 
     class Meta:
-        model = Student
-        fields = ['username', 'name', 'cpf', 'date_of_birth', 'email', 'telephone',
-            'street', 'number', 'district', 'city', 'state']
-
-class RegisterInstructorForm(UserCreationForm):
-    def clean_date_of_birth(self):
-        born = self.cleaned_data['date_of_birth']
-        if not is_date_of_birth_valid(born):
-            raise forms.ValidationError('Um funcionário não pode ser menor de idade')
-        return born
-        # tem q ser maior q 21
-
-    class Meta:
-        model = Employee
-        fields = ['username', 'name', 'cpf', 'date_of_birth', 'email', 'telephone', 'salary', 'cnh',
+        model = Person
+        fields = ['cpf', 'username', 'name', 'date_of_birth', 'email', 'telephone',
             'street', 'number', 'district', 'city', 'state']
 
 def is_date_of_birth_valid(born):

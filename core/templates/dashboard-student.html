@@ -1,0 +1,25 @@
+{% extends "dashboard.html" %}
+
+{% block title %}
+  Conta | {{ block.super }}
+{% endblock %}
+
+{% block dashboard_title %}
+  Bem vindo estudante, {{ user }}
+{% endblock %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item">
+    <a href="{% url 'accounts:index' %}">Minha conta</a>
+  </li>
+{% endblock %}
+
+{% block dashboard_menu %}
+  <a class="list-group-item list-group-item-action" href="{% url 'process:list_processes' %}">
+    <i class="fas fa-tasks"></i> Processos
+  </a>
+
+  <a class="list-group-item list-group-item-action" href="{% url 'process:list_processes' %}">
+    <i class="fas fa-calendar-alt"></i> Agendamentos
+  </a>
+{% endblock %}

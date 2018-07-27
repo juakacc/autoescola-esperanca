@@ -1,13 +1,13 @@
 from datetime import datetime
 from django.db import models
 from django.urls import reverse
-from accounts.models import Employee
+from accounts.models import Person
 from process.models import Process
 from core.models import HORARY
 
 class Appointment(models.Model):
 
-    instructor = models.ForeignKey(Employee, verbose_name='Instrutor', on_delete=models.CASCADE)
+    instructor = models.ForeignKey(Person, verbose_name='Instrutor', on_delete=models.CASCADE)
     process = models.ForeignKey(Process, verbose_name='Processo', on_delete=models.CASCADE)
     simulator = models.BooleanField('Aula no simulador', default=False,
         choices=((True, 'Sim'), (False, 'Não'))

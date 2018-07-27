@@ -35,15 +35,9 @@
     </div>
 
     <div class="col" align="right">
-      <div class="dropdown">
-        <a href=""class="btn btn-dark dropdown-toggle" data-toggle="dropdown">
-          <i class="fas fa-plus"></i> Adicionar funcionário
-        </a>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a href="{% url 'accounts:register_secretary' %}" class="dropdown-item">Secretário</a>
-          <a href="{% url 'accounts:register_instructor' %}" class="dropdown-item">Instrutor</a>
-        </div>
-      </div>
+      <a href="{% url 'accounts:register_employee' %}" class="btn btn-dark">
+        <i class="fas fa-plus"></i> Adicionar funcionário
+      </a>
     </div>
 </div>
 
@@ -69,11 +63,7 @@
           <td>{{ v.email }}</td>
           <td>R$ {{ v.salary }}</td>
           <td>
-            {% if v.function == 'instrutor' %}
-              <a href="{% url 'accounts:update_instructor' v.pk %}"><i class="fas fa-pencil-alt"></i> Editar</a><br>
-            {% else %}
-              <a href="{% url 'accounts:update_secretary' v.pk %}"><i class="fas fa-pencil-alt"></i> Editar</a><br>
-            {% endif %}
+            <a href="{% url 'accounts:update_employee' v.pk %}"><i class="fas fa-pencil-alt"></i> Editar</a><br>
             <a href="{% url 'accounts:delete_employee' v.pk %}"><i class="fas fa-trash-alt"></i> Remover</a>
           </td>
         </tr>

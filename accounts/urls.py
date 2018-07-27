@@ -10,13 +10,8 @@ urlpatterns = [
     path('funcionarios/<str:function>', views.list_employees, name='list_employees'),
     path('funcionario/<int:pk>', views.detail_employee, name='detail_employee'),
     path('deletar-funcionario/<int:pk>', views.delete_employee, name='delete_employee'),
-    path('registro-funcionario/', views.choose_register_employee, name='choose_register_employee'),
-
-    path('registro-secretario/', views.register_secretary, name='register_secretary'),
-    path('atualizar-secretario/<int:pk>', views.update_secretary, name='update_secretary'),
-
-    path('registro-instrutor/', views.register_instructor, name='register_instructor'),
-    path('atualizar-instrutor/<int:pk>', views.update_instructor, name='update_instructor'),
+    path('registro-funcionario/', views.register_employee, name='register_employee'),
+    path('atualizar-funcionario/<int:pk>', views.update_employee, name='update_employee'),
 
     path('registro-aluno/', views.register_student, name='register_student'),
     path('atualizar-aluno/<int:pk>', views.update_student, name='update_student'),
@@ -30,9 +25,9 @@ urlpatterns = [
     path('veiculos/', core_views.list_vehicles, name='list_vehicles'),
     path('veiculos/<str:type>', core_views.list_vehicles, name='list_vehicles'),
 
-    path('alterar-dados/', views.update, name='update'),
+    path('alterar-dados/', views.update_data, name='update'),
     path('alterar-senha/', views.update_password, name='update_password'),
 
-    path('contatos/', core_views.messages, name='messages'),
-    path('contato/<int:pk>', core_views.message, name='message'),
+    path('contatos/', core_views.contacts, name='messages'),
+    path('contato/<int:pk>', core_views.contact, name='message'),
 ]

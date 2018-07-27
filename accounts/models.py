@@ -1,43 +1,17 @@
 from django.db import models
 from django.urls import reverse
+from datetime import datetime
 
 from core.models import User
+from core.constantes import *
 
 class Person(User):
+    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+
     name = models.CharField('Nome', max_length=100)
     cpf = models.CharField('CPF', max_length=11, unique=True)
     date_of_birth = models.DateField('Data de nascimento')
     telephone = models.CharField('Telefone', max_length=20)
-
-    STATES_CHOICE = (
-        ('AC', 'Acre'),
-        ('AL', 'Alagoas'),
-        ('AP', 'Amapá'),
-        ('AM', 'Amazonas'),
-        ('BA', 'Bahia'),
-        ('CE', 'Ceará'),
-        ('DF', 'Distrito Federal'),
-        ('ES', 'Espírito Santo'),
-        ('GO', 'Goiás'),
-        ('MA', 'Maranhão'),
-        ('MT', 'Mato Grosso'),
-        ('MS', 'Mato Grosso do Sul'),
-        ('MG', 'Minas Gerais'),
-        ('PA', 'Pará'),
-        ('PB', 'Paraíba'),
-        ('PR', 'Paraná'),
-        ('PE', 'Pernambuco'),
-        ('PI', 'Piauí'),
-        ('RJ', 'Rio de Janeiro'),
-        ('RN', 'Rio Grande do Norte'),
-        ('RS', 'Rio Grande do Sul'),
-        ('RO', 'Rondônia'),
-        ('RR', 'Roraima'),
-        ('SC', 'Santa Catarina'),
-        ('SP', 'São Paulo'),
-        ('SE', 'Sergipe'),
-        ('TO', 'Tocantins')
-    )
     street = models.CharField('Rua', max_length=200)
     number = models.PositiveIntegerField('Número')
     district = models.CharField('Bairro', max_length=100)
@@ -47,41 +21,28 @@ class Person(User):
 
     created = models.DateTimeField('Criado em', auto_now_add=True)
 
+    role_admin = models.BooleanField('Admin?', default=False)
+    role_secretary = models.BooleanField('Secretário?', default=False)
+    role_instructor = models.BooleanField('Instrutor?', default=False)
+    role_student = models.BooleanField('Aluno?', default=False)
+    current_view = models.CharField('Visão atual', max_length=20, null=True, blank=True) # visão atual do site
+
+    registry = models.CharField('Matrícula', max_length=10, null=True, blank=True) # Automaticamente
+    salary = models.DecimalField(verbose_name='Salário', max_digits=8, decimal_places=2, default=950.00)
+    admission = models.DateField('Admitido em', default=datetime.today, null=True, blank=True)
+    # Instrutores
+    cnh = models.CharField('CNH', max_length=20, unique=True, null=True, blank=True)
+
     def __str__(self):
         return self.name
 
     def get_cpf_display(self):
         return '{}.{}.{}-{}'.format(self.cpf[:3], self.cpf[3:6], self.cpf[6:9], self.cpf[9:])
 
-    class Meta:
-        verbose_name = 'Pessoa'
-
-class Employee(Person):
-    FUNCTION_CHOICES = (
-        ('secretario', 'Secretário'),
-        ('instrutor', 'Instrutor')
-    )
-    registry = models.CharField('Matrícula', max_length=10) # Automaticamente
-    function = models.CharField('Função', max_length=20, choices=FUNCTION_CHOICES)
-    salary = models.DecimalField(verbose_name='Salário', max_digits=8, decimal_places=2, default=950.00)
-    # Instrutores
-    cnh = models.CharField('CNH', max_length=20, null=True)
-
     def get_absolute_url(self):
         return reverse('accounts:detail_employee', kwargs={'pk': self.pk})
 
     class Meta:
-        verbose_name = 'Funcionário'
-        verbose_name_plural = 'Funcionários'
-        ordering = ['name']
-
-class Student(Person):
-    pass
-
-    def get_absolute_url(self):
-        return reverse('accounts:detail_student', kwargs={'pk': self.pk})
-
-    class Meta:
-        verbose_name = 'Aluno'
-        verbose_name_plural = 'Alunos'
+        verbose_name = 'Pessoa'
+        verbose_name_plural = 'Pessoas'
         ordering = ['name']

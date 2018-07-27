@@ -11,6 +11,8 @@ from process.forms import RegisterPracticalClassForm
 from process.models import PracticalClass
 from .forms import RegisterAppointmentForm
 from .models import Appointment
+from core.constantes import *
+from accounts.models import Person
 
 class ListDiariesView(ListView):
     model = Appointment
@@ -57,12 +59,32 @@ class ListDiariesView(ListView):
         query = query.filter(day__gte=begin, day__lte=end)
         return query
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        person = get_object_or_404(Person, pk=self.request.user.pk)
+
+        if person.current_view == SECRETARY:
+            context['template_base'] =  'dashboard-secretary.html'
+        elif person.current_view == ADMIN:
+            context['template_base'] =  'dashboard-admin.html'
+        return context
+
 class RegisterAppointmentView(SuccessMessageMixin, CreateView):
     model = Appointment
     form_class = RegisterAppointmentForm
     template_name = 'diary/register_appointment.html'
     success_url = reverse_lazy('diary:list_diaries')
     success_message = 'Agendamento realizado com sucesso'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        person = get_object_or_404(Person, pk=self.request.user.pk)
+
+        if person.current_view == SECRETARY:
+            context['template_base'] =  'dashboard-secretary.html'
+        elif person.current_view == ADMIN:
+            context['template_base'] =  'dashboard-admin.html'
+        return context
 
 class RemoveAppointmentView(DeleteView):
     model = Appointment
@@ -71,6 +93,16 @@ class RemoveAppointmentView(DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(request, 'Agendamento removido com sucesso')
         return super().delete(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        person = get_object_or_404(Person, pk=self.request.user.pk)
+
+        if person.current_view == SECRETARY:
+            context['template_base'] =  'dashboard-secretary.html'
+        elif person.current_view == ADMIN:
+            context['template_base'] =  'dashboard-admin.html'
+        return context
 
 class ConfirmAppointmentView(SuccessMessageMixin, CreateView):
     model = PracticalClass
@@ -97,8 +129,28 @@ class ConfirmAppointmentView(SuccessMessageMixin, CreateView):
         self.object.save()
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        person = get_object_or_404(Person, pk=self.request.user.pk)
+
+        if person.current_view == SECRETARY:
+            context['template_base'] =  'dashboard-secretary.html'
+        elif person.current_view == ADMIN:
+            context['template_base'] =  'dashboard-admin.html'
+        return context
+
 class DetailAppointmentView(DetailView):
     model = Appointment
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        person = get_object_or_404(Person, pk=self.request.user.pk)
+
+        if person.current_view == SECRETARY:
+            context['template_base'] =  'dashboard-secretary.html'
+        elif person.current_view == ADMIN:
+            context['template_base'] =  'dashboard-admin.html'
+        return context
 
 list_diaries = ListDiariesView.as_view()
 detail_appointment = DetailAppointmentView.as_view()

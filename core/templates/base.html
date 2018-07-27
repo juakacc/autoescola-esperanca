@@ -18,7 +18,7 @@
     <!-- Cabeçalho -->
     <header>
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{% url 'core:index' %}">
           <img src="{% static "assets/logo.svg" %}" alt="">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +42,7 @@
               <a class="nav-link" href="{% url 'core:contact' %}"><i class="fas fa-envelope"></i> Contato</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#"><i class="fas fa-map-marker-alt"></i> Localização</a>
+              <a class="nav-link" href="{% url 'core:localizacao' %}"><i class="fas fa-map-marker-alt"></i> Localização</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#"><i class="fas fa-question-circle"></i> FAQ</a>
@@ -52,7 +52,20 @@
             </li>
           </ul>
           {% if user.is_authenticated %}
-            <a href="{% url 'accounts:index' %}" class="btn btn-outline-info mx-2">Painel</a>
+
+            {% if person.role_secretary %}
+              <a href="{% url 'core:go-home' 'secretario' %}" class="btn btn-outline-info mx-2">Secretário</a>
+            {% endif %}
+            {% if person.role_instructor %}
+              <a href="{% url 'accounts:index' %}" class="btn btn-outline-info mx-2">Instrutor</a>
+            {% endif %}
+            {% if person.role_student %}
+              <a href="{% url 'accounts:index' %}" class="btn btn-outline-info mx-2">Aluno</a>
+            {% endif %}
+            {% if person.role_admin %}
+              <a href="{% url 'accounts:index' %}" class="btn btn-outline-info mx-2">Admin</a>
+            {% endif %}
+
             <a href="{% url 'core:logout' %}" class="btn btn-outline-danger"><i class="fas fa-sign-out-alt"></i> Sair</a>
           {% else %}
             <a href="{% url 'core:login' %}" class="btn btn-outline-warning"><i class="fas fa-sign-in-alt"></i> Área restrita</a>
@@ -87,20 +100,6 @@
       {% block container %}
 
       {% endblock %}
-
-      <!-- <div id="map" style="width:400px;height:400px;background:yellow"></div>
-
-      <script>
-        function myMap() {
-        var mapOptions = {
-            center: new google.maps.LatLng(-6.990087, -36.245295),
-            zoom: 18,
-            mapTypeId: google.maps.MapTypeId.HYBRID
-        }
-        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-        }
-      </script>
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeD2CzlTtQLuNPLaRg6XQBbpZhIm1P66Q&callback=myMap"></script> -->
     </div> <!-- Fim do container -->
 
     <nav class="navbar fixed-bottom navbar-expand-sm bg-dark navbar-dark">

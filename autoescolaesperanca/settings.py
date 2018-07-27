@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
 
                 'accounts.context_processors.contacts',
+                'accounts.context_processors.user'
             ],
         },
     },
