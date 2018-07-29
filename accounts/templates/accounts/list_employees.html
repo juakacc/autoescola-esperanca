@@ -1,4 +1,4 @@
-{% extends "dashboard.html" %}
+{% extends template_base %}
 {% load pagination %}
 
 {% block breadcrumb %}
@@ -58,7 +58,13 @@
         <tr>
           <td>#{{ v.pk }}</td>
           <td><a href="{{ v.get_absolute_url }}">{{ v.name }}</a></td>
-          <td>{{ v.get_function_display }}</td>
+          <td>
+            <ul class="list-unstyled">
+              {% for function in v.get_functions %}
+                <li>{{ function }}</li>
+              {% endfor %}
+            </ul>
+          </td>
           <td>{{ v.username }}</td>
           <td>{{ v.email }}</td>
           <td>R$ {{ v.salary }}</td>

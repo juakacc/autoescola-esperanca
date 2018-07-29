@@ -44,13 +44,17 @@
               <td><a href="{% url 'process:remove_theoretical_class' class.pk %}"><i class="fas fa-trash-alt"></i></a></td>
             </tr>
           {% endfor %}
-          <tr>
-            <td></td><td></td><td></td>
-            <td>Total de horas:</td>
-            <td>{{ theoretical_course.count_classes|floatformat:"1" }}h</td>
-          </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <strong>Total de horas:</strong> {{ theoretical_course.count_classes|floatformat:"1" }}h
+      {% if theoretical_course.status == 'concluido' %}
+        <span class="badge badge-success">Concluído</span>
+      {% endif %}
     </div>
   </div>
 {% endblock %}

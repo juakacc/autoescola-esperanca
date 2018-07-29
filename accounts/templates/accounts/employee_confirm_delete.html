@@ -1,4 +1,4 @@
-{% extends "dashboard.html" %}
+{% extends template_base %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -11,7 +11,7 @@
 
 {% block dashboard_container %}
 <p>Deseja realmente remover o secretário: {{ object }} ? <span class="text-danger">(Essa ação não pode ser desfeita)</span></p>
-<form method="post">{% csrf_token %}  
+<form method="post">{% csrf_token %}
   <input type="submit" value="Sim" class="btn btn-dark"/>
   <a href="{% url 'accounts:list_employees' %}" class="btn btn-light">Não</a>
 </form>

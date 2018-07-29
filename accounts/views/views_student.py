@@ -1,10 +1,11 @@
-from django.contrib import messages
+from django.contrib import messages as msgs
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView
 from django.urls import reverse_lazy
 
 from accounts.models import Person
 from accounts.forms import RegisterStudentForm
+from core.constantes import *
+from core.views.generics import CreateView, UpdateView, ListView, DeleteView, DetailView
 
 from rolepermissions.mixins import HasPermissionsMixin
 from rolepermissions.roles import assign_role
@@ -48,6 +49,12 @@ class ListStudentsView(ListView):
 
 class DetailStudentView(DetailView):
     model = Person
+    template_name = 'accounts/person_detail.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['person_func'] = False
+        return context
 
 class DeleteStudentView(DeleteView):
     model = Person
@@ -55,7 +62,7 @@ class DeleteStudentView(DeleteView):
     success_url = reverse_lazy('accounts:list_students')
 
     def delete(self, request, *args, **kwargs):
-        messages.success(request, 'Aluno {} removido com sucesso'.format(self.get_object()))
+        msgs.success(request, 'Aluno {} removido com sucesso'.format(self.get_object()))
         return super().delete(request, *args, **kwargs)
 
 register_student = RegisterStudentView.as_view()

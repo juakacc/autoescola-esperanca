@@ -39,6 +39,16 @@ class Person(User):
     def get_cpf_display(self):
         return '{}.{}.{}-{}'.format(self.cpf[:3], self.cpf[3:6], self.cpf[6:9], self.cpf[9:])
 
+    def get_functions(self):
+        list = []
+        if self.role_admin:
+            list.append('Admin')
+        if self.role_secretary:
+            list.append('Secretário')
+        if self.role_instructor:
+            list.append('Instrutor')
+        return list
+
     def get_absolute_url(self):
         return reverse('accounts:detail_employee', kwargs={'pk': self.pk})
 

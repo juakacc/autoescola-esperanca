@@ -1,5 +1,6 @@
 from django import forms
 from .models import Appointment
+from process.models import Process
 from accounts.models import Person
 from core.constantes import *
 
@@ -7,6 +8,7 @@ class RegisterAppointmentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['instructor'].queryset = Person.objects.filter(role_instructor=True)
+        self.fields['process'].queryset = Process.objects.filter(theoretical_course__status=CONCLUIDO)
 
     def clean_process(self):
         process = self.cleaned_data['process']

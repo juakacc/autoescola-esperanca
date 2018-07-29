@@ -2,8 +2,10 @@
 
 {% block breadcrumb %}
   {{ block.super }}
-  <li class="breadcrumb-item"><a href="{% url 'process:list_processes' %}">Processos</a></li>
-  <li class="breadcrumb-item"><a href="{% url 'process:detail_process' pk_process %}">Processo #{{ pk_process }}</a></li>
+  {% if not instructor %}
+    <li class="breadcrumb-item"><a href="{% url 'process:list_processes' %}">Processos</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'process:detail_process' pk_process %}">Processo #{{ pk_process }}</a></li>
+  {% endif %}
   <li class="breadcrumb-item">Aulas teóricas</li>
 {% endblock %}
 

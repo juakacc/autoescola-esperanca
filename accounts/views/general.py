@@ -1,9 +1,11 @@
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
-from django.views.generic import (TemplateView, UpdateView, FormView)
+from core.views.generics import (TemplateView, UpdateView, FormView)
 
 from core.models import Vehicle
+from core.constantes import *
 from accounts.models import Person
 
 from rolepermissions.mixins import HasPermissionsMixin
@@ -11,17 +13,7 @@ from rolepermissions.checkers import has_permission, has_role
 
 class IndexAccountView(HasPermissionsMixin, TemplateView):
     required_permission = 'student'
-
-    def get_template_names(self):
-        user = self.request.user
-        if has_permission(user, 'admin'):
-            return 'dashboard-admin.html'
-        elif has_permission(user, 'secretary'):
-            return 'dashboard-secretary.html'
-        elif has_permission(user, 'instructor'):
-            return 'dashboard-instructor.html'
-        elif has_permission(user, 'student'):
-            return 'dashboard-student.html'
+    template_name = 'accounts/index.html'
 
 class UpdateMyDataView(HasPermissionsMixin, SuccessMessageMixin, UpdateView):
     required_permission = 'student'
@@ -38,7 +30,8 @@ class UpdateMyDataView(HasPermissionsMixin, SuccessMessageMixin, UpdateView):
             return Employee.objects.get(pk=user.pk)
         return Person.objects.get(pk=user.pk)
 
-class UpdateMyPasswordView(SuccessMessageMixin, FormView):
+class UpdateMyPasswordView(HasPermissionsMixin, SuccessMessageMixin, FormView):
+    required_permission = 'student'
     template_name = 'accounts/update_password.html'
     success_url = reverse_lazy('core:logout')
     form_class = PasswordChangeForm

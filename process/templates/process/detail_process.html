@@ -1,4 +1,4 @@
-{% extends "dashboard-secretary.html" %}
+{% extends template_base %}
 {% load get_status_class_css %}
 
 {% block breadcrumb %}
@@ -15,14 +15,13 @@
 <!-- Informações do processo -->
 <div class="row">
   <div class="col">
-    <h4>Informações sobre o processo</h4>
     Progresso: <strong>{{ process.get_percent }}%</strong>
     <div class="progress" style="height: 20px;">
       <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: {{ process.get_percent }}%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
-    <strong>Aluno: </strong>{{ process.student }}<br>
+    <strong>Aluno: </strong>{{ process.student }},
     <strong>Tipo CNH: </strong>{{ process.get_type_cnh_display }}<br>
-    <strong>Data do início: </strong>{{ process.begin_date }}<br>
+    <strong>Data do início: </strong>{{ process.begin_date }},
     <strong>Data do término: </strong> {{ process.end_date }}<br>
   </div>
 </div>

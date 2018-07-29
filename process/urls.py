@@ -19,5 +19,8 @@ urlpatterns = [
 
     path('registro-processo/', views.register_process, name='register_process'),
     path('deletar-processo/<int:pk>', views.delete_process, name='delete_process'),
-    # Atualizar processo
+
+    # Para instrutor
+    path('registrar-aula-teorica/', views.register_theoretical_class_instructor, name='register_theoretical_class_instructor'),
+    path('registrar-aula-pratica/', views.register_practical_class_instructor, name='register_practical_class_instructor'),
 ]

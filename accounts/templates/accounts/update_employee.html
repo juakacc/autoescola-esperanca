@@ -1,12 +1,13 @@
-{% extends "dashboard.html" %}
+{% extends template_base %}
 
 {% block breadcrumb %}
   {{ block.super }}
-  <li class="breadcrumb-item">Atualização de funcionário</li>
+  <li class="breadcrumb-item"><a href="{% url 'accounts:list_employees' %}">Funcionários</a></li>
+  <li class="breadcrumb-item">Editar funcionário</li>
 {% endblock %}
 
 {% block dashboard_title %}
-  Atualização de funcionário
+  Editar funcionário
 {% endblock %}
 
 {% block dashboard_container %}

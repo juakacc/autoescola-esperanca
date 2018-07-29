@@ -1,14 +1,17 @@
-from django.contrib import messages
+from django.contrib import messages as msgs
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView, TemplateView
 from django.urls import reverse_lazy
 
 from accounts.models import Person
 from accounts.forms import RegisterEmployeeForm, UpdateEmployeeForm
+from core.constantes import *
+from core.views.generics import CreateView, UpdateView, ListView, DeleteView, DetailView, TemplateView
 
 from rolepermissions.roles import assign_role
+from rolepermissions.mixins import HasPermissionsMixin
 
-class RegisterEmployeeView(SuccessMessageMixin, CreateView):
+class RegisterEmployeeView(HasPermissionsMixin, SuccessMessageMixin, CreateView):
+    required_permission = 'secretary'
     model = Person
     template_name = 'accounts/register_employee.html'
     form_class = RegisterEmployeeForm
@@ -26,20 +29,26 @@ class RegisterEmployeeView(SuccessMessageMixin, CreateView):
         func.save()
         return super().get_success_url()
 
-class UpdateEmployeeView(SuccessMessageMixin, UpdateView):
+class UpdateEmployeeView(HasPermissionsMixin, SuccessMessageMixin, UpdateView):
+    required_permission = 'secretary'
     model = Person
     template_name = 'accounts/update_employee.html'
     form_class = UpdateEmployeeForm
-    # fields = ['name', 'cpf', 'date_of_birth', 'email', 'telephone', 'salary',
-    #     'street', 'number', 'district', 'city', 'state']
     success_url = reverse_lazy('accounts:list_employees')
     success_message = 'Funcionário atualizado com sucesso'
 
-class DetailEmployeeView(DetailView):
+class DetailEmployeeView(HasPermissionsMixin, DetailView):
+    required_permission = 'secretary'
     model = Person
-    template_name = 'accounts/employee_detail.html'
+    template_name = 'accounts/person_detail.html'
 
-class EmployeesListView(ListView):
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['person_func'] = True
+        return context
+
+class EmployeesListView(HasPermissionsMixin, ListView):
+    required_permission = 'secretary'
     template_name = 'accounts/list_employees.html'
     context_object_name = 'secretaries'
     model = Person
@@ -54,18 +63,21 @@ class EmployeesListView(ListView):
         else:
             f = self.kwargs.get('function', '')
             if f:
-                queryset = queryset.filter(function=f)
+                if f == 'secretario':
+                    queryset = queryset.filter(role_secretary=True)
+                elif f == 'instrutor':
+                    queryset = queryset.filter(role_instructor=True)
         return queryset
 
-class DeleteEmployeeView(DeleteView):
+class DeleteEmployeeView(HasPermissionsMixin, DeleteView):
+    required_permission = 'secretary'
     model = Person
     template_name = 'accounts/employee_confirm_delete.html'
     success_url = reverse_lazy('accounts:list_employees')
 
     def delete(self, request, *args, **kwargs):
-        messages.success(request, 'Funcionário {} removido com sucesso'.format(self.get_object()))
+        msgs.success(request, 'Funcionário {} removido com sucesso'.format(self.get_object()))
         return super().delete(request, *args, **kwargs)
-
 
 delete_employee = DeleteEmployeeView.as_view()
 list_employees = EmployeesListView.as_view()

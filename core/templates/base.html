@@ -52,21 +52,19 @@
             </li>
           </ul>
           {% if user.is_authenticated %}
-
             {% if person.role_secretary %}
-              <a href="{% url 'core:go-home' 'secretario' %}" class="btn btn-outline-info mx-2">Secretário</a>
+              <a href="{% url 'core:go-home' 'secretario' %}" class="btn btn-outline-warning mx-1"><i class="fas fa-eye"></i> Secretário</a>
             {% endif %}
             {% if person.role_instructor %}
-              <a href="{% url 'accounts:index' %}" class="btn btn-outline-info mx-2">Instrutor</a>
+              <a href="{% url 'core:go-home' 'instrutor' %}" class="btn btn-outline-warning mx-1"><i class="fas fa-eye"></i> Instrutor</a>
             {% endif %}
             {% if person.role_student %}
-              <a href="{% url 'accounts:index' %}" class="btn btn-outline-info mx-2">Aluno</a>
+              <a href="{% url 'core:go-home' 'student' %}" class="btn btn-outline-info mx-1"><i class="fas fa-eye"></i> Aluno</a>
             {% endif %}
             {% if person.role_admin %}
-              <a href="{% url 'accounts:index' %}" class="btn btn-outline-info mx-2">Admin</a>
+              <a href="{% url 'core:go-home' 'admin' %}" class="btn btn-outline-info mx-1"><i class="fas fa-eye"></i> Admin</a>
             {% endif %}
-
-            <a href="{% url 'core:logout' %}" class="btn btn-outline-danger"><i class="fas fa-sign-out-alt"></i> Sair</a>
+            <a href="{% url 'core:logout' %}" class="btn btn-outline-danger mx-1"><i class="fas fa-sign-out-alt"></i> Sair</a>
           {% else %}
             <a href="{% url 'core:login' %}" class="btn btn-outline-warning"><i class="fas fa-sign-in-alt"></i> Área restrita</a>
           {% endif %}

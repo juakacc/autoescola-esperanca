@@ -1,6 +1,7 @@
 from django import forms
 from .models import Process, TheoreticalClass, PracticalClass
 from accounts.models import Person
+from core.validators import validar_carro, validar_end_time
 
 class RegisterProcessForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -12,24 +13,27 @@ class RegisterProcessForm(forms.ModelForm):
         fields = ['student', 'type_cnh', 'begin_date']
 
 class RegisterTheoreticalClassForm(forms.ModelForm):
+    ''' Para registro de aula teórica pelo secretário '''
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['instructor'].queryset = Process.objects.filter(role_instructor=True)
+        self.fields['instructor'].queryset = Person.objects.filter(role_instructor=True)
 
     def clean_end_time(self):
-        begin = self.cleaned_data['begin_time']
-        end = self.cleaned_data['end_time']
-        if begin > end:
-            raise forms.ValidationError('Tempo final não pode ser menor que o tempo inicial')
-        return end
+        return validar_end_time(self)
 
     class Meta:
         model = TheoreticalClass
         fields = ['instructor', 'day', 'begin_time', 'end_time']
-        # widgets = {
-        #     # 'begin_time': forms.TextInput(attrs={'placeholder': 'HH:mm'}),
-        #     # 'end_time': forms.TextInput(attrs={'placeholder': 'HH:mm'}),
-        # }
+
+class RegisterTheoreticalClassFormInstructor(forms.ModelForm):
+    process = forms.ModelChoiceField(label='Processo', queryset=Process.objects.all())
+
+    def clean_end_time(self):
+        return validar_end_time(self)
+
+    class Meta:
+        model = TheoreticalClass
+        fields = ['process', 'day', 'begin_time', 'end_time']
 
 class RegisterPracticalClassForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -37,27 +41,24 @@ class RegisterPracticalClassForm(forms.ModelForm):
         self.fields['instructor'].queryset = Person.objects.filter(role_instructor=True)
 
     def clean_vehicle(self):
-        vehicle = self.cleaned_data['vehicle']
-        simulator = self.cleaned_data['simulator']
-
-        if simulator:
-            return None
-        else:
-            if not vehicle:
-                raise forms.ValidationError('Escolha um veículo')
-            return vehicle
+        return validar_carro(self)
 
     def clean_end_time(self):
-        begin = self.cleaned_data['begin_time']
-        end = self.cleaned_data['end_time']
-        if begin > end:
-            raise forms.ValidationError('Tempo final não pode ser menor que o tempo inicial')
-        return end
+        return validar_end_time(self)
 
     class Meta:
         model = PracticalClass
         fields = ['instructor', 'simulator', 'vehicle', 'day', 'begin_time', 'end_time']
-        # widgets = {
-        #     'begin_time': forms.TextInput(attrs={'placeholder': 'HH:mm'}),
-        #     'end_time': forms.TextInput(attrs={'placeholder': 'HH:mm'}),
-        # }
+
+class RegisterPracticalClassFormInstructor(forms.ModelForm):
+    process = forms.ModelChoiceField(queryset=Process.objects.all(), label='Processo')
+
+    def clean_vehicle(self):
+        return validar_carro(self)
+
+    def clean_end_time(self):
+        return validar_end_time(self)
+
+    class Meta:
+        model = PracticalClass
+        fields = ['process', 'simulator', 'vehicle', 'day', 'begin_time', 'end_time']

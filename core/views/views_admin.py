@@ -1,23 +1,24 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView, RedirectView
+from django.views.generic import RedirectView
 from django.urls import reverse_lazy
 
 from core.models import Contact, Vehicle, SystemSettings
 from core.forms import ResponseContactForm, RegisterVehicleForm
+from core.views.generics import CreateView, ListView, UpdateView, DeleteView
 from accounts.models import Person
 
 from rolepermissions.mixins import HasPermissionsMixin
 
 class MessagesView(HasPermissionsMixin, ListView):
-    # required_permission = 'secretary'
+    required_permission = 'secretary'
     template_name = 'list_contacts.html'
     context_object_name = 'contacts'
     model = Contact
     paginate_by = 10
 
 class MessageView(HasPermissionsMixin, UpdateView):
-    # required_permission = 'secretary'
+    required_permission = 'secretary'
     template_name = 'detail_contact.html'
     model = Contact
     form_class = ResponseContactForm
@@ -36,7 +37,8 @@ class MessageView(HasPermissionsMixin, UpdateView):
         form.send_email(self.get_object())
         return super().form_valid(form)
 
-class UpdateSettingsView(SuccessMessageMixin, UpdateView):
+class UpdateSettingsView(HasPermissionsMixin, SuccessMessageMixin, UpdateView):
+    required_permission = 'secretary'
     model = SystemSettings
     template_name = 'update_settings.html'
     fields = '__all__'
@@ -48,17 +50,15 @@ class UpdateSettingsView(SuccessMessageMixin, UpdateView):
 
 class RedirectHomeView(RedirectView):
     ''' Altera a view_current da pessoa e redireciona para o home apropriado '''
-    permanent = True
-    url = reverse_lazy('accounts:index')
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, **kwargs):
         person = get_object_or_404(Person, pk=self.request.user.pk)
         view = kwargs['type']
         person.current_view = view
         person.save()
-        return super().get_redirect_url(*args, **kwargs)
+        return reverse_lazy('accounts:index')
 
-contacts = MessagesView.as_view()
-contact = MessageView.as_view()
+messages = MessagesView.as_view()
+message = MessageView.as_view()
 update_settings = UpdateSettingsView.as_view()
-redirect_home = RedirectHomeView.as_view()
+red_home = RedirectHomeView.as_view()

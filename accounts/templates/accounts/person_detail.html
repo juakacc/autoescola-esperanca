@@ -1,0 +1,99 @@
+{% extends template_base %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  {% if person_func %}
+    <li class="breadcrumb-item"><a href="{% url 'accounts:list_employees' %}">Funcionários</a></li>
+    <li class="breadcrumb-item">Funcionário</li>
+  {% else %}
+    <li class="breadcrumb-item"><a href="{% url 'accounts:list_students' %}">Alunos</a></li>
+    <li class="breadcrumb-item">Aluno</li>
+  {% endif %}
+{% endblock %}
+
+{% block dashboard_title %}
+  {% if person_func %}
+    Detalhes do funcionário:
+  {% else %}
+    Detalhes do aluno:
+  {% endif %}
+  <strong>{{ object.name }}</strong>
+{% endblock %}
+
+{% block dashboard_container %}
+
+  <dl class="row">
+    <div class="col-12">
+      <h5>Informações básicas</h5>
+    </div>
+
+    <dt class="col-3">Nome de usuário</dt>
+    <dd class="col-9">{{ object.username }}</dd>
+
+    <dt class="col-3">Nome</dt>
+    <dd class="col-9">{{ object.name }}</dd>
+
+    <dt class="col-3">CPF</dt>
+    <dd class="col-9">{{ object.get_cpf_display }}</dd>
+
+    <dt class="col-3">Data de nascimento</dt>
+    <dd class="col-9">{{ object.date_of_birth }}</dd>
+
+    <dt class="col-3">Telefone</dt>
+    <dd class="col-9">{{ object.telephone }}</dd>
+
+    <dt class="col-3">Cadastrado em</dt>
+    <dd class="col-9">{{ object.created }}</dd>
+
+    {% if object.role_instructor or object.role_secretary %}
+      <div class="col-12">
+        <h5>Informações contratuais</h5>
+      </div>
+
+      <dt class="col-3">Matrícula</dt>
+      <dd class="col-9">{{ object.registry }}</dd>
+
+      <dt class="col-3">Salário</dt>
+      <dd class="col-9">{{ object.salary }}</dd>
+
+      <dt class="col-3">Admitido em</dt>
+      <dd class="col-9">{{ object.admission }}</dd>
+
+      {% if object.role_instructor %}
+        <dt class="col-3">Nº CNH</dt>
+        <dd class="col-9">{{ object.cnh }}</dd>
+      {% endif %}
+    {% endif %}
+
+    <div class="col-12">
+      <h5>Endereço</h5>
+    </div>
+
+    <dt class="col-3">Rua</dt>
+    <dd class="col-9">{{ object.street }}</dd>
+
+    <dt class="col-3">Número</dt>
+    <dd class="col-9">{{ object.number }}</dd>
+
+    <dt class="col-3">Bairro</dt>
+    <dd class="col-9">{{ object.district }}</dd>
+
+    <dt class="col-3">Cidade</dt>
+    <dd class="col-9">{{ object.city }}</dd>
+
+    <dt class="col-3">Estado</dt>
+    <dd class="col-9">{{ object.get_state_display }}</dd>
+  </dl>
+
+  <div class="row">
+    <div class="col">
+      {% if person_func %}
+        <a href="{% url 'accounts:list_employees' %}" class="btn btn-dark"><i class="fas fa-reply"></i> Voltar</a>
+        <a href="{% url 'accounts:update_employee' object.pk %}" class="btn btn-dark"><i class="fas fa-pencil-alt"></i> Editar dados</a>
+      {% else %}
+        <a href="{% url 'accounts:list_students' %}" class="btn btn-dark"><i class="fas fa-reply"></i> Voltar</a>
+        <a href="{% url 'accounts:update_student' object.pk %}" class="btn btn-dark"><i class="fas fa-pencil-alt"></i> Editar dados</a>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

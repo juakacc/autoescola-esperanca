@@ -10,9 +10,8 @@ class IndexView(TemplateView):
 class ContactView(SuccessMessageMixin, CreateView):
     template_name = 'contact.html'
     model = Contact
-    success_url = reverse_lazy('index')
     fields = ['name', 'email', 'subject', 'message']
-
+    success_url = reverse_lazy('core:index')
     success_message = 'Obrigado pelo contato'
 
 class QuemSomosView(TemplateView):

@@ -5,7 +5,7 @@ from . import views
 app_name='core'
 urlpatterns = [
     path('', views.index, name='index'),
-    path('go-home/<str:type>', views.redirect_home, name='go-home'),
+    path('go-home/<str:type>', views.red_home, name='go-home'),
     path('quem-somos/', views.quem_somos, name='quem_somos'),
     path('localizacao/', views.localizacao, name='localizacao'),
     path('configuracoes/', views.update_settings, name='update_settings'),

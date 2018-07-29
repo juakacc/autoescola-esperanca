@@ -1,0 +1,16 @@
+{% extends "diary/list_appointments.html" %}
+
+{% block appointments_filters %}
+  <a href="{% url 'diary:list_diaries_instructor' 'tudo' %}" class="btn btn-dark"><i class="fas fa-align-justify"></i> Tudo</a>
+  <div class="btn-group">
+    <a href="" class="btn btn-dark dropdown-toggle" data-toggle="dropdown">
+      <i class="fas fa-filter"></i> Data
+    </a>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a href="{% url 'diary:list_diaries_instructor' 'hoje' %}" class="dropdown-item">Hoje</a>
+      <a href="{% url 'diary:list_diaries_instructor' 'essa-semana' %}" class="dropdown-item">Essa semana</a>
+      <a href="{% url 'diary:list_diaries_instructor' 'esse-mes' %}" class="dropdown-item">Esse mês</a>
+      <a href="{% url 'diary:list_diaries_instructor' 'esse-ano' %}" class="dropdown-item">Esse ano</a>
+    </div>
+  </div>
+{% endblock  %}

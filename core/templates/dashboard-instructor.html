@@ -1,32 +1,21 @@
 {% extends "dashboard.html" %}
 
 {% block title %}
-  Conta | {{ block.super }}
+  {{ block.super }}
 {% endblock %}
 
 {% block dashboard_menu %}
   <a class="list-group-item list-group-item-action" href="{% url 'process:list_processes' %}"><i class="fas fa-tasks"></i> Processos</a>
-  <a class="list-group-item list-group-item-action" href="{% url 'diary:list_diaries' %}"><i class="fas fa-calendar-alt"></i> Agendamentos</a>
-
-  <a class="list-group-item list-group-item-action" data-toggle="collapse" href="#menu-cadastros">
-    <i class="fas fa-plus-square"></i> Cadastros <i class="fas fa-caret-down"></i>
-  </a>
-  <div id="menu-cadastros"class="panel-collapse collapse">
-    <a href="{% url 'accounts:choose_register_employee' %}" class="list-group-item list-group-item-action"><i class="fas fa-user-tie"></i> Funcionário</a>
-    <a href="{% url 'accounts:register_student' %}" class="list-group-item list-group-item-action"><i class="fas fa-user"></i> Aluno</a>
-    <a href="{% url 'accounts:register_vehicle' %}" class="list-group-item list-group-item-action"><i class="fas fa-shuttle-van"></i> Veículo</a>
-  </div>
+  <a class="list-group-item list-group-item-action" href="{% url 'diary:list_diaries_instructor' %}"><i class="fas fa-calendar-alt"></i> Meus agendamentos</a>
 
   <a class="list-group-item list-group-item-action" data-toggle="collapse" href="#menu-pessoal">
-    <i class="fas fa-users"></i> Gerenciar pessoal <i class="fas fa-caret-down"></i>
+    <i class="fas fa-edit"></i> Registrar aula <i class="fas fa-caret-down"></i>
   </a>
   <div id="menu-pessoal"class="panel-collapse collapse">
-    <a href="{% url 'accounts:list_employees' %}" class="list-group-item list-group-item-action"><i class="fas fa-user-friends"></i> Funcionários</a>
-    <a href="{% url 'accounts:list_students' %}" class="list-group-item list-group-item-action"><i class="fas fa-user-friends"></i> Alunos</a>
+    <a href="{% url 'process:register_theoretical_class_instructor' %}" class="list-group-item list-group-item-action"><i class="fas fa-chalkboard"></i> Aula teórica</a>
+    <a href="{% url 'process:register_practical_class_instructor' %}" class="list-group-item list-group-item-action"><i class="fas fa-car"></i> Aula prática</a>
   </div>
 
   <a class="list-group-item list-group-item-action" href="{% url 'accounts:list_vehicles' %}"><i class="fas fa-shuttle-van"></i> Veículos</a>
 
-  <!-- Configurações gerais do sistema -->
-  <a class="list-group-item list-group-item-action" href="{% url 'core:update_settings' %}"><i class="fas fa-cog"></i> Configurações gerais</a>
 {% endblock %}

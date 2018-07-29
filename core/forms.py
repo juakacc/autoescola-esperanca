@@ -2,7 +2,7 @@ from django import forms
 from .models import Contact, Vehicle
 
 class ResponseContactForm(forms.ModelForm):
-# Formulário para responder um contato
+    ''' Formulário para responder um contato '''
     class Meta:
         model = Contact
         fields = ['response']

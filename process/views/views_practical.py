@@ -2,16 +2,18 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import ListView, CreateView, DeleteView
 
-from process.models import PracticalClass, PracticalCourse
-from process.forms import RegisterPracticalClassForm
+from core.views.generics import ListView, CreateView, DeleteView
+
+from process.models import PracticalClass, PracticalCourse, Process
+from process.forms import RegisterPracticalClassForm, RegisterPracticalClassFormInstructor
 from accounts.models import Person
-from core.constantes import * 
 
 from rolepermissions.mixins import HasPermissionsMixin
 
-class RegisterPracticalClass(SuccessMessageMixin, CreateView):
+''' View para registro de aula prática pelo secretário '''
+class RegisterPracticalClassView(HasPermissionsMixin, SuccessMessageMixin, CreateView):
+    required_permission = 'secretary'
     model = PracticalClass
     form_class = RegisterPracticalClassForm
     template_name = 'process/register_practical_class.html'
@@ -21,13 +23,7 @@ class RegisterPracticalClass(SuccessMessageMixin, CreateView):
         context = super().get_context_data(**kwargs)
         process = get_object_or_404(Process, practical_course__pk=self.kwargs['pk_course'])
         context['pk_process'] = process.pk
-
-        person = get_object_or_404(Person, pk=self.request.user.pk)
-        if person.current_view == SECRETARY:
-            context['template_base'] = 'dashboard-secretary.html'
-        elif person.current_view == ADMIN:
-            context['template_base'] = 'dashboard-admin.html'
-
+        context['instructor'] = False
         return context
 
     def get_success_url(self):
@@ -40,8 +36,31 @@ class RegisterPracticalClass(SuccessMessageMixin, CreateView):
         self.object.save()
         return super().form_valid(form)
 
-class ListPracticalCourse(ListView):
+''' View para registro de aula prática pelo instrutor '''
+class RegisterPracticalClassViewInstructor(HasPermissionsMixin, SuccessMessageMixin, CreateView):
+    required_permission = 'instructor'
     model = PracticalClass
+    form_class = RegisterPracticalClassFormInstructor
+    template_name = 'process/register_practical_class.html'
+    success_message = 'Aula registrada com sucesso'
+    success_url = reverse_lazy('accounts:index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['instructor'] = True
+        return context
+
+    def form_valid(self, form):
+        process = form.cleaned_data['process']
+        self.object = form.save(commit=False)
+        self.object.practical_course = process.practical_course
+        self.object.instructor = Person.objects.get(pk=self.request.user.pk)
+        self.object.save()
+        return super().form_valid(form)
+
+''' Lista as aulas práticas de um determinado processo '''
+class ListPracticalCourse(HasPermissionsMixin, ListView):
+    required_permission = 'student'
     template_name = 'process/practicals_classes.html'
 
     def get_queryset(self):
@@ -54,17 +73,11 @@ class ListPracticalCourse(ListView):
 
         context['classes_car'] = self.get_queryset().filter(simulator=False)
         context['classes_simulator'] = self.get_queryset().filter(simulator=True)
-
-        person = get_object_or_404(Person, pk=self.request.user.pk)
-        if person.current_view == SECRETARY:
-            context['template_base'] = 'dashboard-secretary.html'
-        elif person.current_view == ADMIN:
-            context['template_base'] = 'dashboard-admin.html'
-
         return context
 
-class RemovePracticalClassView(DeleteView):
-    model = PracticalClass
+''' Remove uma aula prática '''
+class RemovePracticalClassView(HasPermissionsMixin, DeleteView):
+    required_permission = 'secretary'
     template_name = 'process/class_confirm_delete.html'
 
     def get_object(self):
@@ -74,16 +87,8 @@ class RemovePracticalClassView(DeleteView):
         messages.success(self.request, 'Aula excluída com sucesso')
         return self.object.practical_course.get_absolute_url()
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        person = get_object_or_404(Person, pk=self.request.user.pk)
-        if person.current_view == SECRETARY:
-            context['template_base'] = 'dashboard-secretary.html'
-        elif person.current_view == ADMIN:
-            context['template_base'] = 'dashboard-admin.html'
-        return context
-
 practical_course = ListPracticalCourse.as_view()
-register_practical_class = RegisterPracticalClass.as_view()
+register_practical_class = RegisterPracticalClassView.as_view()
 remove_practical_class = RemovePracticalClassView.as_view()
+
+register_practical_class_instructor = RegisterPracticalClassViewInstructor.as_view()
