@@ -37,10 +37,11 @@ INSTALLED_APPS = [
     'rolepermissions',
     'widget_tweaks',
 
-    'core',
     'accounts',
-    'process',
+    'core',
     'diary',
+    'inbox',
+    'process',
 ]
 
 MIDDLEWARE = [

@@ -16,13 +16,21 @@
 <div class="row">
   <!-- Menu lateral -->
   <div class="col-3 list-group">
-
+    <!-- Contatos com o site -->
     <a class="list-group-item list-group-item-action" href="{% url 'accounts:messages' %}">
-      <i class="fas fa-comments"></i> Mensagens
+      <i class="fas fa-comments"></i> Contatos recebidos
       {% if num_msg > 0 %}
       <span class="badge badge-warning badge-pill"><i class="far fa-envelope"></i> {{ num_msg }}</span>
       {% endif %}
     </a>
+    <!-- Mensagens para todos (individual) -->
+    <a href="#menu-messages" data-toggle="collapse" class="list-group-item list-group-item-action">
+      <i class="fas fa-at"></i> Mensagens <i class="fas fa-caret-down"></i>
+    </a>
+    <div id="menu-messages" class="panel-collapse collapse">
+      <a href="{% url 'inbox:list_messages' %}" class="list-group-item list-group-item-action">Recebidas</a>
+      <a href="#" class="list-group-item list-group-item-action">Enviadas</a>
+    </div>
     {% block dashboard_menu %}
 
     {% endblock %}
@@ -34,7 +42,7 @@
       <a href="{% url 'accounts:update_password' %}" class="list-group-item list-group-item-action"><i class="fas fa-user-lock"></i> Alterar senha</a>
     </div>
   </div><!-- Fim do menu lateral -->
-  
+
   <!-- Área de amostragem -->
   <div class="col-9">
     <div class="page-header">

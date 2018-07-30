@@ -1,0 +1,43 @@
+{% extends template_base %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item">Mensagens recebidas</li>
+{% endblock  %}
+
+{% block dashboard_title %}
+  Mensagens recebidas
+{% endblock  %}
+
+{% block dashboard_container %}
+<div class="row">
+  <div class="col">
+    <table class="table list">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Remetente</th>
+          <th>Assunto</th>
+          <th>Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for message in messages %}
+          <tr>
+            <td>
+              {% if not message.visualized %}
+                <i class="far fa-envelope"></i>
+              {% else %}
+                <i class="far fa-envelope-open"></i>
+              {% endif %}
+            </td>
+            <td>{{ message.sender }}</td>
+            <td>{{ message.subject }}</td>
+            <td>{{ message.created }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock  %}
