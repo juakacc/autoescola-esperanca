@@ -1,0 +1,43 @@
+{% extends template_base %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item">Mensagens enviadas</li>
+{% endblock  %}
+
+{% block dashboard_title %}
+  Mensagens enviadas
+{% endblock  %}
+
+{% block dashboard_container %}
+<div class="row">
+  <div class="col">
+    <table class="table list">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Destinatário</th>
+          <th>Assunto</th>
+          <th>Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for message in msgs %}
+          <tr>
+            <td>
+              {% if not message.visualized %}
+                <i class="far fa-envelope"></i>
+              {% else %}
+                <i class="far fa-envelope-open"></i>
+              {% endif %}
+            </td>
+            <td>{{ message.to }}</td>
+            <td><a href="{% url 'inbox:detail_message' message.pk %}">{{ message.subject }}</a></td>
+            <td>{{ message.created }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock  %}

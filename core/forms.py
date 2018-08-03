@@ -9,10 +9,9 @@ class ResponseContactForm(forms.ModelForm):
 
     def send_email(self, obj):
         print('E-mail enviado com sucesso: ' + obj.response + ' de: ' + obj.subject)
-        pass
 
 class RegisterVehicleForm(forms.ModelForm):
-
+    ''' Formulário para registrar um veículo '''
     class Meta:
         model = Vehicle
         fields = ['type', 'slug', 'fabricator', 'model', 'year', 'plate']

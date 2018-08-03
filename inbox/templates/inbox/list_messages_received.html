@@ -22,7 +22,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for message in messages %}
+        {% for message in msgs %}
           <tr>
             <td>
               {% if not message.visualized %}
@@ -32,7 +32,7 @@
               {% endif %}
             </td>
             <td>{{ message.sender }}</td>
-            <td>{{ message.subject }}</td>
+            <td><a href="{% url 'inbox:detail_message' message.pk %}">{{ message.subject }}</a></td>
             <td>{{ message.created }}</td>
           </tr>
         {% endfor %}

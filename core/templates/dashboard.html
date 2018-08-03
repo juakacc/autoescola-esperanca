@@ -28,8 +28,8 @@
       <i class="fas fa-at"></i> Mensagens <i class="fas fa-caret-down"></i>
     </a>
     <div id="menu-messages" class="panel-collapse collapse">
-      <a href="{% url 'inbox:list_messages' %}" class="list-group-item list-group-item-action">Recebidas</a>
-      <a href="#" class="list-group-item list-group-item-action">Enviadas</a>
+      <a href="{% url 'inbox:list_messages_received' %}" class="list-group-item list-group-item-action">Recebidas</a>
+      <a href="{% url 'inbox:list_messages_sent' %}" class="list-group-item list-group-item-action">Enviadas</a>
     </div>
     {% block dashboard_menu %}
 
@@ -48,7 +48,6 @@
     <div class="page-header">
       <h2>{% block dashboard_title %}Bem vindo, {{ user }}{% endblock %}</h2>
     </div>
-
     {% block dashboard_container %}
 
     {% endblock %}

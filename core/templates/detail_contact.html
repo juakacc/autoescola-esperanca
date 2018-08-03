@@ -27,6 +27,6 @@
   <form method="post">
     {% include "_form.html" %}
     <button type="submit" class="btn btn-dark" name="button">Responder</button>
-    <a href="{% url 'accounts:messages' %}" class="btn btn-ligth">Voltar</a>
+    <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-ligth">Voltar</a>
   </form>
 {% endblock %}

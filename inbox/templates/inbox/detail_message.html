@@ -1,0 +1,41 @@
+{% extends template_base %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item">Mensagem</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  <strong>Assunto: </strong>{{ message.subject }}
+{% endblock  %}
+
+{% block dashboard_container %}
+  <dl class="row">
+    <dt class="col-2">De</dt>
+    <dd class="col-10">{{ message.sender.name }}</dd>
+
+    <dt class="col-2">Para</dt>
+    <dd class="col-10">{{ message.to.name }}</dd>
+
+    <dt class="col-2">Data</dt>
+    <dd class="col-10">{{ message.created }}</dd>
+
+    <dt class="col-2">Assunto</dt>
+    <dd class="col-10">{{ message.subject }}</dd>
+
+    <dt class="col-2">Mensagem</dt>
+    <dd class="col-10">{{ message.message }}</dd>
+  </dl>
+
+  <div class="row">
+    <div class="col">
+      {% if not is_mine %}
+        <form method="post">
+          {% include "_form.html" %}
+          <button type="submit" class="btn btn-dark" name="button">Responder</button>
+        </form>
+      {% endif %}
+      <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-ligth">Voltar</a>
+    </div>
+  </div>
+{% endblock %}

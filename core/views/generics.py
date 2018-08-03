@@ -15,6 +15,8 @@ class FormView(FormView):
             context['template_base'] = 'dashboard-admin.html'
         elif person.current_view == INSTRUCTOR:
             context['template_base'] = 'dashboard-instructor.html'
+        elif person.current_view == STUDENT:
+            context['template_base'] = 'dashboard-student.html'
         return context
 
 class TemplateView(TemplateView):
@@ -29,6 +31,8 @@ class TemplateView(TemplateView):
             context['template_base'] = 'dashboard-admin.html'
         elif person.current_view == INSTRUCTOR:
             context['template_base'] = 'dashboard-instructor.html'
+        elif person.current_view == STUDENT:
+            context['template_base'] = 'dashboard-student.html'
         return context
 
 class CreateView(CreateView):
@@ -43,6 +47,8 @@ class CreateView(CreateView):
             context['template_base'] = 'dashboard-admin.html'
         elif person.current_view == INSTRUCTOR:
             context['template_base'] = 'dashboard-instructor.html'
+        elif person.current_view == STUDENT:
+            context['template_base'] = 'dashboard-student.html'
         return context
 
 class UpdateView(UpdateView):
@@ -57,6 +63,8 @@ class UpdateView(UpdateView):
             context['template_base'] = 'dashboard-admin.html'
         elif person.current_view == INSTRUCTOR:
             context['template_base'] = 'dashboard-instructor.html'
+        elif person.current_view == STUDENT:
+            context['template_base'] = 'dashboard-student.html'
         return context
 
 class ListView(ListView):
@@ -71,6 +79,8 @@ class ListView(ListView):
             context['template_base'] = 'dashboard-admin.html'
         elif person.current_view == INSTRUCTOR:
             context['template_base'] = 'dashboard-instructor.html'
+        elif person.current_view == STUDENT:
+            context['template_base'] = 'dashboard-student.html'
         return context
 
 class DeleteView(DeleteView):
@@ -85,6 +95,8 @@ class DeleteView(DeleteView):
             context['template_base'] = 'dashboard-admin.html'
         elif person.current_view == INSTRUCTOR:
             context['template_base'] = 'dashboard-instructor.html'
+        elif person.current_view == STUDENT:
+            context['template_base'] = 'dashboard-student.html'
         return context
 
 class DetailView(DetailView):
@@ -99,4 +111,6 @@ class DetailView(DetailView):
             context['template_base'] = 'dashboard-admin.html'
         elif person.current_view == INSTRUCTOR:
             context['template_base'] = 'dashboard-instructor.html'
+        elif person.current_view == STUDENT:
+            context['template_base'] = 'dashboard-student.html'
         return context

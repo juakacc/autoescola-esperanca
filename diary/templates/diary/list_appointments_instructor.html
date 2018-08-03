@@ -14,3 +14,31 @@
     </div>
   </div>
 {% endblock  %}
+
+{% block appointments_list %}
+  {% for a in appointments %}
+  <tr>
+    <td><a href="{% url 'diary:detail_appointment' a.pk %}">{{ a.pk }}</a></td>
+    <td><a href="{% url 'process:detail_process' a.process.pk %}">#{{ a.process.pk }}</a></td>
+    <td>
+      {% if a.simulator %}
+        <i class="fas fa-desktop"></i>
+      {% else %}
+        <i class="fas fa-shuttle-van"></i>
+      {% endif %}
+    </td>
+    <td>{{ a.day }}</td>
+    <td>{{ a.process.student }}</td>
+    <td>{{ a.instructor }}</td>
+    <td>{{ a.begin_time }}</td>
+    <td>{{ a.end_time }}</td>
+    <td>
+      <a href="{% url 'diary:remove_appointment' a.pk %}"><i class="fas fa-trash-alt"></i></a>
+      <a href="{% url 'diary:confirm_appointment' a.pk %}"><i class="fas fa-calendar-check"></i></a><br>
+      <a href="{% url 'inbox:register_message' a.process.student.pk 'Agendamento do dia __' %}">Enviar mensagem</a>
+      <!-- já tem q ir com remetente, destinatário, assunto -->
+    </td>
+    <th></th>
+  </tr>
+  {% endfor %}
+{% endblock  %}
