@@ -48,7 +48,7 @@ class DetailEmployeeView(HasPermissionsMixin, DetailView):
         return context
 
 class EmployeesListView(HasPermissionsMixin, ListView):
-    required_permission = 'secretary'
+    required_permission = 'student'
     template_name = 'accounts/list_employees.html'
     context_object_name = 'secretaries'
     model = Person

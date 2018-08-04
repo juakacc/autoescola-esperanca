@@ -1,4 +1,4 @@
-{% extends template_base %}
+{% extends "template_list_messages.html" %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -9,35 +9,47 @@
   Mensagens recebidas
 {% endblock  %}
 
-{% block dashboard_container %}
-<div class="row">
-  <div class="col">
-    <table class="table list">
-      <thead>
+{% block table_list %}
+  <table class="table list">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Remetente</th>
+        <th>Assunto</th>
+        <th>Data do recebimento</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for message in msgs %}
         <tr>
-          <th></th>
-          <th>Remetente</th>
-          <th>Assunto</th>
-          <th>Data</th>
+          <td>
+            {% include "_display_status_message.html" %}
+          </td>
+
+          <td>
+            {% if not message.visualized %}<strong>{% endif %}
+            {{ message.sender }}
+            {% if not message.visualized %}</strong>{% endif %}
+          </td>
+
+          <td>
+            {% if not message.visualized %}<strong>{% endif %}
+            <a href="{% url 'inbox:detail_message' message.pk %}">{{ message.subject }}</a>
+            {% if not message.visualized %}</strong>{% endif %}
+          </td>
+
+          <td>
+            {% if not message.visualized %}<strong>{% endif %}
+            {{ message.created }}
+            {% if not message.visualized %}</strong>{% endif %}
+          </td>
+
+          <td>
+            <a href="{% url 'inbox:delete_message' message.pk %}">Ocultar</a>
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        {% for message in msgs %}
-          <tr>
-            <td>
-              {% if not message.visualized %}
-                <i class="far fa-envelope"></i>
-              {% else %}
-                <i class="far fa-envelope-open"></i>
-              {% endif %}
-            </td>
-            <td>{{ message.sender }}</td>
-            <td><a href="{% url 'inbox:detail_message' message.pk %}">{{ message.subject }}</a></td>
-            <td>{{ message.created }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock  %}

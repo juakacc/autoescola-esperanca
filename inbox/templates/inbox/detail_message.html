@@ -1,7 +1,13 @@
-{% extends template_base %}
+{% extends "template_detail.html" %}
 
 {% block breadcrumb %}
   {{ block.super }}
+  {% if is_mine %}
+    <li class="breadcrumb-item"><a href="{% url 'inbox:list_messages_sent' %}">Mensagens enviadas</a></li>
+  {% else %}
+    <li class="breadcrumb-item"><a href="{% url 'inbox:list_messages_received' %}">Mensagens recebidas</a></li>
+  {% endif %}
+
   <li class="breadcrumb-item">Mensagem</li>
 {% endblock %}
 
@@ -9,22 +15,44 @@
   <strong>Assunto: </strong>{{ message.subject }}
 {% endblock  %}
 
-{% block dashboard_container %}
+{% block detail_container %}
   <dl class="row">
     <dt class="col-2">De</dt>
-    <dd class="col-10">{{ message.sender.name }}</dd>
+    <dd class="col-10">
+      {% if message.sender.pk == user.pk %}<strong>{% endif %}
+        {{ message.sender.name }}
+      {% if message.sender.pk == user.pk %}</strong>{% endif %}
+    </dd>
 
     <dt class="col-2">Para</dt>
-    <dd class="col-10">{{ message.to.name }}</dd>
-
-    <dt class="col-2">Data</dt>
-    <dd class="col-10">{{ message.created }}</dd>
+    <dd class="col-10">
+      {% if message.to.pk == user.pk %}<strong>{% endif %}
+        {{ message.to.name }}
+      {% if message.to.pk == user.pk %}</strong>{% endif %}
+    </dd>
 
     <dt class="col-2">Assunto</dt>
     <dd class="col-10">{{ message.subject }}</dd>
 
-    <dt class="col-2">Mensagem</dt>
-    <dd class="col-10">{{ message.message }}</dd>
+    <dt class="col-2">Data</dt>
+    <dd class="col-10">{{ message.created }}</dd>
+
+    {% if message.message %} <!-- É uma resposta? -->
+      <dt class="col-2">Resposta</dt>
+    {% else %}
+      <dt class="col-2">Mensagem</dt>
+    {% endif %}
+    <dd class="col-10">{{ message.message_text }}</dd>
+
+    {% if message.response %} <!-- Tem uma resposta? -->
+      <dt class="col-2">Resposta</dt>
+      <dd class="col-10">{{ message.response }}</dd>
+    {% endif %}
+
+    {% if message.message %} <!-- Se é uma resposta mostra a mensagem -->
+      <dt class="col-2">Mensagem</dt>
+      <dd class="col-10">{{ message.message }}</dd>
+    {% endif %}
   </dl>
 
   <div class="row">
@@ -35,7 +63,6 @@
           <button type="submit" class="btn btn-dark" name="button">Responder</button>
         </form>
       {% endif %}
-      <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-ligth">Voltar</a>
     </div>
   </div>
 {% endblock %}

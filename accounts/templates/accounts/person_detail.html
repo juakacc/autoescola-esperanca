@@ -1,4 +1,4 @@
-{% extends template_base %}
+{% extends "template_detail.html" %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -20,8 +20,7 @@
   <strong>{{ object.name }}</strong>
 {% endblock %}
 
-{% block dashboard_container %}
-
+{% block detail_container %}
   <dl class="row">
     <div class="col-12">
       <h5>Informações básicas</h5>
@@ -87,7 +86,6 @@
 
   <div class="row">
     <div class="col">
-      <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-dark"><i class="fas fa-reply"></i> Voltar</a>
       {% if person_func %}
         <a href="{% url 'accounts:update_employee' object.pk %}" class="btn btn-dark"><i class="fas fa-pencil-alt"></i> Editar dados</a>
       {% else %}

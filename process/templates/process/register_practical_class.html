@@ -1,4 +1,4 @@
-{% extends template_base %}
+{% extends "template_register.html" %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -13,7 +13,7 @@
   Registrar aula prática
 {% endblock %}
 
-{% block dashboard_container %}
+{% block register_container %}
   <form method="post">
     {% include "_form.html" %}
     <div class="form-group">

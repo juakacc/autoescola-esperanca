@@ -1,0 +1,16 @@
+{% extends "template_confirm_delete.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item"><a href="{% url 'inbox:list_messages_received' %}">Mensagens recebidas</a></li>
+  <li class="breadcrumb-item">Ocultar mensagem</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  Ocultar mensagem
+{% endblock %}
+
+{% block delete_message %}
+  <p>Deseja realmente ocultar a mensagem de: {{ object.sender }}?</p>
+  <p>Para visualizar novamente essa mensagem acesse: Mensagem > mensagens ocultas</p>
+{% endblock  %}

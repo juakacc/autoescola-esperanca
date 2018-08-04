@@ -1,0 +1,46 @@
+{% extends "template_detail.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item"><a href="{% url 'accounts:list_vehicles' %}">Veículos</a></li>
+  <li class="breadcrumb-item">Detalhes de veículo</li>
+{% endblock  %}
+
+{% block dashboard_title %}
+  Detalhes de {{ object.slug }}
+{% endblock  %}
+
+{% block detail_container %}
+<div class="row">
+  <dt class="col-3">Tipo</dt>
+  <dd class="col-9">{{ object.get_type_display }}</dd>
+
+  <dt class="col-3">Apelido</dt>
+  <dd class="col-9">{{ object.slug }}</dd>
+
+  <dt class="col-3">Fabricante</dt>
+  <dd class="col-9">{{ object.fabricator }}</dd>
+
+  <dt class="col-3">Modelo</dt>
+  <dd class="col-9">{{ object.model }}</dd>
+
+  <dt class="col-3">Ano de fabricação</dt>
+  <dd class="col-9">{{ object.year }}</dd>
+
+  <dt class="col-3">Placa</dt>
+  <dd class="col-9">{{ object.plate }}</dd>
+
+  <dt class="col-3">Status</dt>
+  <dd class="col-9">
+    <span class="badge badge-{% if v.state == 'Em conserto' %}danger{% else %}success{% endif %}">
+    {{ object.get_state_display }}</span>
+  </dd>
+</div>
+<div class="row">
+  <div class="col">
+    <a href="{% url 'accounts:update_vehicle' object.pk %}" class="btn btn-dark">
+      <i class="fas fa-pencil-alt"></i> Editar
+    </a>
+  </div>
+</div>
+{% endblock  %}

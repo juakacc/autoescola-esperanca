@@ -1,0 +1,20 @@
+<!-- Template padrão para confirmação de exclusão -->
+{% extends template_base %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+{% endblock %}
+
+{% block dashboard_container %}
+<form method="post">{% csrf_token %}
+
+  {% block delete_message %}
+    <p>Deseja realmente ocultar a mensagem de: {{ object.sender }}?</p>
+    <p>Para visualizar novamente essa mensagem acesse: Mensagem > mensagens ocultas</p>
+  {% endblock  %}
+
+  <p><span class="text-danger">(Essa ação não pode ser desfeita)</span></p>
+  <input type="submit" value="Sim" class="btn btn-dark"/>
+  <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-info">Não</a>
+</form>
+{% endblock %}

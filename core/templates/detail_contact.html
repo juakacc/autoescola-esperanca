@@ -1,4 +1,4 @@
-{% extends template_base %}
+{% extends "template_detail.html" %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -6,10 +6,11 @@
   <li class="breadcrumb-item">Contato</li>
 {% endblock %}
 
-{% block dashboard_container %}
-  <div class="page-header">
-    <h1><strong>Assunto: </strong>{{ contact.subject }}</h1>
-  </div>
+{% block dashboard_title %}
+  <strong>Assunto: </strong>{{ contact.subject }}
+{% endblock  %}
+
+{% block detail_container %}
 
   <dl class="row">
     <dt class="col-2">Remetente</dt>
@@ -24,9 +25,9 @@
     <dt class="col-2">Mensagem</dt>
     <dd class="col-10">{{ contact.message }}</dd>
   </dl>
+
   <form method="post">
     {% include "_form.html" %}
     <button type="submit" class="btn btn-dark" name="button">Responder</button>
-    <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-ligth">Voltar</a>
   </form>
 {% endblock %}

@@ -24,6 +24,7 @@ urlpatterns = [
     path('deletar-veiculo/<int:pk>', core_views.delete_vehicle, name='delete_vehicle'),
     path('veiculos/', core_views.list_vehicles, name='list_vehicles'),
     path('veiculos/<str:type>', core_views.list_vehicles, name='list_vehicles'),
+    path('veiculo/<str:slug>', core_views.detail_vehicle, name='detail_vehicle'),
 
     path('alterar-dados/', views.update_data, name='update'),
     path('alterar-senha/', views.update_password, name='update_password'),

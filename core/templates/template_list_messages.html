@@ -1,0 +1,18 @@
+{% extends template_base %}
+{% load pagination %}
+
+{% block dashboard_container %}
+<div class="row"> <!-- Barra de pesquisa -->
+  <div class="col">
+    Teste
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    {% block table_list %}
+
+    {% endblock  %}
+    {% pagination request paginator page_obj %}
+  </div>
+</div>
+{% endblock  %}

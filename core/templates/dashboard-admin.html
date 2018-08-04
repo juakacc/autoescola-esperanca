@@ -1,9 +1,5 @@
 {% extends "dashboard.html" %}
 
-{% block title %}
-  Conta | {{ block.super }}
-{% endblock %}
-
 {% block dashboard_menu %}
   <a class="list-group-item list-group-item-action" href="{% url 'process:list_processes' %}">
     <i class="fas fa-tasks"></i> Processos

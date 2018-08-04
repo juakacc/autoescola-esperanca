@@ -1,4 +1,4 @@
-{% extends template_base %}
+{% extends "template_confirm_delete.html" %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -10,10 +10,6 @@
   Remoção de agendamento
 {% endblock %}
 
-{% block dashboard_container %}
-<form method="post">{% csrf_token %}
-  <p>Deseja realmente remover o agendamento de {{ object.process.student }}? <span class="text-danger">(Essa ação não pode ser desfeita)</span></p>
-  <input type="submit" value="Sim" class="btn btn-dark"/>
-  <a href="{% url 'diary:list_diaries' %}" class="btn btn-light">Não</a>
-</form>
-{% endblock %}
+{% block delete_message %}
+  <p>Deseja realmente remover o agendamento de {{ object.process.student }}?</p>
+{% endblock  %}

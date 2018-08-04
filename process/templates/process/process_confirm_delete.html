@@ -1,4 +1,4 @@
-{% extends template_base %}
+{% extends "template_confirm_delete.html" %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -10,10 +10,6 @@
   Remoção de processo
 {% endblock %}
 
-{% block dashboard_container %}
-<form method="post">{% csrf_token %}
-  <p>Deseja realmente remover o processo de {{ object.student }} ? <span class="text-danger">(Essa ação não pode ser desfeita)</span></p>
-  <input type="submit" value="Sim" class="btn btn-dark"/>
-  <a href="{% url 'process:list_processes' %}" class="btn btn-light">Não</a>
-</form>
-{% endblock %}
+{% block delete_message %}
+  <p>Deseja realmente remover o processo de {{ object.student }}?</p>
+{% endblock  %}

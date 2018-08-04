@@ -51,6 +51,9 @@ class CreateView(CreateView):
             context['template_base'] = 'dashboard-student.html'
         return context
 
+    def get_success_url(self):
+        return self.success_url or self.request.META.get('HTTP_REFERER')
+
 class UpdateView(UpdateView):
 
     def get_context_data(self, *args, **kwargs):
@@ -98,6 +101,9 @@ class DeleteView(DeleteView):
         elif person.current_view == STUDENT:
             context['template_base'] = 'dashboard-student.html'
         return context
+
+    def get_success_url(self):
+        return self.success_url or self.request.META.get('HTTP_REFERER')
 
 class DetailView(DetailView):
 

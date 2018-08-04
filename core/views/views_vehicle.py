@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 
 from core.models import Vehicle
 from core.forms import RegisterVehicleForm
-from core.views.generics import CreateView, ListView, UpdateView, DeleteView
+from core.views.generics import CreateView, ListView, UpdateView, DeleteView, DetailView
 
 from rolepermissions.mixins import HasPermissionsMixin
 
@@ -27,11 +27,12 @@ class UpdateVehicleView(HasPermissionsMixin, SuccessMessageMixin, UpdateView):
 class DeleteVehicleView(HasPermissionsMixin, DeleteView):
     required_permission = 'secretary'
     model = Vehicle
+    template_name = 'accounts/vehicle_confirm_delete.html'
     success_url = reverse_lazy('accounts:list_vehicles')
 
     def delete(self, request, *args, **kwargs):
         msgs.success(request, 'Veículo removido com sucesso')
-        return super(DeleteVehicleView, self).delete(request, *args, **kwargs)
+        return super().delete(request, *args, **kwargs)
 
 class VehiclesListView(HasPermissionsMixin, ListView):
     required_permission = 'instructor'
@@ -48,11 +49,13 @@ class VehiclesListView(HasPermissionsMixin, ListView):
             query = Vehicle.objects.all()
         return query
 
-    # def get_context_data(self, *args, **kwargs):
-    #     context = super().get_context_data(*args, **kwargs)
-    #     user = Person.
+class DetailVehicleView(HasPermissionsMixin, DetailView):
+    required_permission = 'student'
+    model = Vehicle
+    template_name = 'accounts/vehicle_detail.html'
 
 register_vehicle = RegisterVehicleView.as_view()
 update_vehicle = UpdateVehicleView.as_view()
 delete_vehicle = DeleteVehicleView.as_view()
 list_vehicles = VehiclesListView.as_view()
+detail_vehicle = DetailVehicleView.as_view()

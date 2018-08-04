@@ -1,10 +1,13 @@
+from django.shortcuts import HttpResponseRedirect
+from django.urls import reverse_lazy
 from .forms import RegisterMessageForm, RegisterResponseForm
 from .models import Message
 from accounts.models import Person
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages as messages_django
 from django.core.exceptions import PermissionDenied
 
-from core.views.generics import ListView, CreateView, DetailView
+from core.views.generics import ListView, CreateView, DetailView, DeleteView
 
 from rolepermissions.mixins import HasPermissionsMixin
 
@@ -12,23 +15,47 @@ class ListMessagesReceivedView(HasPermissionsMixin, ListView):
     required_permission = 'student'
     template_name = 'inbox/list_messages_received.html'
     context_object_name = 'msgs'
+    paginate_by = 10
 
     def get_queryset(self):
-        return Message.objects.filter(to__pk=self.request.user.pk)
+        return Message.objects.filter(to__pk=self.request.user.pk, not_view=False)
 
 class ListMessagesSentView(HasPermissionsMixin, ListView):
     required_permission = 'student'
     template_name = 'inbox/list_messages_sent.html'
     context_object_name = 'msgs'
+    paginate_by = 10
 
     def get_queryset(self):
         return Message.objects.filter(sender__pk=self.request.user.pk)
 
+class ListMessagesHidden(HasPermissionsMixin, ListView):
+    required_permission = 'student'
+    template_name = 'inbox/list_messages_received.html'
+    context_object_name = 'msgs'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Message.objects.filter(to__pk=self.request.user.pk, not_view=True)
+
 class DetailMessageView(HasPermissionsMixin, CreateView):
+    ''' View para detalhar uma mensagem enviada/recebida, no último caso
+    é possível registrar uma resposta '''
     required_permission = 'student'
     template_name = 'inbox/detail_message.html'
     model = Message
     form_class = RegisterResponseForm
+
+    def form_valid(self, form):
+        response = form.save(commit=False)
+        message = self.get_context_data().get('message')
+        response.to = message.sender
+        response.sender = message.to
+        response.subject = 'RES: {}'.format(message.subject)
+        response.save()
+        message.response = response
+        message.save()
+        return HttpResponseRedirect(self.get_success_url())
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -40,7 +67,12 @@ class DetailMessageView(HasPermissionsMixin, CreateView):
         if sender != user and to != user: # Só exibir template se o usuário for o sender ou o to da mensagem
             raise PermissionDenied
 
-        context['is_mine'] = True if message.sender.pk == self.request.user.pk else False
+        if message.sender.pk == self.request.user.pk:
+            context['is_mine'] = True
+        else:
+            context['is_mine'] = False
+            message.visualized = True
+            message.save()
         context['message'] = message
         return context
 
@@ -70,7 +102,22 @@ class RegisterMessageView(HasPermissionsMixin, SuccessMessageMixin, CreateView):
         self.object.save()
         return super().form_valid(form)
 
+class DeleteMessageView(DeleteView):
+    ''' View para ocultar uma determinada mensagem '''
+    model = Message
+    success_url = reverse_lazy('inbox:list_messages_received')
+
+    def delete(self, request, *args, **kwargs):
+        mensagem = self.get_object()
+        mensagem.not_view = True
+        mensagem.save()
+        messages_django.success(self.request, 'Mensagem oculta com sucesso')
+        return HttpResponseRedirect(self.get_success_url())
+
 list_messages_received = ListMessagesReceivedView.as_view()
 list_messages_sent = ListMessagesSentView.as_view()
+list_messages_hidden = ListMessagesHidden.as_view()
+
 register_message = RegisterMessageView.as_view()
 detail_message = DetailMessageView.as_view()
+delete_message = DeleteMessageView.as_view()

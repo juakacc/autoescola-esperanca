@@ -1,4 +1,4 @@
-{% extends template_base %}
+{% extends "template_detail.html" %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -10,11 +10,7 @@
   Detalhes do agendamento #{{ object.pk }}
 {% endblock %}
 
-{% block dashboard_container %}
-  <!-- <div class="page-header">
-    <h1><strong>Assunto: </strong>{{ contact.subject }}</h1>
-  </div>-->
-
+{% block detail_container %}
   <dl class="row">
     <dt class="col-2">Processo</dt>
     <dd class="col-10"><a href="{{ object.process.get_absolute_url }}">#{{ object.process.pk }}</a></dd>
@@ -40,7 +36,6 @@
 
   <div class="row">
     <div class="col">
-      <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-dark"><i class="fas fa-reply"></i> Voltar</a>
       <a href="{% url 'diary:confirm_appointment' object.pk %}" class="btn btn-dark"><i class="fas fa-calendar-check"></i> Confirmar agendamento</a>
     </div>
   </div>

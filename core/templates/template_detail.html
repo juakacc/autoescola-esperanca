@@ -1,0 +1,15 @@
+{% extends template_base %}
+
+{% block dashboard_container %}
+  <div class="row">
+    <div class="col" align="right">
+      <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-info">
+        <i class="fas fa-reply"></i> Voltar
+      </a>
+    </div>
+  </div>
+
+  {% block detail_container %}
+
+  {% endblock  %}
+{% endblock %}

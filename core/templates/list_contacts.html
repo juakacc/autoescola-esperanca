@@ -21,29 +21,25 @@
       </tr>
     </thead>
     <tbody>
-      {% for contact in contacts %}
+      {% for message in contacts %}
         <tr>
           <td>
-            {% if not contact.visualized %}
-              <i class="far fa-envelope"></i>
-            {% else %}
-              <i class="far fa-envelope-open"></i>
-            {% endif %}
+            {% include "_display_status_message.html" %}
           </td>
           <td>
-            {% if not contact.visualized %}<strong>{% endif %}
-              {{ contact.name }}
-            {% if not contact.visualized %}</strong>{% endif %}
+            {% if not message.visualized %}<strong>{% endif %}
+              {{ message.name }}
+            {% if not message.visualized %}</strong>{% endif %}
           </td>
           <td>
-            {% if not contact.visualized %}<strong>{% endif %}
-            <a href="{% url 'accounts:message' contact.pk %}" class="">{{ contact.subject }}</a>
-            {% if not contact.visualized %}</strong>{% endif %}
+            {% if not message.visualized %}<strong>{% endif %}
+            <a href="{% url 'accounts:message' message.pk %}" class="">{{ message.subject }}</a>
+            {% if not message.visualized %}</strong>{% endif %}
           </td>
           <td>
-            {% if not contact.visualized %}<strong>{% endif %}
-            {{ contact.created }}
-            {% if not contact.visualized %}</strong>{% endif %}
+            {% if not message.visualized %}<strong>{% endif %}
+            {{ message.created }}
+            {% if not message.visualized %}</strong>{% endif %}
           </td>
         </tr>
       {% endfor %}

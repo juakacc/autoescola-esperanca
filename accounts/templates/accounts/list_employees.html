@@ -69,8 +69,8 @@
           <td>{{ v.email }}</td>
           <td>R$ {{ v.salary }}</td>
           <td>
-            <a href="{% url 'accounts:update_employee' v.pk %}"><i class="fas fa-pencil-alt"></i> Editar</a><br>
-            <a href="{% url 'accounts:delete_employee' v.pk %}"><i class="fas fa-trash-alt"></i> Remover</a>
+            <a href="{% url 'accounts:delete_employee' v.pk %}"><i class="fas fa-trash-alt"></i> Remover</a><br />
+            <a href="{% url 'inbox:register_message' v.pk %}">Enviar mensagem</a>
           </td>
         </tr>
       {% endfor %}

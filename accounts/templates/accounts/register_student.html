@@ -1,4 +1,4 @@
-{% extends template_base %}
+{% extends "template_register.html" %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -10,7 +10,7 @@
   Cadastro de aluno
 {% endblock %}
 
-{% block dashboard_container %}
+{% block register_container %}
   <form method="post">
     {% include "_form.html" %}
     <button type="submit" class="btn btn-dark">Enviar</button>
