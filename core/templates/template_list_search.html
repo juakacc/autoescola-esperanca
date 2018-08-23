@@ -1,0 +1,26 @@
+{% extends template_base %}
+{% load pagination %}
+
+{% block dashboard_container %}
+<div class="row justify-content-between"> <!-- Barra de pesquisa -->
+  {% block filters_options %}
+    <div class="col">
+      <form class="form-inline" method="get">
+        <div class="form-group">
+          <input type="text" class="form-control mx-2" name="q" placeholder="Procurar" col="2" value="{{ request.GET.q }}">
+        </div>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+  {% endblock  %}
+</div>
+
+<div class="row list">
+  <div class="col">
+    {% block table_list %}
+
+    {% endblock  %}
+    {% pagination request paginator page_obj %}
+  </div>
+</div>
+{% endblock  %}

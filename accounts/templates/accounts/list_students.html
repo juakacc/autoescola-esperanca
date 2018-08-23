@@ -1,4 +1,4 @@
-{% extends template_base %}
+{% extends "template_list_search.html" %}
 {% load pagination %}
 
 {% block breadcrumb %}
@@ -10,51 +10,37 @@
   Alunos cadastrados
 {% endblock %}
 
-{% block dashboard_container %}
-<div class="row">
-  <div class="col">
-    <form class="form-inline" method="get">
-      <div class="form-group">
-        <input type="text" class="form-control" name="q" placeholder="Procurar" col="2" value="{{ request.GET.q }}">
-      </div>
-      <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
-    </form>
-  </div>
-
+{% block filters_options %}
+  {{ block.super }}
   <div class="col" align="right">
     <a href="{% url 'accounts:register_student' %}" class="btn btn-dark"><i class="fas fa-plus"></i> Adicionar aluno</a>
   </div>
-</div>
+{% endblock  %}
 
-<div class="row">
-  <div class="col">
-    <table class="table list">
-      <thead>
+{% block table_list %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nº</th>
+        <th>Nome</th>
+        <th>Nome de usuário</th>
+        <th>E-mail</th>
+        <th>Opções</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for v in students %}
         <tr>
-          <th>Nº</th>
-          <th>Nome</th>
-          <th>Nome de usuário</th>
-          <th>E-mail</th>
-          <th>Opções</th>
+          <td>#{{ v.pk }}</td>
+          <td><a href="{% url 'accounts:detail_student' v.pk %}">{{ v.name }}</a></td>
+          <td>{{ v.username }}</td>
+          <td>{{ v.email }}</td>
+          <td>
+            <a href="{% url 'accounts:delete_student' v.pk %}"><i class="fas fa-trash-alt"></i> Remover</a><br>
+            <a href="{% url 'inbox:register_message' v.pk %}">Enviar mensagem</a>
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        {% for v in students %}
-          <tr>
-            <td>#{{ v.pk }}</td>
-            <td><a href="{% url 'accounts:detail_student' v.pk %}">{{ v.name }}</a></td>
-            <td>{{ v.username }}</td>
-            <td>{{ v.email }}</td>
-            <td>
-              <a href="{% url 'accounts:delete_student' v.pk %}"><i class="fas fa-trash-alt"></i> Remover</a><br>
-              <a href="{% url 'inbox:register_message' v.pk %}">Enviar mensagem</a>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% pagination request paginator page_obj %}
-  </div>
-</div>
-
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

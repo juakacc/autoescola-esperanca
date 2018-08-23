@@ -1,4 +1,4 @@
-{% extends "template_list_messages.html" %}
+{% extends "template_list_search.html" %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -10,7 +10,7 @@
 {% endblock  %}
 
 {% block table_list %}
-  <table class="table list">
+  <table class="table">
     <thead>
       <tr>
         <th>Destinatário</th>
@@ -30,7 +30,7 @@
           </td>
 
           <td>
-            {{ message.created }}
+            {{ message.created|timesince }} atrás
           </td>
         </tr>
       {% endfor %}

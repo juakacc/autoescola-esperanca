@@ -17,19 +17,19 @@
 
 {% block detail_container %}
   <dl class="row">
-    <dt class="col-2">De</dt>
-    <dd class="col-10">
-      {% if message.sender.pk == user.pk %}<strong>{% endif %}
+    {% if message.sender.pk != user.pk %}
+      <dt class="col-2">De</dt>
+      <dd class="col-10">
         {{ message.sender.name }}
-      {% if message.sender.pk == user.pk %}</strong>{% endif %}
-    </dd>
+      </dd>
+    {% endif %}
 
-    <dt class="col-2">Para</dt>
-    <dd class="col-10">
-      {% if message.to.pk == user.pk %}<strong>{% endif %}
+    {% if message.to.pk != user.pk %}
+      <dt class="col-2">Para</dt>
+      <dd class="col-10">
         {{ message.to.name }}
-      {% if message.to.pk == user.pk %}</strong>{% endif %}
-    </dd>
+      </dd>
+    {% endif %}
 
     <dt class="col-2">Assunto</dt>
     <dd class="col-10">{{ message.subject }}</dd>
@@ -37,21 +37,12 @@
     <dt class="col-2">Data</dt>
     <dd class="col-10">{{ message.created }}</dd>
 
-    {% if message.message %} <!-- É uma resposta? -->
-      <dt class="col-2">Resposta</dt>
-    {% else %}
-      <dt class="col-2">Mensagem</dt>
-    {% endif %}
-    <dd class="col-10">{{ message.message_text }}</dd>
-
-    {% if message.response %} <!-- Tem uma resposta? -->
-      <dt class="col-2">Resposta</dt>
-      <dd class="col-10">{{ message.response }}</dd>
-    {% endif %}
+    <dt class="col-2">Conteúdo</dt>
+    <dd class="col-10 text-justify">{{ message.message_text }}</dd>
 
     {% if message.message %} <!-- Se é uma resposta mostra a mensagem -->
       <dt class="col-2">Mensagem</dt>
-      <dd class="col-10">{{ message.message }}</dd>
+      <dd class="col-10"><a href="{% url 'inbox:detail_message' message.message.pk %}">{{ message.message.subject }}</a></dd>
     {% endif %}
   </dl>
 

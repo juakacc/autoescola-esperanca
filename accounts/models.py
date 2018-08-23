@@ -56,3 +56,16 @@ class Person(User):
         verbose_name = 'Pessoa'
         verbose_name_plural = 'Pessoas'
         ordering = ['name']
+
+class PasswordReset(models.Model):
+
+    user = models.ForeignKey(
+        Person, verbose_name='Usuário', related_name='resets', on_delete=models.CASCADE
+    )
+    key = models.CharField('Chave', max_length=500, unique=True)
+    created_at = models.DateTimeField('Criado em', auto_now_add=True)
+    confirmed = models.BooleanField('Confirmado?', default=False, blank=True)
+
+    class Meta:
+        verbose_name = 'Nova Senha'
+        verbose_name_plural = 'Novas Senhas'

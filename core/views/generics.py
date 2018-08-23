@@ -1,122 +1,47 @@
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView, TemplateView, FormView
-from django.shortcuts import get_object_or_404
+from django.views import View
 from accounts.models import Person
 from core.constantes import *
 
-class FormView(FormView):
-
+class Base():
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        person = get_object_or_404(Person, pk=self.request.user.pk)
+        try:
+            person = Person.objects.get(pk=self.request.user.pk)
 
-        if person.current_view == SECRETARY:
-            context['template_base'] = 'dashboard-secretary.html'
-        elif person.current_view == ADMIN:
-            context['template_base'] = 'dashboard-admin.html'
-        elif person.current_view == INSTRUCTOR:
-            context['template_base'] = 'dashboard-instructor.html'
-        elif person.current_view == STUDENT:
-            context['template_base'] = 'dashboard-student.html'
-        return context
-
-class TemplateView(TemplateView):
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        person = get_object_or_404(Person, pk=self.request.user.pk)
-
-        if person.current_view == SECRETARY:
-            context['template_base'] = 'dashboard-secretary.html'
-        elif person.current_view == ADMIN:
-            context['template_base'] = 'dashboard-admin.html'
-        elif person.current_view == INSTRUCTOR:
-            context['template_base'] = 'dashboard-instructor.html'
-        elif person.current_view == STUDENT:
-            context['template_base'] = 'dashboard-student.html'
-        return context
-
-class CreateView(CreateView):
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        person = get_object_or_404(Person, pk=self.request.user.pk)
-
-        if person.current_view == SECRETARY:
-            context['template_base'] = 'dashboard-secretary.html'
-        elif person.current_view == ADMIN:
-            context['template_base'] = 'dashboard-admin.html'
-        elif person.current_view == INSTRUCTOR:
-            context['template_base'] = 'dashboard-instructor.html'
-        elif person.current_view == STUDENT:
-            context['template_base'] = 'dashboard-student.html'
+            if person.current_view == SECRETARY:
+                context['template_base'] = 'dashboard-secretary.html'
+            elif person.current_view == ADMIN:
+                context['template_base'] = 'dashboard-admin.html'
+            elif person.current_view == INSTRUCTOR:
+                context['template_base'] = 'dashboard-instructor.html'
+            elif person.current_view == STUDENT:
+                context['template_base'] = 'dashboard-student.html'
+        except:
+            context['template_base'] = 'base.html'
+            
         return context
 
     def get_success_url(self):
         return self.success_url or self.request.META.get('HTTP_REFERER')
 
-class UpdateView(UpdateView):
+class FormView(Base, FormView):
+    pass
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        person = get_object_or_404(Person, pk=self.request.user.pk)
+class TemplateView(Base, TemplateView):
+    pass
 
-        if person.current_view == SECRETARY:
-            context['template_base'] = 'dashboard-secretary.html'
-        elif person.current_view == ADMIN:
-            context['template_base'] = 'dashboard-admin.html'
-        elif person.current_view == INSTRUCTOR:
-            context['template_base'] = 'dashboard-instructor.html'
-        elif person.current_view == STUDENT:
-            context['template_base'] = 'dashboard-student.html'
-        return context
+class CreateView(Base, CreateView):
+    pass
 
-class ListView(ListView):
+class UpdateView(Base, UpdateView):
+    pass
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        person = get_object_or_404(Person, pk=self.request.user.pk)
+class ListView(Base, ListView):
+    pass
 
-        if person.current_view == SECRETARY:
-            context['template_base'] = 'dashboard-secretary.html'
-        elif person.current_view == ADMIN:
-            context['template_base'] = 'dashboard-admin.html'
-        elif person.current_view == INSTRUCTOR:
-            context['template_base'] = 'dashboard-instructor.html'
-        elif person.current_view == STUDENT:
-            context['template_base'] = 'dashboard-student.html'
-        return context
+class DeleteView(Base, DeleteView):
+    pass
 
-class DeleteView(DeleteView):
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        person = get_object_or_404(Person, pk=self.request.user.pk)
-
-        if person.current_view == SECRETARY:
-            context['template_base'] = 'dashboard-secretary.html'
-        elif person.current_view == ADMIN:
-            context['template_base'] = 'dashboard-admin.html'
-        elif person.current_view == INSTRUCTOR:
-            context['template_base'] = 'dashboard-instructor.html'
-        elif person.current_view == STUDENT:
-            context['template_base'] = 'dashboard-student.html'
-        return context
-
-    def get_success_url(self):
-        return self.success_url or self.request.META.get('HTTP_REFERER')
-
-class DetailView(DetailView):
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        person = get_object_or_404(Person, pk=self.request.user.pk)
-
-        if person.current_view == SECRETARY:
-            context['template_base'] = 'dashboard-secretary.html'
-        elif person.current_view == ADMIN:
-            context['template_base'] = 'dashboard-admin.html'
-        elif person.current_view == INSTRUCTOR:
-            context['template_base'] = 'dashboard-instructor.html'
-        elif person.current_view == STUDENT:
-            context['template_base'] = 'dashboard-student.html'
-        return context
+class DetailView(Base, DetailView):
+    pass

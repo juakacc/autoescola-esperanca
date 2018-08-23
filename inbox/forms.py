@@ -13,5 +13,5 @@ class RegisterResponseForm(forms.ModelForm):
         model = Message
         fields = ['message_text']
         labels = {
-            'message': 'Adicione uma resposta'
+            'message_text': 'Adicione uma resposta'
         }

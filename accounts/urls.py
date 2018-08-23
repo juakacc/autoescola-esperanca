@@ -28,6 +28,8 @@ urlpatterns = [
 
     path('alterar-dados/', views.update_data, name='update'),
     path('alterar-senha/', views.update_password, name='update_password'),
+    path('recuperar-senha/', views.reset_password, name='reset_password'),
+    path('definir-senha/<str:key>', views.password_reset_confirm, name='password_reset_confirm'),
 
     path('contatos/', core_views.messages, name='messages'),
     path('contato/<int:pk>', core_views.message, name='message'),

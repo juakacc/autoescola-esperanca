@@ -7,6 +7,7 @@ class User(AbstractUser):
     pass
     class Meta:
         verbose_name = 'Usuário'
+        unique_together = ('email',)
 
 class Vehicle(models.Model):
     STATE_CHOICES = (

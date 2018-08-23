@@ -1,4 +1,4 @@
-{% extends "template_list_messages.html" %}
+{% extends "template_list_search.html" %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -10,7 +10,7 @@
 {% endblock  %}
 
 {% block table_list %}
-  <table class="table list">
+  <table class="table">
     <thead>
       <tr>
         <th></th>
@@ -41,12 +41,12 @@
 
           <td>
             {% if not message.visualized %}<strong>{% endif %}
-            {{ message.created }}
+            {{ message.created|timesince }} atrás
             {% if not message.visualized %}</strong>{% endif %}
           </td>
 
           <td>
-            <a href="{% url 'inbox:delete_message' message.pk %}">Ocultar</a>
+            <a href="{% url 'inbox:delete_message' message.pk %}"><i class="fas fa-minus-square"></i> Ocultar</a>
           </td>
         </tr>
       {% endfor %}

@@ -1,4 +1,4 @@
-{% extends template_base %}
+{% extends "template_list_search.html" %}
 {% load pagination %}
 
 {% block breadcrumb %}
@@ -10,8 +10,7 @@
   Listagem de agendamentos
 {% endblock %}
 
-{% block dashboard_container %}
-<div class="row justify-content-between">
+{% block filters_options %}
   <div class="col">
     {% block appointments_filters %}
       <a href="{% url 'diary:list_diaries' 'tudo' %}" class="btn btn-dark"><i class="fas fa-align-justify"></i> Tudo</a>
@@ -45,51 +44,46 @@
       <a href="{% url 'diary:register_appointment' %}" class="btn btn-dark"><i class="fas fa-calendar-plus"></i> Agendar</a>
     {% endif %}
   </div>
-</div>
+{% endblock  %}
 
-<div class="row">
-  <div class="col">
-    <table class="table list">
+{% block table_list %}
+  <table class="table">
+    <tr>
+      <th>Nº</th>
+      <th>Proc</th>
+      <th><i class="fas fa-desktop"></i> / <i class="fas fa-shuttle-van"></i></th>
+      <th>Data</th>
+      <th>Aluno</th>
+      <th>Instrutor</th>
+      <th>Início</th>
+      <th>Fim</th>
+      <th>Opções</th>
+    </tr>
+    {% block appointments_list %}
+      {% for a in appointments %}
       <tr>
-        <th>Nº</th>
-        <th>Proc</th>
-        <th><i class="fas fa-desktop"></i> / <i class="fas fa-shuttle-van"></i></th>
-        <th>Data</th>
-        <th>Aluno</th>
-        <th>Instrutor</th>
-        <th>Início</th>
-        <th>Fim</th>
-        <th>Opções</th>
+        <td><a href="{% url 'diary:detail_appointment' a.pk %}">{{ a.pk }}</a></td>
+        <td><a href="{% url 'process:detail_process' a.process.pk %}">#{{ a.process.pk }}</a></td>
+        <td>
+          {% if a.simulator %}
+            <i class="fas fa-desktop"></i>
+          {% else %}
+            <i class="fas fa-shuttle-van"></i>
+          {% endif %}
+        </td>
+        <td>{{ a.day }}</td>
+        <td>{{ a.process.student }}</td>
+        <td>{{ a.instructor }}</td>
+        <td>{{ a.begin_time }}</td>
+        <td>{{ a.end_time }}</td>
+        <td>
+          <a href="{% url 'diary:remove_appointment' a.pk %}"><i class="fas fa-trash-alt"></i></a>
+          <a href="{% url 'diary:confirm_appointment' a.pk %}"><i class="fas fa-calendar-check"></i></a>
+        </td>
+        <th></th>
       </tr>
-      {% block appointments_list %}
-        {% for a in appointments %}
-        <tr>
-          <td><a href="{% url 'diary:detail_appointment' a.pk %}">{{ a.pk }}</a></td>
-          <td><a href="{% url 'process:detail_process' a.process.pk %}">#{{ a.process.pk }}</a></td>
-          <td>
-            {% if a.simulator %}
-              <i class="fas fa-desktop"></i>
-            {% else %}
-              <i class="fas fa-shuttle-van"></i>
-            {% endif %}
-          </td>
-          <td>{{ a.day }}</td>
-          <td>{{ a.process.student }}</td>
-          <td>{{ a.instructor }}</td>
-          <td>{{ a.begin_time }}</td>
-          <td>{{ a.end_time }}</td>
-          <td>
-            <a href="{% url 'diary:remove_appointment' a.pk %}"><i class="fas fa-trash-alt"></i></a>
-            <a href="{% url 'diary:confirm_appointment' a.pk %}"><i class="fas fa-calendar-check"></i></a>
-          </td>
-          <th></th>
-        </tr>
-        {% endfor %}
-      {% endblock  %}
-    </table>
-    <i class="fas fa-desktop"></i> Simulador / <i class="fas fa-shuttle-van"></i> Veículo
-    {% pagination request paginator page_obj %}
-  </div>
-</div>
-
+      {% endfor %}
+    {% endblock  %}
+  </table>
+  <i class="fas fa-desktop"></i> Simulador / <i class="fas fa-shuttle-van"></i> Veículo
 {% endblock %}

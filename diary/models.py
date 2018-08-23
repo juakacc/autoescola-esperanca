@@ -22,6 +22,9 @@ class Appointment(models.Model):
     def __str__(self):
         return 'Agendamento do processo #{}'.format(self.process.pk)
 
+    def get_slug(self):
+        return 'Agendamento #{}'.format(self.pk)
+
     class Meta:
         verbose_name = 'Agendamento'
         verbose_name_plural = 'Agendamentos'

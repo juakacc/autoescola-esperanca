@@ -18,7 +18,7 @@ class QuemSomosView(TemplateView):
     template_name = 'quem_somos.html'
 
 class localizacaoView(TemplateView):
-    template_name = 'localizacao.html'
+    template_name = 'templates_index/localizacao.html'
 
 index = IndexView.as_view()
 contact = ContactView.as_view()

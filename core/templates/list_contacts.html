@@ -1,4 +1,4 @@
-{% extends template_base %}
+{% extends "template_list_search.html" %}
 {% load pagination %}
 
 {% block breadcrumb %}
@@ -10,7 +10,7 @@
   Contatos recebidos
 {% endblock %}
 
-{% block dashboard_container %}
+{% block table_list %}
   <table class="table table-bordered table-hover">
     <thead class="thead-light">
       <tr>
@@ -38,12 +38,11 @@
           </td>
           <td>
             {% if not message.visualized %}<strong>{% endif %}
-            {{ message.created }}
+            {{ message.created|timesince }} atrás
             {% if not message.visualized %}</strong>{% endif %}
           </td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
-  {% pagination request paginator page_obj %}
 {% endblock %}

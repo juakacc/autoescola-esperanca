@@ -36,6 +36,7 @@ INSTALLED_APPS = [
 
     'rolepermissions',
     'widget_tweaks',
+    'watson',
 
     'accounts',
     'core',
@@ -129,6 +130,15 @@ LOGIN_REDIRECT_URL = 'core:index'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 STATIC_URL = '/static/'
+
+# Envio de e-mails
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'email@gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'email@gmail.com'
+EMAIL_HOST_PASSWORD = 'senha'
+EMAIL_PORT = 587
 
 # Personalisando o usuário django
 AUTH_USER_MODEL = 'core.User'

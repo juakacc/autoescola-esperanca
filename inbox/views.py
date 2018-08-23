@@ -8,7 +8,7 @@ from django.contrib import messages as messages_django
 from django.core.exceptions import PermissionDenied
 
 from core.views.generics import ListView, CreateView, DetailView, DeleteView
-
+from watson import search as watson
 from rolepermissions.mixins import HasPermissionsMixin
 
 class ListMessagesReceivedView(HasPermissionsMixin, ListView):
@@ -18,7 +18,11 @@ class ListMessagesReceivedView(HasPermissionsMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Message.objects.filter(to__pk=self.request.user.pk, not_view=False)
+        query =  Message.objects.filter(to__pk=self.request.user.pk, not_view=False)
+        q = self.request.GET.get('q', '')
+        if q:
+            query = watson.filter(query, q)
+        return query
 
 class ListMessagesSentView(HasPermissionsMixin, ListView):
     required_permission = 'student'
@@ -27,7 +31,11 @@ class ListMessagesSentView(HasPermissionsMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Message.objects.filter(sender__pk=self.request.user.pk)
+        query = Message.objects.filter(sender__pk=self.request.user.pk)
+        q = self.request.GET.get('q', '')
+        if q:
+            query = watson.filter(query, q)
+        return query
 
 class ListMessagesHidden(HasPermissionsMixin, ListView):
     required_permission = 'student'
@@ -36,7 +44,11 @@ class ListMessagesHidden(HasPermissionsMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Message.objects.filter(to__pk=self.request.user.pk, not_view=True)
+        query = Message.objects.filter(to__pk=self.request.user.pk, not_view=True)
+        q = self.request.GET.get('q', '')
+        if q:
+            query = watson.filter(query, q)
+        return query
 
 class DetailMessageView(HasPermissionsMixin, CreateView):
     ''' View para detalhar uma mensagem enviada/recebida, no último caso
@@ -45,6 +57,13 @@ class DetailMessageView(HasPermissionsMixin, CreateView):
     template_name = 'inbox/detail_message.html'
     model = Message
     form_class = RegisterResponseForm
+
+    def get_initial(self):
+        message = Message.objects.get(pk=self.kwargs['message_pk'])
+
+        return {
+            'message_text' : message.response
+        }
 
     def form_valid(self, form):
         response = form.save(commit=False)
@@ -55,6 +74,7 @@ class DetailMessageView(HasPermissionsMixin, CreateView):
         response.save()
         message.response = response
         message.save()
+        messages_django.success(self.request, 'Resposta enviada com sucesso')
         return HttpResponseRedirect(self.get_success_url())
 
     def get_context_data(self, *args, **kwargs):

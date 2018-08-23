@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import Person
+from watson import search as watson
 
 class Message(models.Model):
 
@@ -20,3 +21,5 @@ class Message(models.Model):
         verbose_name = 'Mensagem'
         verbose_name_plural = 'Mensagens'
         ordering = ['-created']
+
+watson.register(Message)

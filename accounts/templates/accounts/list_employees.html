@@ -1,4 +1,4 @@
-{% extends template_base %}
+{% extends "template_list_search.html" %}
 {% load pagination %}
 
 {% block breadcrumb %}
@@ -10,38 +10,30 @@
   Listagem de funcionários
 {% endblock %}
 
-{% block dashboard_container %}
-<div class="row justify-content-between">
-    <div class="col">
-      <a href="{% url 'accounts:list_employees' %}" class="btn btn-dark"><i class="fas fa-align-justify"></i> Tudo</a>
-      <div class="btn-group">
-        <a href="" class="btn btn-dark dropdown-toggle" data-toggle="dropdown">
-          <i class="fas fa-user-friends"></i> Tipo
-        </a>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a href="{% url 'accounts:list_employees' 'secretario' %}" class="dropdown-item">Secretários</a>
-          <a href="{% url 'accounts:list_employees' 'instrutor' %}" class="dropdown-item">Instrutores</a>
-        </div>
+{% block filters_options %}
+  {{ block.super }}
+  <div class="col">
+    <a href="{% url 'accounts:list_employees' %}" class="btn btn-dark"><i class="fas fa-align-justify"></i> Tudo</a>
+    <div class="btn-group">
+      <a href="" class="btn btn-dark dropdown-toggle" data-toggle="dropdown">
+        <i class="fas fa-user-friends"></i> Tipo
+      </a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a href="{% url 'accounts:list_employees' 'secretario' %}" class="dropdown-item">Secretários</a>
+        <a href="{% url 'accounts:list_employees' 'instrutor' %}" class="dropdown-item">Instrutores</a>
       </div>
     </div>
+  </div>
 
-    <div class="col">
-      <form class="form-inline" method="get">
-        <div class="form-group">
-          <input type="text" class="form-control" name="q" placeholder="Procurar" col="2" value="{{ request.GET.q }}">
-        </div>
-        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
-      </form>
-    </div>
+  <div class="col" align="right">
+    <a href="{% url 'accounts:register_employee' %}" class="btn btn-dark">
+      <i class="fas fa-plus"></i> Adicionar funcionário
+    </a>
+  </div>
+{% endblock  %}
 
-    <div class="col" align="right">
-      <a href="{% url 'accounts:register_employee' %}" class="btn btn-dark">
-        <i class="fas fa-plus"></i> Adicionar funcionário
-      </a>
-    </div>
-</div>
-
-  <table class="table list">
+{% block table_list %}
+  <table class="table">
     <thead>
       <tr>
         <th>Nº</th>
@@ -76,5 +68,4 @@
       {% endfor %}
     </tbody>
   </table>
-  {% pagination request paginator page_obj %}
 {% endblock %}

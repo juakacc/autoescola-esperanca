@@ -24,13 +24,11 @@
 
 <div class="row">
   <div class="col">
-    <table class="table list">
+    <table class="table">
       <thead>
         <tr>
           <th>Tipo</th>
           <th>Slug</th>
-          <th>Modelo</th>
-          <th>Marca</th>
           <th>Placa</th>
           <th>Situação</th>
           <th>Foto</th>
@@ -50,8 +48,6 @@
             <td>
               <a href="{% url 'accounts:detail_vehicle' v.slug %}">{{ v.slug }}</a>
             </td>
-            <td>{{ v.model }}</td>
-            <td>{{ v.fabricator }}</td>
             <td>{{ v.plate }}</td>
             <td>
               <span class="badge badge-{% if v.state == 'Em conserto' %}danger{% else %}success{% endif %}">

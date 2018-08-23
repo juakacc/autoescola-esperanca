@@ -1,4 +1,4 @@
-{% extends template_base %}
+{% extends "template_list_search.html" %}
 {% load pagination %}
 {% load get_status_class_css %}
 
@@ -11,57 +11,42 @@
   Listagem de processos
 {% endblock %}
 
-{% block dashboard_container %}
-<div class="row">
-  <div class="col">
-    <form class="form-inline" method="get">
-      <div class="form-group">
-        <input type="text" class="form-control" name="q" placeholder="Aluno" col="2" value="{{ request.GET.q }}">
-      </div>
-      <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
-    </form>
-  </div>
-
+{% block filters_options %}
   <div class="col" align="right">
     <a href="{% url 'process:register_process' %}" class="btn btn-dark"><i class="fas fa-plus"></i> Adicionar processo</a>
   </div>
-</div>
+{% endblock  %}
 
-<div class="row">
-  <div class="col">
-    <table class="table list">
-      <thead>
+{% block table_list %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nº</th>
+        <th>Aluno</th>
+        <th>Status</th>
+        <th>Tipo</th>
+        <th>Início</th>
+        <th>Fim</th>
+        <th>Opções</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for v in processes %}
         <tr>
-          <th>Nº</th>
-          <th>Aluno</th>
-          <th>Status</th>
-          <th>Tipo</th>
-          <th>Início</th>
-          <th>Fim</th>
-          <th>Opções</th>
+          <td>#{{ v.pk }}</td>
+          <td>{{ v.student }}</td>
+          <td><span class="badge badge-{{ v.status|get_class_css }}">{{ v.get_status_display }}</span></td>
+          <td>{{ v.get_type_cnh_display }}</td>
+          <td>{{ v.begin_date }}</td>
+          <td>{{ v.end_date }}</td>
+          <td>
+            <a href="{% url 'process:detail_process' v.pk %}">
+              <i class="fas fa-info-circle"></i> Detalhes</a><br>
+            <a href="{% url 'process:delete_process' v.pk %}">
+              <i class="fas fa-trash-alt"></i> Remover</a>
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        {% for v in processes %}
-          <tr>
-            <td>#{{ v.pk }}</td>
-            <td>{{ v.student }}</td>
-            <td><span class="badge badge-{{ v.status|get_class_css }}">{{ v.get_status_display }}</span></td>
-            <td>{{ v.get_type_cnh_display }}</td>
-            <td>{{ v.begin_date }}</td>
-            <td>{{ v.end_date }}</td>
-            <td>
-              <a href="{% url 'process:detail_process' v.pk %}">
-                <i class="fas fa-info-circle"></i> Detalhes</a><br>
-              <a href="{% url 'process:delete_process' v.pk %}">
-                <i class="fas fa-trash-alt"></i> Remover</a>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% pagination request paginator page_obj %}
-  </div>
-</div>
-
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
