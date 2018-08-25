@@ -70,7 +70,7 @@ class PasswordResetConfirmView(SuccessMessageMixin, FormView):
         if reset.confirmed: # Esse reset já foi utilizado
             messages.warning(self.request, 'Por questões de segurança esse pedido expirou, solicite-o novamente!')
             return redirect('core:login')
-        return super().dispatch(*args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -82,7 +82,7 @@ class PasswordResetConfirmView(SuccessMessageMixin, FormView):
     def form_valid(self, form):
         form.save()
         reset = get_object_or_404(PasswordReset, key=self.kwargs.get('key'))
-        reset.confirmed = True
+        reset.confirmed = True # Torna o reset inutilizável
         reset.save()
         return super().form_valid(form)
 

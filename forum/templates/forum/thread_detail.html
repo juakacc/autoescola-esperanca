@@ -1,0 +1,55 @@
+{% extends template_base %}
+
+{% block title %}
+  Fórum | {{ block.super }}
+{% endblock  %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item">
+    <a href="{% url 'forum:index' %}">Fórum</a>
+  </li>
+  <li class="breadcrumb-item">{{ object }}</li>
+{% endblock  %}
+
+{% block container %}
+<div class="row">
+  <div class="col">
+    <h2>{{ object }}</h2>
+    {{ object.body|linebreaks }}
+    <h5>Criado por {{ object.author }}</h5>
+    <p>Atualizado a {{ object.created_at|timesince }} atrás</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <h4>Respostas
+      {% if user.is_authenticated %}
+        <a href="#add_comment" class="btn btn-primary">Responder</a>
+      {% endif %}
+    </h4>
+  </div>
+</div>
+
+{% for reply in object.replies.all %}
+<div class="row">
+  <div class="col">
+    <strong>{{ reply.author }}</strong> disse à {{ reply.created_at|timesince }} atrás
+    {{ reply.reply|linebreaks }}
+  </div>
+</div>
+{% endfor %}
+
+<!-- Apenas usuários autenticados podem responder tópicos -->
+{% if user.is_authenticated %}
+  <div class="row">
+    <div class="col">
+      <form method="post" id="add_comment">
+        {% include "_form.html" %}
+        <button type="submit" class="btn btn-dark">Enviar</button>
+      </form>
+    </div>
+  </div>
+{% endif %}
+
+{% endblock  %}

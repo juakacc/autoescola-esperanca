@@ -7,5 +7,6 @@ urlpatterns = [
     path('processos/', include('process.urls')),
     path('mensagens/', include('inbox.urls')),
     path('agenda/', include('diary.urls')),
+    path('forum/', include('forum.urls')),
     path('admin/', admin.site.urls),
 ]

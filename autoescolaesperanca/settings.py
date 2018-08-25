@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'diary',
     'inbox',
     'process',
+    'forum'
 ]
 
 MIDDLEWARE = [
