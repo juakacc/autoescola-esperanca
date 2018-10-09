@@ -39,7 +39,7 @@ class ListMessagesSentView(HasPermissionsMixin, ListView):
 
 class ListMessagesHidden(HasPermissionsMixin, ListView):
     required_permission = 'student'
-    template_name = 'inbox/list_messages_received.html'
+    template_name = 'inbox/list_messages_hidden.html'
     context_object_name = 'msgs'
     paginate_by = 10
 

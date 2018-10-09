@@ -1,0 +1,15 @@
+{% extends "template_confirm_delete.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item"><a href="{% url 'news:list_news_edit' %}">Notícias</a></li>
+  <li class="breadcrumb-item">Remoção de notícia</li>
+{% endblock  %}
+
+{% block dashboard_title %}
+  Remoção de notícia
+{% endblock %}
+
+{% block delete_message %}
+  <p>Deseja realmente remover a notícia <strong>"{{ object.title }}"</strong>?</p>
+{% endblock  %}

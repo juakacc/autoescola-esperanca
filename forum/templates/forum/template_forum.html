@@ -1,0 +1,30 @@
+{% extends template_base %}
+{% load pagination %}
+
+{% block title %}
+  Fórum | {{ block.super }}
+{% endblock  %}
+
+{% block container %}
+  <div class="row">
+    <div class="col-3"> <!-- Menu do fórum -->
+      <li class="list-group-item list-group-item-dark">Tópicos do Fórum</li>
+
+      <a class="list-group-item list-group-item-action" href="{% url 'forum:index' %}?order=recente">
+        <i class="fas fa-comments"></i> Mais recentes
+      </a>
+      <a class="list-group-item list-group-item-action" href="{% url 'forum:index' %}?order=visualizacoes">
+        <i class="fas fa-comments"></i> Mais visualizados
+      </a>
+      <a class="list-group-item list-group-item-action" href="{% url 'forum:index' %}?order=comentarios">
+        <i class="fas fa-comments"></i> Mais comentados
+      </a>
+    </div> <!-- Fim do Menu do fórum -->
+
+    <div class="col"> <!-- Painel de listagem -->
+      {% block painel_forum %}
+
+      {% endblock  %}
+    </div> <!-- Fim da listgem -->
+  </div>
+{% endblock  %}

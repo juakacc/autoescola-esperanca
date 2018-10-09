@@ -37,13 +37,15 @@ INSTALLED_APPS = [
     'rolepermissions',
     'widget_tweaks',
     'watson',
+    'easy_thumbnails',
 
     'accounts',
     'core',
     'diary',
     'inbox',
     'process',
-    'forum'
+    'forum',
+    'news'
 ]
 
 MIDDLEWARE = [
@@ -155,4 +157,11 @@ MESSAGE_TAGS = {
     msg_constants.WARNING: 'warning',
     msg_constants.SUCCESS: 'success',
     msg_constants.ERROR: 'danger',
+}
+
+#THUMBNAILS
+THUMBNAIL_ALIASES = {
+    '': {
+        'new_image': {'size': (200, 160), 'crop': True},
+    },
 }

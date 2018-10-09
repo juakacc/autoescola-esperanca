@@ -1,0 +1,55 @@
+{% extends "template_list_search.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item">Mensagens ocultas</li>
+{% endblock  %}
+
+{% block dashboard_title %}
+  Mensagens ocultas
+{% endblock  %}
+
+{% block table_list %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Remetente</th>
+        <th>Assunto</th>
+        <th>Data do recebimento</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for message in msgs %}
+        <tr>
+          <td>
+            {% include "_display_status_message.html" %}
+          </td>
+
+          <td>
+            {% if not message.visualized %}<strong>{% endif %}
+            {{ message.sender }}
+            {% if not message.visualized %}</strong>{% endif %}
+          </td>
+
+          <td>
+            {% if not message.visualized %}<strong>{% endif %}
+            <a href="{% url 'inbox:detail_message' message.pk %}">{{ message.subject }}</a>
+            {% if not message.visualized %}</strong>{% endif %}
+          </td>
+
+          <td>
+            {% if not message.visualized %}<strong>{% endif %}
+            {{ message.created|timesince }} atrás
+            {% if not message.visualized %}</strong>{% endif %}
+          </td>
+
+          <td>
+            <a href="{% url 'inbox:delete_message' message.pk %}"><i class="fas fa-minus-square"></i> Ocultar</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock  %}

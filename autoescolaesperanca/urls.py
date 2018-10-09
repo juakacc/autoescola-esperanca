@@ -8,5 +8,6 @@ urlpatterns = [
     path('mensagens/', include('inbox.urls')),
     path('agenda/', include('diary.urls')),
     path('forum/', include('forum.urls')),
+    path('noticias/', include('news.urls')),
     path('admin/', admin.site.urls),
 ]

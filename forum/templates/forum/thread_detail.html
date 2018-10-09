@@ -1,55 +1,74 @@
-{% extends template_base %}
+{% extends "forum/template_forum.html" %}
 
 {% block title %}
   Fórum | {{ block.super }}
 {% endblock  %}
 
 {% block breadcrumb %}
+  {{ block.super }}
   <li class="breadcrumb-item">
     <a href="{% url 'forum:index' %}">Fórum</a>
   </li>
   <li class="breadcrumb-item">{{ object }}</li>
 {% endblock  %}
 
-{% block container %}
-<div class="row">
-  <div class="col">
-    <h2>{{ object }}</h2>
-    {{ object.body|linebreaks }}
-    <h5>Criado por {{ object.author }}</h5>
-    <p>Atualizado a {{ object.created_at|timesince }} atrás</p>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col">
-    <h4>Respostas
-      {% if user.is_authenticated %}
-        <a href="#add_comment" class="btn btn-primary">Responder</a>
-      {% endif %}
-    </h4>
-  </div>
-</div>
-
-{% for reply in object.replies.all %}
-<div class="row">
-  <div class="col">
-    <strong>{{ reply.author }}</strong> disse à {{ reply.created_at|timesince }} atrás
-    {{ reply.reply|linebreaks }}
-  </div>
-</div>
-{% endfor %}
-
-<!-- Apenas usuários autenticados podem responder tópicos -->
-{% if user.is_authenticated %}
+{% block painel_forum %}
   <div class="row">
     <div class="col">
-      <form method="post" id="add_comment">
-        {% include "_form.html" %}
-        <button type="submit" class="btn btn-dark">Enviar</button>
-      </form>
+      <div class="card mb-2">
+        <div class="card-header">
+          <h4 class="card-title">{{ object }}</h4>
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            {{ object.body|linebreaks }}
+          </p>
+        </div>
+        <div class="card-footer text-muted">
+          <p>Criado por {{ object.author }}, atualizado a {{ object.created_at|timesince }} atrás</p>
+        </div>
+      </div>
     </div>
   </div>
-{% endif %}
 
+  <div class="row mb-2 mt-1">
+    <div class="col-6" align='right'>
+      <h5>Respostas</h5>
+    </div>
+    {% if user.is_authenticated %}
+      <div class="col" align='right'>
+        <a href="#add_comment" class="btn btn-primary">Responder</a>
+      </div>
+    {% endif %}
+  </div>
+
+  {% for reply in object.replies.all %}
+    <div class="row justify-content-end">
+      <div class="col-11">
+        <div class="card mb-2">
+          <div class="card-header">
+            <p class="card-title"><strong>{{ reply.author }}</strong> disse à {{ reply.created_at|timesince }} atrás</p>
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              {{ reply.reply|linebreaks }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+  <!-- Apenas usuários autenticados podem responder tópicos -->
+  {% if user.is_authenticated %}
+    <div class="row">
+      <div class="col">
+        <form method="post" id="add_comment">
+          {% include "_form.html" %}
+          <button type="submit" class="btn btn-dark">Enviar</button>
+        </form>
+      </div>
+    </div>
+  {% endif %}
+</div>
 {% endblock  %}

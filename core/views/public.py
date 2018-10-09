@@ -3,9 +3,12 @@ from django.views.generic import CreateView, TemplateView
 from django.urls import reverse_lazy
 
 from core.models import Contact
+from core.views.generics import ListView
+from news.models import New
 
-class IndexView(TemplateView):
-    template_name = 'base.html'
+class IndexView(ListView):
+    template_name = 'templates_index/index.html'
+    model = New
 
 class ContactView(SuccessMessageMixin, CreateView):
     template_name = 'contact.html'

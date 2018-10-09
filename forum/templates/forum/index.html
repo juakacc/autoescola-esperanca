@@ -1,4 +1,4 @@
-{% extends template_base %}
+{% extends "forum/template_forum.html" %}
 {% load pagination %}
 
 {% block title %}
@@ -6,41 +6,34 @@
 {% endblock  %}
 
 {% block breadcrumb %}
+  {{ block.super }}
   <li class="breadcrumb-item">Fórum</li>
 {% endblock  %}
 
-{% block container %}
-  <div class="row">
-    <div class="col"> <!-- Filtros -->
-
-    </div> <!-- Fim de Filtros -->
-
-    <div class="col"> <!-- Listagem -->
-      {% for thread in object_list %}
-        <div class="row list">
-          <div class="col">
-            <!-- Tópico -->
-            <div class="card text-center">
-              <div class="card-header">
-                <h4 class="card-title"><a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a></h4>
-              </div>
-              <div class="card-body">
-                <p class="card-text">
-        					Criado por {{ thread.author }} | {{ thread.answers }}
-                  resposta{{ thread.answers|pluralize }} | {{ thread.views }}
-                  Visualizaç{{ thread.views|pluralize:"ão,ões" }}
-        				</p>
-              </div>
-              <div class="card-footer text-muted">
-                <a href="{{ thread.get_absolute_url }}">
-                  Atualizado a {{ thread.modified_at|timesince }} atrás
-                </a>
-              </div>
-            </div>
+{% block painel_forum %}
+  {% for thread in object_list %}
+    <div class="row mb-2">
+      <div class="col">
+        <!-- Tópico -->
+        <div class="card text-center">
+          <div class="card-header">
+            <h4 class="card-title"><a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a></h4>
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              Criado por {{ thread.author }} | {{ thread.answers }}
+              resposta{{ thread.answers|pluralize }} | {{ thread.views }}
+              Visualizaç{{ thread.views|pluralize:"ão,ões" }}
+            </p>
+          </div>
+          <div class="card-footer text-muted">
+            <a href="{{ thread.get_absolute_url }}">
+              Atualizado a {{ thread.modified_at|timesince }} atrás
+            </a>
           </div>
         </div>
-      {% endfor %}
-      {% pagination request paginator page_obj %}
-    </div> <!-- Fim da listgem -->
-  </div>
+      </div>
+    </div>
+  {% endfor %}
+  {% pagination request paginator page_obj %}
 {% endblock  %}

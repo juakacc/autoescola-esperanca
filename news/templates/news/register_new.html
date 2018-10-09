@@ -1,0 +1,45 @@
+{% extends "template_register.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item"><a href="{% url 'news:list_news_edit' %}">Notícias</a></li>
+  <li class="breadcrumb-item">Cadastro de notícia</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  Cadastro de notícia
+{% endblock %}
+
+{% block register_container %}
+  <form method="post">
+    {% include "_form.html" %}
+    <button type="submit" class="btn btn-dark">Enviar</button>
+  </form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  var slug = function(str) {
+    str = str.replace(/^\s+|\s+$/g, ''); // trim
+    str = str.toLowerCase();
+
+    // remove accents, swap ñ for n, etc
+    var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
+    var to   = "aaaaaeeeeeiiiiooooouuuunc------";
+    for (var i=0, l=from.length ; i<l ; i++) {
+      str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+    }
+
+    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+      .replace(/\s+/g, '-') // collapse whitespace and replace by -
+      .replace(/-+/g, '-'); // collapse dashes
+    return str;
+  };
+
+  $(document).ready(function() {
+    $("#id_title").keyup(function() {
+      $("#id_slug").val(slug($("#id_title").val()));
+    });
+  });
+</script>
+{% endblock  %}
