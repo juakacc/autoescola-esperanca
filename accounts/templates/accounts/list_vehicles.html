@@ -31,7 +31,6 @@
           <th>Slug</th>
           <th>Placa</th>
           <th>Situação</th>
-          <th>Foto</th>
           <th>Opções</th>
         </tr>
       </thead>
@@ -53,7 +52,7 @@
               <span class="badge badge-{% if v.state == 'Em conserto' %}danger{% else %}success{% endif %}">
               {{ v.get_state_display }}</span>
             </td>
-            <td>...</td>
+            
             <td>
               <a href="{% url 'accounts:delete_vehicle' v.pk %}"><i class="fas fa-trash-alt"></i> Remover</a>
             </td>

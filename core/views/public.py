@@ -7,6 +7,7 @@ from core.views.generics import ListView
 from news.models import New
 
 class IndexView(ListView):
+    paginate_by = 9
     template_name = 'templates_index/index.html'
     model = New
 
@@ -18,7 +19,7 @@ class ContactView(SuccessMessageMixin, CreateView):
     success_message = 'Obrigado pelo contato'
 
 class QuemSomosView(TemplateView):
-    template_name = 'quem_somos.html'
+    template_name = 'templates_index/quem_somos.html'
 
 class localizacaoView(TemplateView):
     template_name = 'templates_index/localizacao.html'

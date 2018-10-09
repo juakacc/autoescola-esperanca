@@ -162,6 +162,6 @@ MESSAGE_TAGS = {
 #THUMBNAILS
 THUMBNAIL_ALIASES = {
     '': {
-        'new_image': {'size': (200, 160), 'crop': True},
+        'new_image': {'size': (100, 100), 'crop': True},
     },
 }

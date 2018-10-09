@@ -16,11 +16,11 @@ Listagem de notícias
 
 {% block dashboard_container %}
   <div class="row">
-    <div class="col">
+    <div class="col mb-2" align="right">
       <a href="{% url 'news:register_new' %}" class="btn btn-dark"><i class="fas fa-plus-circle"></i> Notícia</a>
     </div>
   </div>
-  
+
   <div class="row">
     {% for new in new_list %}
       {% include "news/_new_edit.html" %}

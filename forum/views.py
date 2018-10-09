@@ -12,6 +12,18 @@ class ForumView(ListView):
     template_name = 'forum/index.html'
     model = Thread
 
+    def get_queryset(self):
+        queryset = Thread.objects.all()
+        order = self.request.GET.get('order', '')
+
+        if order == 'recente':
+            queryset = queryset.order_by('-created_at')
+        elif order == 'visualizacoes':
+            queryset = queryset.order_by('-views')
+        elif order == 'comentarios':
+            queryset = queryset.order_by('replies')
+        return queryset
+
 class ThreadView(DetailView):
     model = Thread
     template_name = 'forum/thread_detail.html'

@@ -1,16 +1,17 @@
 {% extends "template_detail.html" %}
 
 {% block dashboard_title %}
-{{ new.title }}
+  {{ new.title }}
 {% endblock  %}
-
 
 {% block detail_container %}
 
-{% if new.image %}
-  <img src="{{ new.image }}" alt="">
-{% endif %}
+  <span class="text-monospace">Publicado em {{ new.created_at }}</span>
 
-<p>{{ new.text|linebreaks }}</p>
+  {% if new.image %}
+    <img src="{{ new.image }}" alt="">
+  {% endif %}
+
+  <p>{{ new.text|linebreaks }}</p>
 
 {% endblock  %}
