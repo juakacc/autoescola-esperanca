@@ -27,7 +27,7 @@
 
   <div class="col" align="right">
     <a href="{% url 'accounts:register_employee' %}" class="btn btn-dark">
-      <i class="fas fa-plus"></i> Adicionar funcionário
+      <i class="fas fa-plus"></i> Funcionário
     </a>
   </div>
 {% endblock  %}
@@ -38,8 +38,8 @@
       <tr>
         <th>Nº</th>
         <th>Nome</th>
-        <th>Função</th>
-        <th>Nome de usuário</th>
+        <th>Funções</th>
+        <th>Username</th>
         <th>E-mail</th>
         <th>Salário</th>
         <th>Opções</th>
@@ -61,7 +61,7 @@
           <td>{{ v.email }}</td>
           <td>R$ {{ v.salary }}</td>
           <td>
-            <a href="{% url 'accounts:delete_employee' v.pk %}"><i class="fas fa-trash-alt"></i> Remover</a><br />
+            <a href="{% url 'accounts:delete_employee' v.pk %}" class="btn btn-danger btn-sm"><i class="fas fa-minus"></i> Remover</a><br />
             <a href="{% url 'inbox:register_message' v.pk %}">Enviar mensagem</a>
           </td>
         </tr>

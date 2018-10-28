@@ -11,6 +11,16 @@
 {% endblock  %}
 
 {% block painel_forum %}
+  <p>
+    Ordenando resultados por mais
+    {% if request.GET.order == 'recente' %}
+      recentes
+    {% elif request.GET.order == 'visualizacoes' %}
+      visualizados
+    {% else %}
+      comentados
+    {% endif %}
+  </p>
   {% for thread in object_list %}
     <div class="row mb-2">
       <div class="col">

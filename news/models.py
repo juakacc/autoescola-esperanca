@@ -15,3 +15,8 @@ class New(models.Model):
 
     def __str__(self):
         return self.slug
+
+    class Meta:
+        verbose_name = 'Notícia'
+        verbose_name_plural = 'Notícias'
+        ordering = ['-created_at']

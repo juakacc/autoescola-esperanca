@@ -13,7 +13,7 @@
 {% block filters_options %}
   {{ block.super }}
   <div class="col" align="right">
-    <a href="{% url 'accounts:register_student' %}" class="btn btn-dark"><i class="fas fa-plus"></i> Adicionar aluno</a>
+    <a href="{% url 'accounts:register_student' %}" class="btn btn-dark"><i class="fas fa-plus"></i> Aluno</a>
   </div>
 {% endblock  %}
 
@@ -23,7 +23,7 @@
       <tr>
         <th>Nº</th>
         <th>Nome</th>
-        <th>Nome de usuário</th>
+        <th>Username</th>
         <th>E-mail</th>
         <th>Opções</th>
       </tr>
@@ -36,7 +36,7 @@
           <td>{{ v.username }}</td>
           <td>{{ v.email }}</td>
           <td>
-            <a href="{% url 'accounts:delete_student' v.pk %}"><i class="fas fa-trash-alt"></i> Remover</a><br>
+            <a href="{% url 'accounts:delete_student' v.pk %}" class="btn btn-danger btn-sm"><i class="fas fa-minus"></i> Remover</a><br>
             <a href="{% url 'inbox:register_message' v.pk %}">Enviar mensagem</a>
           </td>
         </tr>

@@ -4,7 +4,7 @@
 {% block dashboard_container %}
 <div class="row justify-content-between"> <!-- Barra de pesquisa -->
   {% block filters_options %}
-    <div class="col">
+    <div class="col-5">
       <form class="form-inline" method="get">
         <div class="form-group">
           <input type="text" class="form-control mx-2" name="q" placeholder="Procurar" col="2" value="{{ request.GET.q }}">

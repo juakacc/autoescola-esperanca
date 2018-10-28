@@ -18,13 +18,13 @@
       <a href="{% url 'accounts:list_vehicles' 'motorcycle' %}" class="btn btn-dark"><i class="fas fa-motorcycle"></i> Motocicletas</a>
     </div>
     <div class="col-3" align="right">
-      <a href="{% url 'accounts:register_vehicle' %}" class="btn btn-dark"><i class="fas fa-plus"></i> Adicionar veículo</a>
+      <a href="{% url 'accounts:register_vehicle' %}" class="btn btn-dark"><i class="fas fa-plus"></i> Veículo</a>
     </div>
 </div>
 
 <div class="row">
   <div class="col">
-    <table class="table">
+    <table class="table mt-2">
       <thead>
         <tr>
           <th>Tipo</th>
@@ -52,9 +52,9 @@
               <span class="badge badge-{% if v.state == 'Em conserto' %}danger{% else %}success{% endif %}">
               {{ v.get_state_display }}</span>
             </td>
-            
+
             <td>
-              <a href="{% url 'accounts:delete_vehicle' v.pk %}"><i class="fas fa-trash-alt"></i> Remover</a>
+              <a href="{% url 'accounts:delete_vehicle' v.pk %}" class="btn btn-danger btn-sm"><i class="fas fa-minus"></i> Remover</a>
             </td>
           </tr>
         {% endfor %}
