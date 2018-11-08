@@ -1,10 +1,6 @@
 {% extends "forum/template_forum.html" %}
 {% load pagination %}
 
-{% block title %}
-  Fórum | {{ block.super }}
-{% endblock  %}
-
 {% block breadcrumb %}
   {{ block.super }}
   <li class="breadcrumb-item">Fórum</li>
@@ -12,7 +8,7 @@
 
 {% block painel_forum %}
   <p>
-    Ordenando resultados por mais
+    Ordenando resultados por: Mais
     {% if request.GET.order == 'recente' %}
       recentes
     {% elif request.GET.order == 'visualizacoes' %}

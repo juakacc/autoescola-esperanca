@@ -19,7 +19,7 @@ class RegisterProcessView(HasPermissionsMixin, SuccessMessageMixin, CreateView):
 
     def get_success_url(self):
         process = self.object
-        self.success_message = 'Processo cadastrado. Prazo final {}'.format(process.end_date)
+        self.success_message = 'Processo cadastrado. Prazo final {}'.format(process.end_date.strftime('%d/%m/%Y'))
         return super().get_success_url()
 
 class UpdateProcessView(HasPermissionsMixin, SuccessMessageMixin, UpdateView):
@@ -43,6 +43,10 @@ class ProcessListView(HasPermissionsMixin, ListView):
         queryset = Process.objects.all()
         if q:
             queryset = queryset.filter(student__name__icontains=q)
+            
+        e = self.request.GET.get('e', '')
+        if e:
+            queryset = queryset.filter(status=e)
         return queryset
 
 class ProcessDetailView(DetailView):

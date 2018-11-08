@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %}
+  Localização | {{ block.super }}
+{% endblock  %}
+
 {% block breadcrumb %}
   {{ block.super }}
   <li class="breadcrumb-item">Localização</li>

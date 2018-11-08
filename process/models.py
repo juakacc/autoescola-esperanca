@@ -91,7 +91,7 @@ class PracticalCourse(models.Model):
         return 'Curso prático de ' + self.process.student.__str__()
 
 class Process(models.Model):
-    student = models.ForeignKey(Person, verbose_name='Aluno', on_delete=models.CASCADE)
+    student = models.OneToOneField(Person, verbose_name='Aluno', on_delete=models.CASCADE)
     type_cnh = models.CharField('Tipo da CNH', choices=TYPE_CNH_CHOICES, max_length=3)
 
     begin_date = models.DateField('Início', default=datetime.now)

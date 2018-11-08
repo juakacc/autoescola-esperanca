@@ -35,6 +35,7 @@ HORARY = (
 NAO_INICIADO = 'nao_iniciado'
 INICIADO = 'iniciado'
 CONCLUIDO = 'concluido'
+VENCIDO = 'vencido'
 
 # estado do veículo
 FUNCIONANDO = 'Funcionando'

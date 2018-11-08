@@ -9,5 +9,6 @@ urlpatterns = [
     path('agenda/', include('diary.urls')),
     path('forum/', include('forum.urls')),
     path('noticias/', include('news.urls')),
+    path('relatorios/', include('reports.urls')),
     path('admin/', admin.site.urls),
 ]

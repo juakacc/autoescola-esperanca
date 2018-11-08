@@ -4,9 +4,10 @@ from accounts.models import Person
 from core.validators import validar_carro, validar_end_time
 
 class RegisterProcessForm(forms.ModelForm):
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['student'].queryset = Person.objects.filter(role_student=True)
+        self.fields['student'].queryset = Person.objects.filter(role_student=True, process__isnull=True)
 
     class Meta:
         model = Process

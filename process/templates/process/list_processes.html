@@ -12,8 +12,22 @@
 {% endblock %}
 
 {% block filters_options %}
+  {{ block.super }}
+  <div class="col">
+    <div class="dropdown">
+      <button id="selected" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-user-friends"></i> Andamento
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li><a href="{% url 'process:list_processes' %}?e=nao_iniciado" class="dropdown-item btn-dark">Não Iniciado</a></li>
+        <li><a href="{% url 'process:list_processes' %}?e=iniciado" class="dropdown-item">Iniciado</a></li>
+        <li><a href="{% url 'process:list_processes' %}?e=concluido" class="dropdown-item">Concluído</a></li>
+        <li><a href="{% url 'process:list_processes' %}?e=vencido" class="dropdown-item">Vencido</a></li>
+      </div>
+    </div>
+  </div>
   <div class="col" align="right">
-    <a href="{% url 'process:register_process' %}" class="btn btn-dark"><i class="fas fa-plus"></i> Adicionar processo</a>
+    <a href="{% url 'process:register_process' %}" class="btn btn-dark"><i class="fas fa-plus"></i> Processo</a>
   </div>
 {% endblock  %}
 
@@ -24,9 +38,7 @@
         <th>Nº</th>
         <th>Aluno</th>
         <th>Status</th>
-        <th>Tipo</th>
-        <th>Início</th>
-        <th>Fim</th>
+        <th>Data de término</th>
         <th>Opções</th>
       </tr>
     </thead>
@@ -36,13 +48,11 @@
           <td>#{{ v.pk }}</td>
           <td>{{ v.student }}</td>
           <td><span class="badge badge-{{ v.status|get_class_css }}">{{ v.get_status_display }}</span></td>
-          <td>{{ v.get_type_cnh_display }}</td>
-          <td>{{ v.begin_date }}</td>
           <td>{{ v.end_date }}</td>
           <td>
             <a href="{% url 'process:detail_process' v.pk %}">
               <i class="fas fa-info-circle"></i> Detalhes</a><br>
-            <a href="{% url 'process:delete_process' v.pk %}">
+            <a href="{% url 'process:delete_process' v.pk %}" class="btn btn-danger btn-sm">
               <i class="fas fa-trash-alt"></i> Remover</a>
           </td>
         </tr>
@@ -50,3 +60,13 @@
     </tbody>
   </table>
 {% endblock %}
+
+{% block scripts %}
+<script>
+  $("#q").attr("placeholder", "Aluno");
+
+  $('.dropdown a').click(function() {
+    $('#selected').text($(this).text());
+  });
+</script>
+{% endblock  %}

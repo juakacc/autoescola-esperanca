@@ -28,7 +28,7 @@
       <thead>
         <tr>
           <th>Tipo</th>
-          <th>Slug</th>
+          <th>Nome</th>
           <th>Placa</th>
           <th>Situação</th>
           <th>Opções</th>
@@ -54,7 +54,8 @@
             </td>
 
             <td>
-              <a href="{% url 'accounts:delete_vehicle' v.pk %}" class="btn btn-danger btn-sm"><i class="fas fa-minus"></i> Remover</a>
+              <a href="{% url 'accounts:delete_vehicle' v.pk %}" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash-alt"></i> Remover</a>
             </td>
           </tr>
         {% endfor %}

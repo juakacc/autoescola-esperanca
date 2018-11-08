@@ -36,8 +36,10 @@
           <td>{{ v.username }}</td>
           <td>{{ v.email }}</td>
           <td>
-            <a href="{% url 'accounts:delete_student' v.pk %}" class="btn btn-danger btn-sm"><i class="fas fa-minus"></i> Remover</a><br>
-            <a href="{% url 'inbox:register_message' v.pk %}">Enviar mensagem</a>
+            <a href="{% url 'accounts:delete_student' v.pk %}" class="btn btn-danger btn-sm">
+              <i class="fas fa-trash-alt"></i> Remover</a><br>
+            <a href="{% url 'inbox:register_message' v.pk %}" class="btn btn-primary btn-sm">
+              Enviar mensagem</a>
           </td>
         </tr>
       {% endfor %}

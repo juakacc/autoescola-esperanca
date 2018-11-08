@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'inbox',
     'process',
     'forum',
-    'news'
+    'news',
+    'reports'
 ]
 
 MIDDLEWARE = [
