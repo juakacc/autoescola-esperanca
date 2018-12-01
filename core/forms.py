@@ -7,6 +7,12 @@ class ResponseContactForm(forms.ModelForm):
     class Meta:
         model = Contact
         fields = ['response']
+        labels = {
+            'response': 'Resposta *'
+        }
+        widgets = {
+            'response': forms.Textarea(attrs={'class': 'form-control'})
+        }
 
     def send_email(self, obj):
         print('E-mail enviado com sucesso: ' + obj.response + ' de: ' + obj.subject)
@@ -46,7 +52,28 @@ class RegisterVehicleForm(forms.ModelForm):
             'year': 'Ano *',
             'plate': 'Placa *'
         }
+        widgets = {
+            'type': forms.Select(attrs={'class': 'custom-select'}),
+            'slug': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'carro-01, moto-01...'}),
+            'fabricator': forms.TextInput(attrs={'class': 'form-control'}),
+            'model': forms.TextInput(attrs={'class': 'form-control'}),
+            'year': forms.NumberInput(attrs={'class': 'form-control'}),
+            'plate': forms.TextInput(attrs={'class': 'form-control placa_veiculo', 'placeholder': 'AAA-1111'})
+        }
 
+class UpdateVehicleForm(forms.ModelForm):
+    ''' Formulário para editar um veículo '''
+    class Meta:
+        model = Vehicle
+        fields = ['type', 'slug', 'fabricator', 'model', 'year', 'plate']
+        labels = {
+            'type': 'Tipo *',
+            'slug': 'Apelido *',
+            'fabricator': 'Fabricante *',
+            'model': 'Modelo *',
+            'year': 'Ano *',
+            'plate': 'Placa *'
+        }
         widgets = {
             'type': forms.Select(attrs={'class': 'custom-select'}),
             'slug': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'carro-01, moto-01...'}),

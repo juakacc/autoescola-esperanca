@@ -3,7 +3,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 
 from accounts.models import Person
-from accounts.forms import RegisterStudentForm
+from accounts.forms import RegisterStudentForm, UpdateStudentForm
 from core.constantes import *
 from core.views.generics import CreateView, UpdateView, ListView, DeleteView, DetailView
 
@@ -26,10 +26,9 @@ class RegisterStudentView(HasPermissionsMixin, SuccessMessageMixin, CreateView):
         return super().get_success_url()
 
 class UpdateStudentView(SuccessMessageMixin, UpdateView):
-    model = Person
     template_name = 'accounts/update_student.html'
-    fields = ['username', 'name', 'cpf', 'date_of_birth', 'email', 'telephone',
-        'street', 'number', 'district', 'city', 'state']
+    model = Person
+    form_class = UpdateStudentForm
     success_url = reverse_lazy('accounts:list_students')
     success_message = 'Aluno atualizado com sucesso'
 

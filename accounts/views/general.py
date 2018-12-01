@@ -8,7 +8,7 @@ from core.views.generics import (TemplateView, UpdateView, FormView)
 from core.models import Vehicle
 from core.constantes import *
 from accounts.models import Person, PasswordReset
-from accounts.forms import PasswordResetForm
+from accounts.forms import PasswordResetForm, UpdateMyDataForm
 
 from rolepermissions.mixins import HasPermissionsMixin
 from rolepermissions.checkers import has_permission, has_role
@@ -21,7 +21,7 @@ class UpdateMyDataView(HasPermissionsMixin, SuccessMessageMixin, UpdateView):
     required_permission = 'student'
     template_name = 'accounts/update.html'
     # Fields de Person
-    fields = ['username', 'name', 'cpf', 'email', 'date_of_birth', 'telephone', 'street', 'number', 'district', 'city', 'state']
+    form_class = UpdateMyDataForm
     success_url = reverse_lazy('accounts:index')
     success_message = 'Dados atualizados com sucesso'
 

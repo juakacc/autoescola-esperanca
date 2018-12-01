@@ -6,6 +6,16 @@ class RegisterMessageForm(forms.ModelForm):
     class Meta:
         model = Message
         fields = ['to', 'subject', 'message_text']
+        labels = {
+            'to': 'Para *',
+            'subject': 'Assunto *',
+            'message_text': 'Mensagem *'
+        }
+        widgets = {
+            'to': forms.Select(attrs={'class':'custom-select'}),
+            'subject': forms.TextInput(attrs={'class':'form-control'}),
+            'message_text': forms.Textarea(attrs={'class':'form-control'})
+        }
 
 class RegisterResponseForm(forms.ModelForm):
     ''' Formulário para registrar a reposta para uma mensagem '''
@@ -14,4 +24,7 @@ class RegisterResponseForm(forms.ModelForm):
         fields = ['message_text']
         labels = {
             'message_text': 'Adicione uma resposta'
+        }
+        widgets = {
+            'message_text': forms.Textarea(attrs={'class':'form-control'})
         }

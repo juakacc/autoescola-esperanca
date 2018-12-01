@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 
 from core.models import Vehicle
-from core.forms import RegisterVehicleForm
+from core.forms import RegisterVehicleForm, UpdateVehicleForm
 from core.views.generics import CreateView, ListView, UpdateView, DeleteView, DetailView
 from core.constantes import *
 from django.views.generic import RedirectView
@@ -23,7 +23,7 @@ class UpdateVehicleView(HasPermissionsMixin, SuccessMessageMixin, UpdateView):
     required_permission = 'secretary'
     model = Vehicle
     template_name = 'accounts/update_vehicle.html'
-    fields = ['slug', 'fabricator', 'model', 'year', 'plate', 'state']
+    form_class = UpdateVehicleForm
     success_url = reverse_lazy('accounts:list_vehicles')
     success_message = 'Veículo atualizado com sucesso'
 

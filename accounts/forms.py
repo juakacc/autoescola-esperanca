@@ -93,10 +93,49 @@ class UpdateEmployeeForm(forms.ModelForm):
         fields = ['cpf', 'username', 'name', 'date_of_birth', 'email', 'telephone', 'admission',
             'role_secretary', 'role_instructor', 'salary', 'cnh', 'street', 'number',
             'district', 'city', 'state']
+        labels = {
+            'cpf'          : 'CPF *',
+            'username'     : 'Nome de usuário *',
+            'name'         : 'Nome completo *',
+            'date_of_birth': 'Data de nascimento *',
+            'email'        : 'E-mail *',
+            'telephone'    : 'Telefone *',
+            'admission'    : 'Admitido em *',
+            'role_admin'   : 'Administrador?',
+            'role_secretary': 'Secretário?',
+            'role_instructor': 'Instrutor?',
+            'salary'       : 'Salário *',
+            'cnh'          : 'CNH',
+            'street'       : 'Rua *',
+            'number'       : 'Número *',
+            'district'     : 'Bairro *',
+            'city'         : 'Cidade *',
+            'state'        : 'Estado *'
+        }
+        widgets = {
+            'cpf': forms.TextInput(attrs={'class':'form-control cpf', 'autofocus':True}),
+            'username': forms.TextInput(attrs={'class':'form-control'}),
+            'name': forms.TextInput(attrs={'class':'form-control'}),
+            'date_of_birth': forms.DateInput(attrs={'class':'form-control data'}),
+            'email': forms.EmailInput(attrs={'class':'form-control'}),
+            'telephone': forms.TextInput(attrs={'class':'form-control telefone'}),
+            'admission'    : forms.DateInput(attrs={'class':'form-control data'}),
+            'role_admin'   : forms.Select(attrs={'class':'form-control'}),
+            'role_secretary': forms.Select(attrs={'class':'form-control'}),
+            'role_instructor': forms.Select(attrs={'class':'form-control'}),
+            'salary'       : forms.NumberInput(attrs={'class':'form-control'}),
+            'cnh': forms.NumberInput(attrs={'class':'form-control','placeholder': 'Caso seja um instrutor'}),
+            'street': forms.TextInput(attrs={'class':'form-control'}),
+            'number': forms.NumberInput(attrs={'class':'form-control'}),
+            'district': forms.TextInput(attrs={'class':'form-control'}),
+            'city': forms.TextInput(attrs={'class':'form-control'}),
+            'state': forms.Select(attrs={'class':'custom-select'}),
+        }
 
 # Verificar se vai precisar
 class PasswordResetForm(forms.Form):
-    email = forms.EmailField(label='E-mail')
+    email = forms.EmailField(label='E-mail *',
+        widget=forms.EmailInput(attrs={'class': 'form-control'}))
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -132,6 +171,84 @@ class RegisterStudentForm(UserCreationForm):
     class Meta:
         model = Person
         fields = ['cpf', 'username', 'name', 'date_of_birth', 'email', 'telephone',
+            'street', 'number', 'district', 'city', 'state']
+        labels = {
+            'cpf': 'CPF *',
+            'username': 'Nome de usuário *',
+            'name': 'Nome completo *',
+            'date_of_birth': 'Data de nascimento *',
+            'email': 'E-mail *',
+            'telephone': 'Telefone *',
+            'street': 'Rua *',
+            'number': 'Número *',
+            'district': 'Bairro *',
+            'city': 'Cidade *',
+            'state': 'Estado *'
+        }
+        widgets = {
+            'cpf': forms.TextInput(attrs={'class':'form-control cpf', 'autofocus':True}),
+            'username': forms.TextInput(attrs={'class':'form-control'}),
+            'name': forms.TextInput(attrs={'class':'form-control'}),
+            'date_of_birth': forms.DateInput(attrs={'class':'form-control data'}),
+            'email': forms.EmailInput(attrs={'class':'form-control'}),
+            'telephone': forms.TextInput(attrs={'class':'form-control telefone'}),
+            'street': forms.TextInput(attrs={'class':'form-control'}),
+            'number': forms.NumberInput(attrs={'class':'form-control'}),
+            'district': forms.TextInput(attrs={'class':'form-control'}),
+            'city': forms.TextInput(attrs={'class':'form-control'}),
+            'state': forms.Select(attrs={'class':'custom-select'}),
+        }
+
+class UpdateStudentForm(forms.ModelForm):
+    ''' Form para atualização de dados do aluno '''
+    def clean_date_of_birth(self):
+        born = self.cleaned_data['date_of_birth']
+        if not is_date_of_birth_valid(born):
+            raise forms.ValidationError('Um aluno não pode ser menor de idade')
+        return born
+
+    class Meta:
+        model = Person
+        fields = ['username', 'name', 'cpf', 'date_of_birth', 'email', 'telephone',
+            'street', 'number', 'district', 'city', 'state']
+        labels = {
+            'cpf': 'CPF *',
+            'username': 'Nome de usuário *',
+            'name': 'Nome completo *',
+            'date_of_birth': 'Data de nascimento *',
+            'email': 'E-mail *',
+            'telephone': 'Telefone *',
+            'street': 'Rua *',
+            'number': 'Número *',
+            'district': 'Bairro *',
+            'city': 'Cidade *',
+            'state': 'Estado *'
+        }
+        widgets = {
+            'cpf': forms.TextInput(attrs={'class':'form-control cpf', 'autofocus':True}),
+            'username': forms.TextInput(attrs={'class':'form-control'}),
+            'name': forms.TextInput(attrs={'class':'form-control'}),
+            'date_of_birth': forms.DateInput(attrs={'class':'form-control data'}),
+            'email': forms.EmailInput(attrs={'class':'form-control'}),
+            'telephone': forms.TextInput(attrs={'class':'form-control telefone'}),
+            'street': forms.TextInput(attrs={'class':'form-control'}),
+            'number': forms.NumberInput(attrs={'class':'form-control'}),
+            'district': forms.TextInput(attrs={'class':'form-control'}),
+            'city': forms.TextInput(attrs={'class':'form-control'}),
+            'state': forms.Select(attrs={'class':'custom-select'}),
+        }
+
+class UpdateMyDataForm(forms.ModelForm):
+    ''' Form para atualização de dados do aluno '''
+    def clean_date_of_birth(self):
+        born = self.cleaned_data['date_of_birth']
+        if not is_date_of_birth_valid(born):
+            raise forms.ValidationError('Um aluno não pode ser menor de idade')
+        return born
+
+    class Meta:
+        model = Person
+        fields = ['username', 'name', 'cpf', 'email', 'date_of_birth', 'telephone',
             'street', 'number', 'district', 'city', 'state']
         labels = {
             'cpf': 'CPF *',

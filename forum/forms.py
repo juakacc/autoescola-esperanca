@@ -9,3 +9,6 @@ class ReplyForm(forms.ModelForm):
         labels = {
             'reply': 'Adicione uma resposta'
         }
+        widgets = {
+            'reply': forms.Textarea(attrs={'class':'form-control'})
+        }

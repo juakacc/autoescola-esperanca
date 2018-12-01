@@ -17,12 +17,13 @@ class MessagesView(HasPermissionsMixin, ListView):
     model = Contact
     paginate_by = 10
 
-class MessageView(HasPermissionsMixin, UpdateView):
+class MessageView(HasPermissionsMixin, SuccessMessageMixin, UpdateView):
     required_permission = 'secretary'
     template_name = 'detail_contact.html'
     model = Contact
     form_class = ResponseContactForm
     success_url = reverse_lazy('accounts:messages')
+    success_message = 'Mensagem enviada com sucesso'
 
     def get_object(self):
         # Tornando a msg lida
