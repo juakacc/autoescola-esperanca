@@ -2,13 +2,16 @@
 
 {% block dashboard_container %}
   <div class="row">
+    <div class="col">
+      <span class="text-danger">Campos com (*) são obrigatórios</span>
+    </div>
     <div class="col" align="right">
       <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-info">
         <i class="fas fa-reply"></i> Voltar
       </a>
     </div>
   </div>
-  
+
   <form method="post">
     {% block register_container %}
 

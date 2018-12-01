@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load widget_tweaks %}
 
 {% block title %}
   Entrar | {{ block.super }}
@@ -17,21 +16,7 @@
 {% block container %}
   <div class="col-md-8">
     <form class="form" method="post">
-      {% csrf_token %}
-      {% for error in form.non_field_errors %}
-        <div class="alert alert-danger">
-          {{ error }}
-        </div>
-      {% endfor %}
-      {% for field in form %}
-        <div class="form-group">
-          <label for="{{ field.auto_id }}">{{ field.label }}</label>
-          {% render_field field class="form-control" %}
-          {% for error in field.errors %}
-            <small class="help-block text-danger">{{ error }}</small>
-          {% endfor %}
-        </div>
-      {% endfor %}
+      {% include "_form_with.html" %}
       <div class="form-group">
         <a href="{% url 'accounts:reset_password' %}">Esqueceu a senha?</a>
         <div class="mt-2">

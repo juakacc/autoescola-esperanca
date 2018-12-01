@@ -21,10 +21,10 @@ class Person(User):
 
     created = models.DateTimeField('Criado em', auto_now_add=True)
 
-    role_admin = models.BooleanField('Admin?', default=False)
-    role_secretary = models.BooleanField('Secretário?', default=False)
-    role_instructor = models.BooleanField('Instrutor?', default=False)
-    role_student = models.BooleanField('Aluno?', default=False)
+    role_admin = models.BooleanField('Admin?', default=False, choices=((True, 'Sim'), (False, 'Não')))
+    role_secretary = models.BooleanField('Secretário?', default=False, choices=((True, 'Sim'), (False, 'Não')))
+    role_instructor = models.BooleanField('Instrutor?', default=False, choices=((True, 'Sim'), (False, 'Não')))
+    role_student = models.BooleanField('Aluno?', default=False, choices=((True, 'Sim'), (False, 'Não')))
     current_view = models.CharField('Visão atual', max_length=20, null=True, blank=True) # visão atual do site
 
     registry = models.CharField('Matrícula', max_length=10, null=True, blank=True) # Automaticamente
