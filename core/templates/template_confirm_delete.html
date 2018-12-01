@@ -7,13 +7,11 @@
 
 {% block dashboard_container %}
 <form method="post">{% csrf_token %}
+  <p>
+    {% block delete_message %}{% endblock  %}<br />
+    <span class="text-danger">(Essa ação não pode ser desfeita)</span>
+  </p>
 
-  {% block delete_message %}
-    <p>Deseja realmente ocultar a mensagem de: {{ object.sender }}?</p>
-    <p>Para visualizar novamente essa mensagem acesse: Mensagem > mensagens ocultas</p>
-  {% endblock  %}
-
-  <p><span class="text-danger">(Essa ação não pode ser desfeita)</span></p>
   <button type="submit" name="button" class="btn btn-dark"><i class="fas fa-check"></i> Sim</button>
   <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-info"><i class="fas fa-times"></i> Não</a>
 </form>

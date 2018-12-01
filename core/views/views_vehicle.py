@@ -1,10 +1,13 @@
 from django.contrib import messages as msgs
 from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 
 from core.models import Vehicle
 from core.forms import RegisterVehicleForm
 from core.views.generics import CreateView, ListView, UpdateView, DeleteView, DetailView
+from core.constantes import *
+from django.views.generic import RedirectView
 
 from rolepermissions.mixins import HasPermissionsMixin
 
@@ -23,6 +26,20 @@ class UpdateVehicleView(HasPermissionsMixin, SuccessMessageMixin, UpdateView):
     fields = ['slug', 'fabricator', 'model', 'year', 'plate', 'state']
     success_url = reverse_lazy('accounts:list_vehicles')
     success_message = 'Veículo atualizado com sucesso'
+
+class UpdateStateView(HasPermissionsMixin, RedirectView):
+    required_permission = 'secretary'
+
+    def get_redirect_url(self, **kwargs):
+        vehicle = get_object_or_404(Vehicle, pk=kwargs['pk'])
+        state = kwargs['state']
+        if (state == 0):
+            vehicle.state = FUNCIONANDO
+        elif (state == 1):
+            vehicle.state = EM_CONSERTO
+        vehicle.save()
+        msgs.success(self.request, 'Estado do veículo atualizado com sucesso')
+        return reverse_lazy('accounts:detail_vehicle', kwargs={'slug': vehicle.slug})
 
 class DeleteVehicleView(HasPermissionsMixin, DeleteView):
     required_permission = 'secretary'
@@ -56,6 +73,7 @@ class DetailVehicleView(HasPermissionsMixin, DetailView):
 
 register_vehicle = RegisterVehicleView.as_view()
 update_vehicle = UpdateVehicleView.as_view()
+update_state_vehicle = UpdateStateView.as_view()
 delete_vehicle = DeleteVehicleView.as_view()
 list_vehicles = VehiclesListView.as_view()
 detail_vehicle = DetailVehicleView.as_view()

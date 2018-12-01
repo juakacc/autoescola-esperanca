@@ -25,4 +25,20 @@ class RegisterAppointmentForm(forms.ModelForm):
 
     class Meta:
         model = Appointment
-        fields = '__all__'
+        fields = ['instructor', 'process', 'simulator', 'day', 'begin_time', 'end_time']
+        labels = {
+            'instructor': 'Instrutor *',
+            'process': 'Processo *',
+            'simulator': 'Aula no simulador?',
+            'day': 'Data *',
+            'begin_time': 'Horário inicial *',
+            'end_time': 'Horário final *'
+        }
+        widgets = {
+            'instructor': forms.Select(attrs={'class':'custom-select'}),
+            'process': forms.Select(attrs={'class':'custom-select'}),
+            'simulator': forms.Select(attrs={'class':'custom-select'}),
+            'day': forms.DateInput(attrs={'class':'form-control'}),
+            'begin_time': forms.Select(attrs={'class':'custom-select'}),
+            'end_time': forms.Select(attrs={'class':'custom-select'})
+        }

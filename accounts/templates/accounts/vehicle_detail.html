@@ -7,7 +7,7 @@
 {% endblock  %}
 
 {% block dashboard_title %}
-  Detalhes de {{ object.slug }}
+  Detalhes: {{ object.slug }}
 {% endblock  %}
 
 {% block detail_container %}
@@ -32,7 +32,7 @@
 
   <dt class="col-3">Status</dt>
   <dd class="col-9">
-    <span class="badge badge-{% if v.state == 'Em conserto' %}danger{% else %}success{% endif %}">
+    <span class="badge badge-{% if object.state == 'Em conserto' %}danger{% else %}success{% endif %}">
     {{ object.get_state_display }}</span>
   </dd>
 </div>
@@ -41,6 +41,13 @@
     <a href="{% url 'accounts:update_vehicle' object.pk %}" class="btn btn-dark">
       <i class="fas fa-pencil-alt"></i> Editar
     </a>
+  </div>
+  <div class="col">
+    {% if object.state == 'Em conserto' %}
+      <a href="{% url 'accounts:update_state_vehicle' object.pk 0 %}">Veículo consertado?</a>
+    {% else %}
+      <a href="{% url 'accounts:update_state_vehicle' object.pk 1 %}">Veículo em manutenção?</a>
+    {% endif %}
   </div>
 </div>
 {% endblock  %}

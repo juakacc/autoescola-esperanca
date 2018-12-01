@@ -11,8 +11,8 @@ class User(AbstractUser):
 
 class Vehicle(models.Model):
     STATE_CHOICES = (
-        (FUNCIONANDO, 'Funcionando'),
-        (EM_CONSERTO, 'Em conserto')
+        (FUNCIONANDO, FUNCIONANDO),
+        (EM_CONSERTO, EM_CONSERTO)
     )
     TYPE_CHOICES = (
         ('car', 'Carro'),
@@ -24,7 +24,7 @@ class Vehicle(models.Model):
     model = models.CharField('Modelo', max_length=20)
     year = models.PositiveIntegerField('Ano', default=datetime.now().year)
     plate = models.CharField('Placa', max_length=8, unique=True)
-    state = models.CharField('Estado', max_length=20, choices=STATE_CHOICES, default='funcionando')
+    state = models.CharField('Estado', max_length=20, choices=STATE_CHOICES, default=FUNCIONANDO)
 
     def __str__(self):
         return self.slug

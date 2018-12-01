@@ -2,6 +2,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView, TemplateView
 from django.urls import reverse_lazy
 
+from core.forms import ContactForm
 from core.models import Contact
 from core.views.generics import ListView
 from news.models import New
@@ -14,7 +15,7 @@ class IndexView(ListView):
 class ContactView(SuccessMessageMixin, CreateView):
     template_name = 'contact.html'
     model = Contact
-    fields = ['name', 'email', 'subject', 'message']
+    form_class = ContactForm
     success_url = reverse_lazy('core:index')
     success_message = 'Obrigado pelo contato'
 

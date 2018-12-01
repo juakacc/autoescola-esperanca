@@ -4,7 +4,7 @@ from django.views.generic import RedirectView
 from django.urls import reverse_lazy
 
 from core.models import Contact, Vehicle, SystemSettings
-from core.forms import ResponseContactForm, RegisterVehicleForm
+from core.forms import ResponseContactForm, RegisterVehicleForm, UpdateSettingsForm
 from core.views.generics import CreateView, ListView, UpdateView, DeleteView
 from accounts.models import Person
 
@@ -39,9 +39,9 @@ class MessageView(HasPermissionsMixin, UpdateView):
 
 class UpdateSettingsView(HasPermissionsMixin, SuccessMessageMixin, UpdateView):
     required_permission = 'secretary'
-    model = SystemSettings
     template_name = 'update_settings.html'
-    fields = '__all__'
+    model = SystemSettings
+    form_class = UpdateSettingsForm
     success_url = reverse_lazy('accounts:index')
     success_message = 'Configurações atualizadas com sucesso'
 

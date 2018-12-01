@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block container_title %}
+  {{ new.title }}
+{% endblock  %}
+
+{% block container %}
+  <div class="col-12" align="right">
+    <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-info">
+      <i class="fas fa-reply"></i> Voltar
+    </a>
+  </div>
+
+  <div class="col-12">
+    <span class="text-monospace">Publicado em {{ new.created_at }}</span>
+  </div>
+
+  <div class="col-12">
+    {% if new.image %}
+      <img src="{{ new.image }}" alt="">
+    {% endif %}
+  </div>
+
+  <div class="col-12">
+    <p>{{ new.text|linebreaks }}</p>
+  </div>
+{% endblock  %}

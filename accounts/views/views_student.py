@@ -49,6 +49,7 @@ class ListStudentsView(ListView):
 
 class DetailStudentView(DetailView):
     model = Person
+    context_object_name = 'aluno'
     template_name = 'accounts/person_detail.html'
 
     def get_context_data(self, *args, **kwargs):

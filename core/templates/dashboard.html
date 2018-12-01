@@ -12,10 +12,8 @@
 {% endblock %}
 
 {% block container %}
-<!-- área de interação -->
-<div class="row">
   <!-- Menu lateral -->
-  <div class="col-3 list-group">
+  <div class="col-3 list-group-flush">
     <!-- Contatos com o site -->
     <!--  <a class="list-group-item list-group-item-action" href="{% url 'accounts:messages' %}">
       <i class="fas fa-comments"></i> Contatos recebidos
@@ -38,9 +36,9 @@
         <i class="fas fa-chevron-circle-right"></i> Ocultas
       </a>
     </div>
-    {% block dashboard_menu %}
 
-    {% endblock %}
+    {% block dashboard_menu %}<!-- Ações individuais -->{% endblock %}
+
     <a class="list-group-item list-group-item-action" data-toggle="collapse" href="#menu-opcoes">
       <i class="fas fa-user-cog"></i> Opções <i class="fas fa-caret-down"></i>
     </a>
@@ -51,13 +49,9 @@
   </div><!-- Fim do menu lateral -->
 
   <!-- Área de amostragem -->
-  <div class="col-9">
-    <div class="page-header">
-      <h2>{% block dashboard_title %}Bem vindo, {{ user }}{% endblock %}</h2>
-    </div>
-    {% block dashboard_container %}
+  <div class="col pr-4">
+    <h2>{% block dashboard_title %}Bem vindo, {{ user }}{% endblock %}</h2>
 
-    {% endblock %}
+    {% block dashboard_container %}{% endblock %}
   </div>
-</div>
 {% endblock %}

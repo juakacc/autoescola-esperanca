@@ -2,9 +2,14 @@ concluir relatórios
 Mexer no financeiro
 verificar dropdown para ficar selecionado
 add asteríscos nos campos obrigatórios
-apenas visão aluno aparecendo em detail student
-colocar e-mail do detail person
 
 Relatórios:
   Entrada de alunos
   Conclusão de processos
+
+ao fazer login redirecionar para página inicial do usuário
+
+Mascaras nos formulários...
+
+
+[acho que resolvido] apenas visão aluno aparecendo em detail student

@@ -11,10 +11,17 @@ Listagem de notícias
 {% endblock  %}
 
 {% block container %}
-  <div class="row">
-    {% for new in new_list %}
-      {% include "news/_new.html" %}
-    {% endfor %}
+  <div class="col-12">
+    <div class="row">
+      <div class="card-group">
+        {% for new in new_list %}
+          {% include "news/_new.html" %}
+        {% endfor %}
+      </div>
+    </div>
   </div>
-  {% pagination request paginator page_obj %}
+
+  <div class="col-12">
+    {% pagination request paginator page_obj %}
+  </div>
 {% endblock  %}

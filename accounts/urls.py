@@ -21,6 +21,8 @@ urlpatterns = [
 
     path('registro-veiculo/', core_views.register_vehicle, name='register_vehicle'),
     path('atualizar-veiculo/<int:pk>', core_views.update_vehicle, name='update_vehicle'),
+    # 0 - funcionando, 1 - em conserto
+    path('atualizar-estado-veiculo/<int:pk>/<int:state>', core_views.update_state_vehicle, name='update_state_vehicle'),
     path('deletar-veiculo/<int:pk>', core_views.delete_vehicle, name='delete_vehicle'),
     path('veiculos/', core_views.list_vehicles, name='list_vehicles'),
     path('veiculos/<str:type>', core_views.list_vehicles, name='list_vehicles'),

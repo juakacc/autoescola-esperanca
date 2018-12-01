@@ -40,6 +40,7 @@ class UpdateEmployeeView(HasPermissionsMixin, SuccessMessageMixin, UpdateView):
 class DetailEmployeeView(HasPermissionsMixin, DetailView):
     required_permission = 'secretary'
     model = Person
+    context_object_name = 'aluno'
     template_name = 'accounts/person_detail.html'
 
     def get_context_data(self, *args, **kwargs):

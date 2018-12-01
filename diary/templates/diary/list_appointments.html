@@ -10,6 +10,14 @@
   Listagem de agendamentos
 {% endblock %}
 
+{% block search_container %}
+<div class="col" align="right">
+  {% if secretary %}
+    <a href="{% url 'diary:register_appointment' %}" class="btn btn-dark"><i class="fas fa-calendar-plus"></i> Agendar</a>
+  {% endif %}
+</div>
+{% endblock %}
+
 {% block filters_options %}
   <div class="col">
     {% block appointments_filters %}
@@ -31,18 +39,12 @@
   <div class="col-8">
     <form class="form-inline" method="get" action="">
       <div class="form-group">
-        <input type="text" format="dd/MM/yyyy" class="form-control mx-1" name="begin" placeholder="dd/mm/yyyy" col="2" value="{{ request.GET.begin }}">
+        <input type="text" format="dd/MM/yyyy" class="form-control mx-1 data" name="begin" placeholder="dd/mm/yyyy" col="2" value="{{ request.GET.begin }}">
         à
-        <input type="text" class="form-control mx-1" name="end" placeholder="dd/mm/yyyy" col="2" value="{{ request.GET.end }}">
+        <input type="text" class="form-control mx-1 data" name="end" placeholder="dd/mm/yyyy" col="2" value="{{ request.GET.end }}">
       </div>
       <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
     </form>
-  </div>
-
-  <div class="col-2">
-    {% if secretary %}
-      <a href="{% url 'diary:register_appointment' %}" class="btn btn-dark"><i class="fas fa-calendar-plus"></i> Agendar</a>
-    {% endif %}
   </div>
 {% endblock  %}
 

@@ -11,13 +11,13 @@
 
 {% block container_title %}Fale conosco{% endblock  %}
 
+{% block container_help %}
+Qualquer dúvida, reclamação, sugestão, etc. <i class="far fa-grin-beam"></i><br />
+Será um prazer pra gente te responder, faremos isso o mais rápido possível!
+{% endblock  %}
+
 {% block container %}
   <div class="col-10">
-    <p>
-      Qualquer dúvida, reclamação, sugestão, etc. <i class="far fa-grin-beam"></i><br />
-      Será um prazer pra gente te responder, faremos isso o mais rápido possível!
-    </p>
-
     <form method="post">
       {% include "_form.html" %}
       <div class="form-group">

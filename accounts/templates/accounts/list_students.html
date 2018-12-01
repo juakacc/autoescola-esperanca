@@ -37,7 +37,7 @@
           <td>{{ v.email }}</td>
           <td>
             <a href="{% url 'accounts:delete_student' v.pk %}" class="btn btn-danger btn-sm">
-              <i class="fas fa-trash-alt"></i> Remover</a><br>
+              <i class="fas fa-trash-alt"></i> Remover</a>
             <a href="{% url 'inbox:register_message' v.pk %}" class="btn btn-primary btn-sm">
               <i class="fab fa-facebook-messenger"></i> Mensagem</a>
           </td>

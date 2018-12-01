@@ -50,22 +50,8 @@
           <td><span class="badge badge-{{ v.status|get_class_css }}">{{ v.get_status_display }}</span></td>
           <td>{{ v.end_date }}</td>
           <td>
-            <div class="dropdown">
-              <button id="selected" class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-user-friends"></i> Opções
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a href="{% url 'process:detail_process' v.pk %}" class="dropdown-item">
-                  <i class="fas fa-info-circle"></i> Detalhes</a><br>
-                <a href="{% url 'process:delete_process' v.pk %}" class="dropdown-item">
-                  <i class="fas fa-trash-alt"></i> Remover</a>
-              </div>
-            </div>
-
-            <!-- <a href="{% url 'process:detail_process' v.pk %}" class="btn btn-info btn-sm">
-              <i class="fas fa-info-circle"></i> Detalhes</a><br>
-            <a href="{% url 'process:delete_process' v.pk %}" class="btn btn-danger btn-sm">
-              <i class="fas fa-trash-alt"></i> Remover</a> -->
+            <a href="{% url 'process:delete_process' v.pk %}" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Remover</a>
+            <a href="{% url 'process:detail_process' v.pk %}" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i> Detalhes</a>
           </td>
         </tr>
       {% endfor %}

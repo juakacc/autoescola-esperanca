@@ -44,6 +44,12 @@ class DetailNewView(DetailView):
     model = New
     context_object_name = 'new'
 
+    def get_template_names(self):
+        if (self.request.user.is_authenticated):
+            return ['news/new_detail.html']
+        else:
+            return ['news/new_detail_not.html']
+
 index = IndexView.as_view()
 register_new = RegisterNewView.as_view()
 delete_new = DeleteNewView.as_view()
