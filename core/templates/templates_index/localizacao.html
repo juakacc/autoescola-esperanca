@@ -9,32 +9,37 @@
   <li class="breadcrumb-item">Localização</li>
 {% endblock %}
 
+{% block container_title %}Onde estamos?{% endblock  %}
+
 {% block container %}
-  <div class="row">
-    <div class="col">
-      <h1>Onde estamos?</h1>
-    </div>
+  <div class="col-6">
+    <div id="map" style="width:400px;height:400px;"></div>
   </div>
 
-  <div class="row">
-    <div class="col-md-6 col-sm-12">
-      <div id="map" style="width:400px;height:400px;background:yellow"></div>
-    </div>
-    <div class="col-md-6 col-sm-12">
-      <h4>Endereço:</h4>
-    </div>
+  <div class="col-6">
+    <h4>Endereço:</h4>
+    <h5>Autoescola Esperança</h5>
+    <p>
+      Rua: Oscar Costa, 120, Centro<br />
+      Esperança, Paraíba, Brasil<br />
+      CEP: 58160-000<br />
+    </p>
+    <p>
+      Horário de funcionamento: 7h - 19h
+    </p>
   </div>
-<!--
-  <script>
-    function myMap() {
-    var mapOptions = {
-        center: new google.maps.LatLng(-6.990087, -36.245295),
-        zoom: 18,
-        mapTypeId: google.maps.MapTypeId.HYBRID
-    }
-    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-    }
-  </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeD2CzlTtQLuNPLaRg6XQBbpZhIm1P66Q&callback=myMap"></script>
--->
 {% endblock %}
+
+{% block scripts %}
+<script>
+  function myMap() {
+  var mapOptions = {
+      center: new google.maps.LatLng(-6.990087, -36.245295),
+      zoom: 18,
+      mapTypeId: google.maps.MapTypeId.HYBRID
+  }
+  var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+  }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeD2CzlTtQLuNPLaRg6XQBbpZhIm1P66Q&callback=myMap"></script>
+{% endblock  %}

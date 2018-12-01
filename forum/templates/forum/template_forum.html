@@ -8,25 +8,23 @@
 {% block container_title %}Fórum da autoescola Esperança{% endblock  %}
 
 {% block container %}
-  <div class="row">
-    <div class="col-3"> <!-- Menu do fórum -->
-      <li class="list-group-item list-group-item-dark">Tópicos do Fórum</li>
+  <div class="col-3"> <!-- Menu do fórum -->
+    <li class="list-group-item list-group-item-dark">Tópicos do Fórum</li>
 
-      <a class="list-group-item list-group-item-action" href="{% url 'forum:index' %}?order=recente">
-        <i class="fas fa-comments"></i> Mais recentes
-      </a>
-      <a class="list-group-item list-group-item-action" href="{% url 'forum:index' %}?order=visualizacoes">
-        <i class="fas fa-comments"></i> Mais visualizados
-      </a>
-      <a class="list-group-item list-group-item-action" href="{% url 'forum:index' %}?order=comentarios">
-        <i class="fas fa-comments"></i> Mais comentados
-      </a>
-    </div> <!-- Fim do Menu do fórum -->
+    <a class="list-group-item list-group-item-action" href="{% url 'forum:index' %}?order=recente">
+      <i class="fas fa-clock"></i> Mais recentes
+    </a>
+    <a class="list-group-item list-group-item-action" href="{% url 'forum:index' %}?order=visualizacoes">
+      <i class="fas fa-eye"></i> Mais visualizados
+    </a>
+    <a class="list-group-item list-group-item-action" href="{% url 'forum:index' %}?order=comentarios">
+      <i class="fas fa-comment"></i> Mais comentados
+    </a>
+  </div> <!-- Fim do Menu do fórum -->
 
-    <div class="col"> <!-- Painel de listagem -->
-      {% block painel_forum %}
+  <div class="col"> <!-- Painel de listagem -->
+    {% block painel_forum %}
 
-      {% endblock  %}
-    </div> <!-- Fim da listgem -->
-  </div>
+    {% endblock  %}
+  </div> <!-- Fim da listgem -->
 {% endblock  %}

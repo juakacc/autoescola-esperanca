@@ -40,7 +40,6 @@
         <th>Nome</th>
         <th>Funções</th>
         <th>Username</th>
-        <th>E-mail</th>
         <th>Salário</th>
         <th>Opções</th>
       </tr>
@@ -58,11 +57,10 @@
             </ul>
           </td>
           <td>{{ v.username }}</td>
-          <td>{{ v.email }}</td>
           <td>R$ {{ v.salary }}</td>
           <td>
             <a href="{% url 'accounts:delete_employee' v.pk %}" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Remover</a><br />
-            <a href="{% url 'inbox:register_message' v.pk %}">Enviar mensagem</a>
+            <a href="{% url 'inbox:register_message' v.pk %}" class="btn btn-primary btn-sm"><i class="fab fa-facebook-messenger"></i> Mensagem</a>
           </td>
         </tr>
       {% endfor %}

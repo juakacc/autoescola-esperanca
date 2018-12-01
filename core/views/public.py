@@ -21,10 +21,14 @@ class ContactView(SuccessMessageMixin, CreateView):
 class QuemSomosView(TemplateView):
     template_name = 'templates_index/quem_somos.html'
 
+class EquipeView(TemplateView):
+    template_name = 'templates_index/equipe.html'
+
 class localizacaoView(TemplateView):
     template_name = 'templates_index/localizacao.html'
 
 index = IndexView.as_view()
 contact = ContactView.as_view()
 quem_somos = QuemSomosView.as_view()
+equipe = EquipeView.as_view()
 localizacao = localizacaoView.as_view()

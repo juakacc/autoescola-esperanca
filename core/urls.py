@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('go-home/<str:type>', views.red_home, name='go-home'),
     path('quem-somos/', views.quem_somos, name='quem_somos'),
+    path('equipe/', views.equipe, name='equipe'),
     path('localizacao/', views.localizacao, name='localizacao'),
     path('configuracoes/', views.update_settings, name='update_settings'),
     path('contato/', views.contact, name='contact'),

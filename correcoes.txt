@@ -1,8 +1,9 @@
-filtragem de processos: iniciado, concluido..
 concluir relatórios
 Mexer no financeiro
 verificar dropdown para ficar selecionado
 add asteríscos nos campos obrigatórios
+apenas visão aluno aparecendo em detail student
+colocar e-mail do detail person
 
 Relatórios:
   Entrada de alunos

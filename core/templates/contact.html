@@ -9,16 +9,20 @@
   <li class="breadcrumb-item">Contato</li>
 {% endblock %}
 
+{% block container_title %}Fale conosco{% endblock  %}
+
 {% block container %}
-  <div class="page-header">
-    <h1>Fale conosco</h1>
-  </div>
   <div class="col-10">
+    <p>
+      Qualquer dúvida, reclamação, sugestão, etc. <i class="far fa-grin-beam"></i><br />
+      Será um prazer pra gente te responder, faremos isso o mais rápido possível!
+    </p>
+
     <form method="post">
       {% include "_form.html" %}
       <div class="form-group">
         <div class="col-md-9 col-md-offset-3">
-          <button type="submit" class="btn btn-dark">Enviar</button>
+          <button type="submit" class="btn btn-dark"><i class="far fa-hand-point-up"></i> Enviar</button>
         </div>
       </div>
     </form>

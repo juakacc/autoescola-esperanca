@@ -33,7 +33,7 @@
               <a class="nav-link" href="{% url 'core:quem_somos' %}"><i class="fas fa-car"></i> Quem somos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#"><i class="fas fa-users"></i> Equipe</a>
+              <a class="nav-link" href="{% url 'core:equipe' %}"><i class="fas fa-users"></i> Equipe</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'forum:index' %}"><i class="fas fa-comment-dots"></i> Fórum</a>
@@ -49,6 +49,15 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="https://github.com/juakacc/autoescola-esperanca"><i class="fab fa-github"></i></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="fab fa-facebook-square"></i></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="fab fa-instagram"></i></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href=""><i class="fab fa-whatsapp"></i></a>
             </li>
           </ul>
           {% if user.is_authenticated %}
@@ -97,9 +106,13 @@
 
       <h2>{% block container_title %}{% endblock %}</h2>
 
+      <div class="row">
+
       {% block container %}
 
       {% endblock %}
+
+    </div>
     </div> <!-- Fim do container -->
 
     <nav class="navbar fixed-bottom navbar-expand-sm bg-dark navbar-dark">
