@@ -1,10 +1,11 @@
-from django.shortcuts import HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect, get_object_or_404
 from django.urls import reverse_lazy
 from .forms import RegisterMessageForm, RegisterResponseForm
 from .models import Message
 from accounts.models import Person
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages as messages_django
+from django.views.generic import RedirectView
 from django.core.exceptions import PermissionDenied
 
 from core.views.generics import ListView, CreateView, DetailView, DeleteView
@@ -114,7 +115,7 @@ class RegisterMessageView(HasPermissionsMixin, SuccessMessageMixin, CreateView):
         }
 
     def get_success_url(self):
-        return self.request.META.get('HTTP_REFERER')
+        return reverse_lazy('accounts:index')
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -134,6 +135,21 @@ class DeleteMessageView(DeleteView):
         messages_django.success(self.request, 'Mensagem oculta com sucesso')
         return HttpResponseRedirect(self.get_success_url())
 
+class ShowMessageView(HasPermissionsMixin, RedirectView):
+    required_permission = 'student'
+
+    def get_redirect_url(self, **kwargs):
+        message = get_object_or_404(Message, pk=kwargs['pk'])
+
+        # O usuário atual é o destinatário
+        if (message.to.pk == self.request.user.pk):
+            message.not_view = False
+            message.save()
+            messages_django.success(self.request, 'Mensagem exibida com sucesso')
+        else:
+            messages_django.warning(self.request, 'Essa mensagem não pertence a você')
+        return reverse_lazy('inbox:list_messages_received')
+
 list_messages_received = ListMessagesReceivedView.as_view()
 list_messages_sent = ListMessagesSentView.as_view()
 list_messages_hidden = ListMessagesHidden.as_view()
@@ -141,3 +157,4 @@ list_messages_hidden = ListMessagesHidden.as_view()
 register_message = RegisterMessageView.as_view()
 detail_message = DetailMessageView.as_view()
 delete_message = DeleteMessageView.as_view()
+show_message = ShowMessageView.as_view()

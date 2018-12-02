@@ -12,4 +12,5 @@ urlpatterns = [
     path('enviar-mensagem/<int:person_pk>/<str:subject>', views.register_message, name='register_message'),
     path('mensagem/<int:message_pk>', views.detail_message, name='detail_message'),
     path('deletar-mensagem/<int:pk>', views.delete_message, name='delete_message'),
+    path('mostrar-mensagem/<int:pk>', views.show_message, name='show_message'),
 ]

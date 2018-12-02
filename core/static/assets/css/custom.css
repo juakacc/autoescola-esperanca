@@ -22,3 +22,7 @@
 .list {
   margin-top: 5px;
 }
+
+body {
+  font-family: 'Roboto', sans-serif;
+}

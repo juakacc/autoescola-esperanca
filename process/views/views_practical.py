@@ -15,7 +15,6 @@ from rolepermissions.mixins import HasPermissionsMixin
 class RegisterPracticalClassView(HasPermissionsMixin, SuccessMessageMixin, CreateView):
     required_permission = 'secretary'
     model = PracticalClass
-    form_class = RegisterPracticalClassForm
     template_name = 'process/register_practical_class.html'
     success_message = 'Aula registrada com sucesso'
 
@@ -29,6 +28,9 @@ class RegisterPracticalClassView(HasPermissionsMixin, SuccessMessageMixin, Creat
     def get_success_url(self):
         return self.object.practical_course.get_absolute_url()
 
+    def get_form(self):
+        return RegisterPracticalClassForm(**self.get_form_kwargs(), argumentos=self.kwargs)
+
     def form_valid(self, form):
         course = get_object_or_404(PracticalCourse, pk=self.kwargs['pk_course'])
         self.object = form.save(commit=False)
@@ -40,7 +42,6 @@ class RegisterPracticalClassView(HasPermissionsMixin, SuccessMessageMixin, Creat
 class RegisterPracticalClassViewInstructor(HasPermissionsMixin, SuccessMessageMixin, CreateView):
     required_permission = 'instructor'
     model = PracticalClass
-    form_class = RegisterPracticalClassFormInstructor
     template_name = 'process/register_practical_class.html'
     success_message = 'Aula registrada com sucesso'
     success_url = reverse_lazy('accounts:index')
@@ -49,6 +50,9 @@ class RegisterPracticalClassViewInstructor(HasPermissionsMixin, SuccessMessageMi
         context = super().get_context_data(**kwargs)
         context['instructor'] = True
         return context
+
+    def get_form(self):
+        return RegisterPracticalClassFormInstructor(**self.get_form_kwargs(), argumentos=self.kwargs)
 
     def form_valid(self, form):
         process = form.cleaned_data['process']

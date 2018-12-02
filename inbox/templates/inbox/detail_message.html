@@ -2,12 +2,13 @@
 
 {% block breadcrumb %}
   {{ block.super }}
-  {% if is_mine %}
+  {% if message.not_view %}
+    <li class="breadcrumb-item"><a href="{% url 'inbox:list_messages_hidden' %}">Mensagens ocultas</a></li>
+  {% elif is_mine %}
     <li class="breadcrumb-item"><a href="{% url 'inbox:list_messages_sent' %}">Mensagens enviadas</a></li>
   {% else %}
     <li class="breadcrumb-item"><a href="{% url 'inbox:list_messages_received' %}">Mensagens recebidas</a></li>
   {% endif %}
-
   <li class="breadcrumb-item">Mensagem</li>
 {% endblock %}
 
@@ -51,7 +52,7 @@
       {% if not is_mine %}
         <form method="post">
           {% include "_form.html" %}
-          <button type="submit" class="btn btn-dark" name="button">Responder</button>
+          <button type="submit" class="btn btn-dark" name="button"><i class="fas fa-share-square"></i> Responder</button>
         </form>
       {% endif %}
     </div>

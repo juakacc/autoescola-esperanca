@@ -5,7 +5,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 
 from accounts.models import Person
 from process.models import Process
-from process.forms import RegisterProcessForm
+from process.forms import RegisterProcessForm, UpdateExamsForm, UpdateProcessForm
 from core.views.generics import CreateView, UpdateView, ListView, DetailView, DeleteView
 
 from rolepermissions.mixins import HasPermissionsMixin
@@ -27,7 +27,7 @@ class UpdateProcessView(HasPermissionsMixin, SuccessMessageMixin, UpdateView):
     template_name = 'process/update_process.html'
     success_message = 'Processo atualizado com sucesso'
     success_url = reverse_lazy('process:list_processes')
-    fields = ['type_cnh', 'begin_date']
+    form_class = UpdateProcessForm
 
     def get_object(self):
         return get_object_or_404(Process, pk=self.kwargs['pk_process'])
@@ -43,7 +43,7 @@ class ProcessListView(HasPermissionsMixin, ListView):
         queryset = Process.objects.all()
         if q:
             queryset = queryset.filter(student__name__icontains=q)
-            
+
         e = self.request.GET.get('e', '')
         if e:
             queryset = queryset.filter(status=e)
@@ -67,8 +67,8 @@ class DeleteProcessView(HasPermissionsMixin, DeleteView):
 
 class ExamsUpdateView(SuccessMessageMixin, UpdateView):
     template_name = 'process/update_exams.html'
-    fields = ['exam_medical', 'exam_psychological']
     success_message = 'Exames atualizados com sucesso'
+    form_class = UpdateExamsForm
 
     def get_success_url(self, **kwargs):
         return self.object.process.get_absolute_url()

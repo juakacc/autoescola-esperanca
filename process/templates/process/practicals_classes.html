@@ -15,16 +15,21 @@
   <div class="row">
     <div class="col" align="right">
       <a href="{% url 'diary:process_appointments' num_process %}" class="btn btn-dark"><i class="fas fa-calendar-alt"></i> Agendamentos</a>
-      {% if practical_course.process.theoretical_course.status == 'concluido' %}
+      {% if practical_course.process.theoretical_course.status == 'concluido' and practical_course.status != 'concluido' %}
         <a href="{% url 'process:register_practical_class' practical_course.pk %}" class="btn btn-dark"><i class="fas fa-plus"></i> Registar aula</a>
       {% endif %}
     </div>
   </div>
 
-
   <div class="row">
     <div class="col">
-      <h4>Aulas no simulador</h4>
+      <h4>
+        Aulas no simulador
+        {% if practical_course.count_classes_simulator >= 5 %}
+          <span class="badge badge-success">Concluído</span>
+        {% endif %}
+      </h4>
+      <strong>Total de horas registradas:</strong> {{ practical_course.count_classes_simulator|floatformat:"1" }}h
       <table class="table list">
         <thead>
           <tr>
@@ -44,18 +49,20 @@
               <td>{{ class.day }}</td>
               <td>{{ class.begin_time|time:'H:i' }}</td>
               <td>{{ class.end_time|time:"H:i" }}</td>
-              <td><a href="{% url 'process:remove_practical_class' class.pk %}"><i class="fas fa-trash-alt"></i></a></td>
+              <td><a href="{% url 'process:remove_practical_class' class.pk %}" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash-alt"></i> Remover</a></td>
             </tr>
           {% endfor %}
-          <tr>
-            <td></td><td></td><td></td>
-            <td>Total de horas:</td>
-            <td>{{ practical_course.count_classes_simulator|floatformat:"1" }}h</td>
-          </tr>
         </tbody>
       </table>
 
-      <h4>Aulas no carro</h4>
+      <h4>
+        Aulas com veículo
+        {% if practical_course.count_classes_car >= practical_course.total_hours %}
+          <span class="badge badge-success">Concluído</span>
+        {% endif %}
+      </h4>
+      <strong>Total de horas registradas:</strong> {{ practical_course.count_classes_car|floatformat:"1" }}h
       <table class="table list">
         <thead>
           <tr>
@@ -77,14 +84,10 @@
               <td>{{ class.day }}</td>
               <td>{{ class.begin_time|time:'H:i' }}</td>
               <td>{{ class.end_time|time:"H:i" }}</td>
-              <td><a href="{% url 'process:remove_practical_class' class.pk %}"><i class="fas fa-trash-alt"></i></a></td>
+              <td><a href="{% url 'process:remove_practical_class' class.pk %}" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash-alt"></i> Remover</a></td>
             </tr>
           {% endfor %}
-          <tr>
-            <td></td><td></td><td></td>
-            <td>Total de horas:</td>
-            <td>{{ practical_course.count_classes_car|floatformat:"1" }}h</td>
-          </tr>
         </tbody>
       </table>
     </div>

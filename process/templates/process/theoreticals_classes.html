@@ -9,16 +9,22 @@
 
 {% block dashboard_title %}
   Aulas teóricas do processo #{{ num_process }}
+  {% if theoretical_course.status == 'concluido' %}
+    <span class="badge badge-success">Concluído</span>
+  {% endif %}
 {% endblock %}
 
 {% block dashboard_container %}
-  {% if theoretical_course.process.exams.status == 'concluido' %}
   <div class="row">
-    <div class="col" align="right">
-      <a href="{% url 'process:register_theoretical_class' theoretical_course.pk %}" class="btn btn-dark"><i class="fas fa-plus"></i> Registar aula</a>
+    <div class="col">
+      <strong>Total de horas registradas:</strong> {{ theoretical_course.count_classes|floatformat:"1" }}h
     </div>
+    {% if theoretical_course.process.exams.status == 'concluido' and theoretical_course.status != 'concluido' %}
+      <div class="col" align="right">
+        <a href="{% url 'process:register_theoretical_class' theoretical_course.pk %}" class="btn btn-dark"><i class="fas fa-plus"></i> Registar aula</a>
+      </div>
+    {% endif %}
   </div>
-  {% endif %}
 
   <div class="row">
     <div class="col">
@@ -41,20 +47,12 @@
               <td>{{ class.day }}</td>
               <td>{{ class.begin_time|time:'H:i' }}</td>
               <td>{{ class.end_time|time:"H:i" }}</td>
-              <td><a href="{% url 'process:remove_theoretical_class' class.pk %}"><i class="fas fa-trash-alt"></i></a></td>
+              <td><a href="{% url 'process:remove_theoretical_class' class.pk %}" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash-alt"></i> Remover</a></td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <strong>Total de horas:</strong> {{ theoretical_course.count_classes|floatformat:"1" }}h
-      {% if theoretical_course.status == 'concluido' %}
-        <span class="badge badge-success">Concluído</span>
-      {% endif %}
     </div>
   </div>
 {% endblock %}

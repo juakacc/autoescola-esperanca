@@ -17,7 +17,7 @@ class ContactView(SuccessMessageMixin, CreateView):
     model = Contact
     form_class = ContactForm
     success_url = reverse_lazy('core:index')
-    success_message = 'Obrigado pelo contato'
+    success_message = 'Obrigado pelo contato. Retornaremos o mais breve possível!'
 
 class QuemSomosView(TemplateView):
     template_name = 'templates_index/quem_somos.html'

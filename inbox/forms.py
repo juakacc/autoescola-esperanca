@@ -8,7 +8,7 @@ class RegisterMessageForm(forms.ModelForm):
         fields = ['to', 'subject', 'message_text']
         labels = {
             'to': 'Para *',
-            'subject': 'Assunto *',
+            'subject': 'Assunto',
             'message_text': 'Mensagem *'
         }
         widgets = {

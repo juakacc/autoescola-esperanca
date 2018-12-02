@@ -12,5 +12,6 @@ ao fazer login redirecionar para página inicial do usuário
 Mascaras nos formulários...
 Colocar foto no pessoal!!!
 Adicionar campos extra do instrutor na hora da edição
+Alterar status do processo
 
 [acho que resolvido] apenas visão aluno aparecendo em detail student

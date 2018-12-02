@@ -30,7 +30,6 @@ class ListTheoreticalCourse(HasPermissionsMixin, ListView):
 class RegisterTheoreticalClassView(HasPermissionsMixin, SuccessMessageMixin, CreateView):
     required_permission = 'secretary'
     model = TheoreticalClass
-    form_class = RegisterTheoreticalClassForm
     template_name = 'process/register_theoretical_class.html'
     success_message = 'Aula registrada com sucesso'
 
@@ -40,6 +39,9 @@ class RegisterTheoreticalClassView(HasPermissionsMixin, SuccessMessageMixin, Cre
         context['pk_process'] = process.pk
         context['instructor'] = False
         return context
+
+    def get_form(self):
+        return RegisterTheoreticalClassForm(**self.get_form_kwargs(), argumentos=self.kwargs)
 
     def get_success_url(self):
         return self.object.theoretical_course.get_absolute_url()
@@ -55,7 +57,6 @@ class RegisterTheoreticalClassView(HasPermissionsMixin, SuccessMessageMixin, Cre
 class RegisterTheoreticalClassViewInstructor(HasPermissionsMixin, SuccessMessageMixin, CreateView):
     required_permission = 'instructor'
     model  = TheoreticalClass
-    form_class = RegisterTheoreticalClassFormInstructor
     template_name = 'process/register_theoretical_class.html'
     success_message = 'Aula registrada com sucesso'
     success_url = reverse_lazy('accounts:index')
@@ -64,6 +65,9 @@ class RegisterTheoreticalClassViewInstructor(HasPermissionsMixin, SuccessMessage
         context = super().get_context_data(**kwargs)
         context['instructor'] = True
         return context
+
+    def get_form(self):
+        return RegisterTheoreticalClassFormInstructor(**self.get_form_kwargs(), argumentos=self.kwargs)
 
     def form_valid(self, form):
         process = form.cleaned_data['process']
