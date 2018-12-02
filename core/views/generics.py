@@ -17,9 +17,11 @@ class Base():
                 context['template_base'] = 'dashboard-instructor.html'
             elif person.current_view == STUDENT:
                 context['template_base'] = 'dashboard-student.html'
+            else:
+                context['template_base'] = 'base.html'
         except:
             context['template_base'] = 'base.html'
-            
+
         return context
 
     def get_success_url(self):

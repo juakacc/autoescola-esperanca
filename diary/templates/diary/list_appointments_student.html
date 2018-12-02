@@ -1,0 +1,54 @@
+{% extends "diary/list_appointments.html" %}
+
+{% block appointments_filters %}
+  <a href="{% url 'diary:list_diaries_student' 'tudo' %}" class="btn btn-dark"><i class="fas fa-align-justify"></i> Tudo</a>
+  <div class="btn-group">
+    <a href="" class="btn btn-dark dropdown-toggle" data-toggle="dropdown">
+      <i class="fas fa-filter"></i> Data
+    </a>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a href="{% url 'diary:list_diaries_student' 'hoje' %}" class="dropdown-item">Hoje</a>
+      <a href="{% url 'diary:list_diaries_student' 'essa-semana' %}" class="dropdown-item">Essa semana</a>
+      <a href="{% url 'diary:list_diaries_student' 'esse-mes' %}" class="dropdown-item">Esse mês</a>
+      <a href="{% url 'diary:list_diaries_student' 'esse-ano' %}" class="dropdown-item">Esse ano</a>
+    </div>
+  </div>
+{% endblock  %}
+
+{% block table_list %}
+  <table class="table">
+    <tr>
+      <th>Proc</th>
+      <th><i class="fab fa-tumblr"></i></th>
+      <th>Data</th>
+      <th>Instrutor</th>
+      <th>Início/Fim</th>
+      <th>Opções</th>
+    </tr>
+    {% block appointments_list %}
+      {% for a in appointments %}
+      <tr>
+        <td><a href="{% url 'process:detail_process' a.process.pk %}">#{{ a.process.pk }}</a></td>
+        <td>
+          {% if a.simulator %}
+            <i class="fas fa-desktop"></i>
+          {% else %}
+            <i class="fas fa-shuttle-van"></i>
+          {% endif %}
+        </td>
+        <td><a href="{% url 'diary:detail_appointment' a.pk %}">{{ a.day }}</a></td>
+        <td>{{ a.instructor }}</td>
+        <td>{{ a.begin_time }}/{{ a.end_time }}</td>
+        <td>
+          <a href="{% url 'diary:remove_appointment' a.pk %}" class="btn btn-danger btn-sm" title="Remover">
+            <i class="fas fa-trash-alt"></i></a>
+          <a href="{% url 'diary:confirm_appointment' a.pk %}" class="btn btn-success btn-sm" title="Confirmar">
+            <i class="fas fa-calendar-check"></i></a>
+        </td>
+        <th></th>
+      </tr>
+      {% endfor %}
+    {% endblock  %}
+  </table>
+  <i class="fab fa-tumblr"></i> = <i class="fas fa-desktop"></i> Simulador / <i class="fas fa-shuttle-van"></i> Veículo
+{% endblock %}

@@ -66,7 +66,7 @@ class RegisterEmployeeForm(UserCreationForm):
             'salary'       : forms.NumberInput(attrs={'class':'form-control'}),
             'cnh': forms.NumberInput(attrs={'class':'form-control','placeholder': 'Caso seja um instrutor'}),
             'street': forms.TextInput(attrs={'class':'form-control'}),
-            'number': forms.NumberInput(attrs={'class':'form-control'}),
+            'number': forms.NumberInput(attrs={'class':'form-control numero'}),
             'district': forms.TextInput(attrs={'class':'form-control'}),
             'city': forms.TextInput(attrs={'class':'form-control'}),
             'state': forms.Select(attrs={'class':'custom-select'}),
@@ -168,6 +168,12 @@ class RegisterStudentForm(UserCreationForm):
             raise forms.ValidationError('Um aluno não pode ser menor de idade')
         return born
 
+    def clean_cpf(self):
+        cpf = self.cleaned_data['cpf']
+        cpf = cpf.replace('.', '')
+        cpf = cpf.replace('-', '')
+        return cpf
+
     class Meta:
         model = Person
         fields = ['cpf', 'username', 'name', 'date_of_birth', 'email', 'telephone',
@@ -266,7 +272,7 @@ class UpdateMyDataForm(forms.ModelForm):
         widgets = {
             'cpf': forms.TextInput(attrs={'class':'form-control cpf', 'autofocus':True}),
             'username': forms.TextInput(attrs={'class':'form-control'}),
-            'name': forms.TextInput(attrs={'class':'form-control'}),
+            'name': forms.TextInput(attrs={'class':'form-control', 'autofocus':True}),
             'date_of_birth': forms.DateInput(attrs={'class':'form-control data'}),
             'email': forms.EmailInput(attrs={'class':'form-control'}),
             'telephone': forms.TextInput(attrs={'class':'form-control telefone'}),

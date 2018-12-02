@@ -7,9 +7,8 @@ from django.urls import reverse_lazy
 import calendar
 from datetime import datetime, timedelta
 
-from process.forms import RegisterPracticalClassForm
 from process.models import PracticalClass, Process
-from .forms import RegisterAppointmentForm
+from .forms import RegisterAppointmentForm, RegisterPracticalClassForm
 from .models import Appointment
 from core.views.generics import ListView, CreateView, DeleteView, DetailView
 from accounts.models import Person
@@ -67,9 +66,56 @@ class ListDiariesView(HasPermissionsMixin, ListView):
         context['secretary'] = True
         return context
 
-class ListDiariesViewInstructor(ListView):
+class ListDiariesViewInstructor(HasPermissionsMixin, ListView):
+    required_permission = 'instructor'
     model = Appointment
     template_name = 'diary/list_appointments_instructor.html'
+    context_object_name = 'appointments'
+    paginate_by = 10
+
+    def get_queryset(self):
+        begin, end = self.request.GET.get('begin', ''), self.request.GET.get('end', '')
+        d = self.kwargs.get('filter', '')
+        query = Appointment.objects.filter(instructor__pk=self.request.user.pk)
+        today = datetime.today()
+
+        if begin and end: # Preencheu o form
+            try:
+                begin = datetime.strptime(begin, '%d/%m/%Y')
+                end = datetime.strptime(end, '%d/%m/%Y')
+                # query = query.filter(day__gte=begin, day__lte=end)
+            except:
+                messages.error(self.request, 'Intervalo de datas inválido. Exibindo tudo!')
+        elif d: # dropdown = tudo, hoje, mês, ano
+            if d == 'tudo':
+                return query
+            elif d == 'hoje':
+                begin = end = today
+            elif d == 'essa-semana':
+                begin = today - timedelta(days=today.isoweekday())
+                end = begin + timedelta(days=6)
+            elif d == 'esse-mes':
+                begin = datetime(day=1, month=today.month, year=today.year)
+                end = datetime(
+                    day=calendar.monthrange(today.year, today.month)[1], month=today.month, year=today.year
+                )
+            elif d == 'esse-ano':
+                begin = datetime(day=1, month=1, year=today.year)
+                end = datetime(
+                    day=calendar.monthrange(today.year, 12)[1], month=12, year=today.year
+                )
+        else: # Sem nada
+            return query.filter(day__gte=today)
+
+        self.request.GET.begin = begin.strftime('%d/%m/%Y')
+        self.request.GET.end = end.strftime('%d/%m/%Y')
+        query = query.filter(day__gte=begin, day__lte=end)
+        return query
+
+class ListDiariesViewStudent(HasPermissionsMixin, ListView):
+    required_permission = 'student'
+    model = Appointment
+    template_name = 'diary/list_appointments_student.html'
     context_object_name = 'appointments'
     paginate_by = 10
 
@@ -154,7 +200,6 @@ class RemoveAppointmentView(HasPermissionsMixin, DeleteView):
 class ConfirmAppointmentView(HasPermissionsMixin, SuccessMessageMixin, CreateView):
     required_permission = 'instructor'
     model = PracticalClass
-    form_class = RegisterPracticalClassForm
     template_name = 'diary/confirm_appointment.html'
     success_url = reverse_lazy('diary:list_diaries')
     success_message = 'Aula registrada com sucesso'
@@ -168,6 +213,9 @@ class ConfirmAppointmentView(HasPermissionsMixin, SuccessMessageMixin, CreateVie
             'begin_time': a.begin_time,
             'end_time': a.end_time
         }
+
+    def get_form(self):
+        return RegisterPracticalClassForm(**self.get_form_kwargs(), argumentos=self.kwargs)
 
     # Remover appointment
     def form_valid(self, form):
@@ -184,6 +232,7 @@ class DetailAppointmentView(HasPermissionsMixin, DetailView):
 
 list_diaries = ListDiariesView.as_view()
 list_diaries_instructor = ListDiariesViewInstructor.as_view()
+list_diaries_student = ListDiariesViewStudent.as_view()
 
 list_diaries_process = ListProcessDiariesView.as_view()
 detail_appointment = DetailAppointmentView.as_view()

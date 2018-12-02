@@ -22,6 +22,7 @@ class RegisterStudentView(HasPermissionsMixin, SuccessMessageMixin, CreateView):
         student = self.object
         assign_role(student, 'student')
         student.role_student = True
+        student.current_view = STUDENT
         student.save()
         return super().get_success_url()
 

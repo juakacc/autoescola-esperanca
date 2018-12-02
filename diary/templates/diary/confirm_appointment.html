@@ -1,4 +1,4 @@
-{% extends template_base %}
+{% extends "template_register.html" %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -10,11 +10,6 @@
   Confirmação de agendamento
 {% endblock %}
 
-{% block dashboard_container %}
-<form method="post">
+{% block register_container %}
   {% include "_form.html" %}
-  <div class="form-group">
-    <button type="submit" class="btn btn-dark">Confirmar</button>
-  </div>
-</form>
 {% endblock %}

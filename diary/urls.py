@@ -8,7 +8,8 @@ urlpatterns = [
 
     path('instrutor/', views.list_diaries_instructor, name='list_diaries_instructor'),
     path('instrutor/<str:filter>', views.list_diaries_instructor, name='list_diaries_instructor'),
-    path('aluno', views.list_diaries_instructor, name='list_diaries_student'),
+    path('aluno/', views.list_diaries_student, name='list_diaries_student'),
+    path('aluno/<str:filter>', views.list_diaries_student, name='list_diaries_student'),
 
     path('<int:pk>/', views.detail_appointment, name='detail_appointment'),
     path('processo/<int:pk_process>', views.list_diaries_process, name='process_appointments'),

@@ -51,20 +51,17 @@
 {% block table_list %}
   <table class="table">
     <tr>
-      <th>Nº</th>
       <th>Proc</th>
-      <th><i class="fas fa-desktop"></i> / <i class="fas fa-shuttle-van"></i></th>
+      <th><i class="fab fa-tumblr"></i></th>
       <th>Data</th>
       <th>Aluno</th>
       <th>Instrutor</th>
-      <th>Início</th>
-      <th>Fim</th>
+      <th>Início/Fim</th>
       <th>Opções</th>
     </tr>
     {% block appointments_list %}
       {% for a in appointments %}
       <tr>
-        <td><a href="{% url 'diary:detail_appointment' a.pk %}">{{ a.pk }}</a></td>
         <td><a href="{% url 'process:detail_process' a.process.pk %}">#{{ a.process.pk }}</a></td>
         <td>
           {% if a.simulator %}
@@ -73,19 +70,20 @@
             <i class="fas fa-shuttle-van"></i>
           {% endif %}
         </td>
-        <td>{{ a.day }}</td>
+        <td><a href="{% url 'diary:detail_appointment' a.pk %}">{{ a.day }}</a></td>
         <td>{{ a.process.student }}</td>
         <td>{{ a.instructor }}</td>
-        <td>{{ a.begin_time }}</td>
-        <td>{{ a.end_time }}</td>
+        <td>{{ a.begin_time }}/{{ a.end_time }}</td>
         <td>
-          <a href="{% url 'diary:remove_appointment' a.pk %}"><i class="fas fa-trash-alt"></i></a>
-          <a href="{% url 'diary:confirm_appointment' a.pk %}"><i class="fas fa-calendar-check"></i></a>
+          <a href="{% url 'diary:remove_appointment' a.pk %}" class="btn btn-danger btn-sm" title="Remover">
+            <i class="fas fa-trash-alt"></i></a>
+          <a href="{% url 'diary:confirm_appointment' a.pk %}" class="btn btn-success btn-sm" title="Confirmar">
+            <i class="fas fa-calendar-check"></i></a>
         </td>
         <th></th>
       </tr>
       {% endfor %}
     {% endblock  %}
   </table>
-  <i class="fas fa-desktop"></i> Simulador / <i class="fas fa-shuttle-van"></i> Veículo
+  <i class="fab fa-tumblr"></i> = <i class="fas fa-desktop"></i> Simulador / <i class="fas fa-shuttle-van"></i> Veículo
 {% endblock %}

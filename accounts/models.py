@@ -9,7 +9,7 @@ class Person(User):
     # user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     name = models.CharField('Nome', max_length=100)
-    cpf = models.CharField('CPF', max_length=11, unique=True)
+    cpf = models.CharField('CPF', max_length=14, unique=True)
     date_of_birth = models.DateField('Data de nascimento')
     telephone = models.CharField('Telefone', max_length=20)
     street = models.CharField('Rua', max_length=200)

@@ -127,7 +127,7 @@ class RegisterPracticalClassForm(forms.ModelForm):
         return validar_end_time(self)
 
     def clean_day(self):
-        return validar_day(self)
+        return validar_day(self, pratico=True)
 
     class Meta:
         model = PracticalClass
@@ -164,7 +164,7 @@ class RegisterPracticalClassFormInstructor(forms.ModelForm):
         return validar_end_time(self)
 
     def clean_day(self):
-        return validar_day(self)
+        return validar_day(self, pratico=True)
 
     class Meta:
         model = PracticalClass

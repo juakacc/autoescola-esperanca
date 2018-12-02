@@ -3,7 +3,7 @@
 
 {% block breadcrumb %}
     {{ block.super }}
-    <li class="breadcrumb-item">Agendamentos</li>
+    <li class="breadcrumb-item"><a href="{% url 'diary:list_diaries' %}">Agendamentos</a></li>
     <li class="breadcrumb-item">Processo #{{ process.pk }}</li>
 {% endblock %}
 
@@ -16,19 +16,23 @@
   <div class="col">
     <a href="{% url 'diary:register_appointment' process.pk %}" class="btn btn-dark"><i class="fas fa-calendar-plus"></i> Agendar</a>
   </div>
+  <div class="col" align="right">
+    <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-info">
+      <i class="fas fa-reply"></i> Voltar
+    </a>
+  </div>
 </div>
 
 <div class="row">
   <div class="col">
-    <table class="table">
+    <table class="table list">
       <tr>
         <th>Nº</th>
-        <th><i class="fas fa-desktop"></i> / <i class="fas fa-shuttle-van"></i></th>
+        <th><i class="fab fa-tumblr"></i></th>
         <th>Data</th>
         <th>Aluno</th>
         <th>Instrutor</th>
-        <th>Início</th>
-        <th>Fim</th>
+        <th>Início/Fim</th>
         <th>Opções</th>
       </tr>
       {% for a in appointments %}
@@ -44,19 +48,19 @@
         <td>{{ a.day }}</td>
         <td>{{ a.process.student }}</td>
         <td>{{ a.instructor }}</td>
-        <td>{{ a.begin_time }}</td>
-        <td>{{ a.end_time }}</td>
+        <td>{{ a.begin_time }}/{{ a.end_time }}</td>
         <td>
-          <a href="{% url 'diary:remove_appointment' a.pk %}"><i class="fas fa-trash-alt"></i></a>
-          <a href="{% url 'diary:confirm_appointment' a.pk %}"><i class="fas fa-calendar-check"></i></a>
+          <a href="{% url 'diary:remove_appointment' a.pk %}" class="btn btn-danger btn-sm" title="Remover">
+            <i class="fas fa-trash-alt"></i></a>
+          <a href="{% url 'diary:confirm_appointment' a.pk %}" class="btn btn-success btn-sm" title="Confirmar">
+            <i class="fas fa-calendar-check"></i></a>
         </td>
         <th></th>
       </tr>
       {% endfor %}
     </table>
-    <i class="fas fa-desktop"></i> Simulador / <i class="fas fa-shuttle-van"></i> Veículo
+    <i class="fab fa-tumblr"></i> = <i class="fas fa-desktop"></i> Simulador / <i class="fas fa-shuttle-van"></i> Veículo
     {% pagination request paginator page_obj %}
-    <a href="{% url 'process:detail_process' process.pk %}" class="btn btn-dark"><i class="fas fa-reply"></i> Voltar</a>
   </div>
 </div>
 
