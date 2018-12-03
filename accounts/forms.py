@@ -32,7 +32,7 @@ class RegisterEmployeeForm(UserCreationForm):
         model = Person
         fields = ['cpf', 'username', 'name', 'date_of_birth', 'email', 'telephone', 'admission',
             'role_admin', 'role_secretary', 'role_instructor', 'salary', 'cnh', 'street', 'number',
-            'district', 'city', 'state']
+            'district', 'city', 'state', 'photo']
         labels = {
             'cpf'          : 'CPF *',
             'username'     : 'Nome de usuário *',
@@ -50,7 +50,8 @@ class RegisterEmployeeForm(UserCreationForm):
             'number'       : 'Número *',
             'district'     : 'Bairro *',
             'city'         : 'Cidade *',
-            'state'        : 'Estado *'
+            'state'        : 'Estado *',
+            'photo'        : 'Foto'
         }
         widgets = {
             'cpf': forms.TextInput(attrs={'class':'form-control cpf', 'autofocus':True}),
@@ -92,7 +93,7 @@ class UpdateEmployeeForm(forms.ModelForm):
         model = Person
         fields = ['cpf', 'username', 'name', 'date_of_birth', 'email', 'telephone', 'admission',
             'role_secretary', 'role_instructor', 'salary', 'cnh', 'street', 'number',
-            'district', 'city', 'state']
+            'district', 'city', 'state', 'photo']
         labels = {
             'cpf'          : 'CPF *',
             'username'     : 'Nome de usuário *',
@@ -110,7 +111,8 @@ class UpdateEmployeeForm(forms.ModelForm):
             'number'       : 'Número *',
             'district'     : 'Bairro *',
             'city'         : 'Cidade *',
-            'state'        : 'Estado *'
+            'state'        : 'Estado *',
+            'photo'        : 'Foto'
         }
         widgets = {
             'cpf': forms.TextInput(attrs={'class':'form-control cpf', 'autofocus':True}),
@@ -177,7 +179,7 @@ class RegisterStudentForm(UserCreationForm):
     class Meta:
         model = Person
         fields = ['cpf', 'username', 'name', 'date_of_birth', 'email', 'telephone',
-            'street', 'number', 'district', 'city', 'state']
+            'street', 'number', 'district', 'city', 'state', 'photo']
         labels = {
             'cpf': 'CPF *',
             'username': 'Nome de usuário *',
@@ -189,7 +191,8 @@ class RegisterStudentForm(UserCreationForm):
             'number': 'Número *',
             'district': 'Bairro *',
             'city': 'Cidade *',
-            'state': 'Estado *'
+            'state': 'Estado *',
+            'photo': 'Foto'
         }
         widgets = {
             'cpf': forms.TextInput(attrs={'class':'form-control cpf', 'autofocus':True}),
@@ -216,7 +219,7 @@ class UpdateStudentForm(forms.ModelForm):
     class Meta:
         model = Person
         fields = ['username', 'name', 'cpf', 'date_of_birth', 'email', 'telephone',
-            'street', 'number', 'district', 'city', 'state']
+            'street', 'number', 'district', 'city', 'state', 'photo']
         labels = {
             'cpf': 'CPF *',
             'username': 'Nome de usuário *',
@@ -228,7 +231,8 @@ class UpdateStudentForm(forms.ModelForm):
             'number': 'Número *',
             'district': 'Bairro *',
             'city': 'Cidade *',
-            'state': 'Estado *'
+            'state': 'Estado *',
+            'photo': 'Foto'
         }
         widgets = {
             'cpf': forms.TextInput(attrs={'class':'form-control cpf', 'autofocus':True}),
@@ -255,7 +259,7 @@ class UpdateMyDataForm(forms.ModelForm):
     class Meta:
         model = Person
         fields = ['username', 'name', 'cpf', 'email', 'date_of_birth', 'telephone',
-            'street', 'number', 'district', 'city', 'state']
+            'street', 'number', 'district', 'city', 'state', 'photo']
         labels = {
             'cpf': 'CPF *',
             'username': 'Nome de usuário *',
@@ -267,7 +271,8 @@ class UpdateMyDataForm(forms.ModelForm):
             'number': 'Número *',
             'district': 'Bairro *',
             'city': 'Cidade *',
-            'state': 'Estado *'
+            'state': 'Estado *',
+            'photo': 'Foto'
         }
         widgets = {
             'cpf': forms.TextInput(attrs={'class':'form-control cpf', 'autofocus':True}),

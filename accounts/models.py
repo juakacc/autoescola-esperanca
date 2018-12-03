@@ -33,6 +33,8 @@ class Person(User):
     # Instrutores
     cnh = models.CharField('CNH', max_length=20, unique=True, null=True, blank=True)
 
+    photo = models.ImageField('Foto', upload_to='person', blank=True, null=True)
+
     def __str__(self):
         return self.name
 

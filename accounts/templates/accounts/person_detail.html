@@ -1,4 +1,5 @@
 {% extends "template_detail.html" %}
+{% load thumbnail %}
 
 {% block breadcrumb %}
   {{ block.super }}
@@ -21,6 +22,14 @@
 {% endblock %}
 
 {% block detail_container %}
+  {% if object.photo %}
+    <div class="row">
+      <div class="col">
+        <img src="{% thumbnail object.photo 200x200 crop %}" alt="" />
+      </div>
+    </div>
+  {% endif %}
+
   <dl class="row">
     <div class="col-12">
       <h5>Informações básicas</h5>
