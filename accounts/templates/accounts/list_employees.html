@@ -24,12 +24,14 @@
       </div>
     </div>
   </div>
-
-  <div class="col" align="right">
-    <a href="{% url 'accounts:register_employee' %}" class="btn btn-dark">
-      <i class="fas fa-plus"></i> Funcionário
-    </a>
-  </div>
+  
+  {% if not is_aluno %}
+    <div class="col" align="right">
+      <a href="{% url 'accounts:register_employee' %}" class="btn btn-dark">
+        <i class="fas fa-plus"></i> Funcionário
+      </a>
+    </div>
+  {% endif %}
 {% endblock  %}
 
 {% block table_list %}
@@ -57,7 +59,9 @@
           </td>
           <td>{{ v.username }}</td>
           <td>
-            <a href="{% url 'accounts:delete_employee' v.pk %}" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Remover</a>
+            {% if not is_aluno %}
+              <a href="{% url 'accounts:delete_employee' v.pk %}" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Remover</a>
+            {% endif %}
             <a href="{% url 'inbox:register_message' v.pk %}" class="btn btn-primary btn-sm"><i class="fab fa-facebook-messenger"></i> Mensagem</a>
           </td>
         </tr>

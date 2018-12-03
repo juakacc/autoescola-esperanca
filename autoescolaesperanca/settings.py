@@ -112,18 +112,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
 LANGUAGE_CODE = 'pt-br'
-
 TIME_ZONE = 'America/Recife'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 # Configurando login
@@ -134,6 +129,10 @@ LOGIN_REDIRECT_URL = 'core:index'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = 'media'
 
 # Envio de e-mails
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -163,6 +162,6 @@ MESSAGE_TAGS = {
 #THUMBNAILS
 THUMBNAIL_ALIASES = {
     '': {
-        'new_image': {'size': (100, 100), 'crop': True},
+        'new_image': {'size': (250, 150), 'crop': True},
     },
 }

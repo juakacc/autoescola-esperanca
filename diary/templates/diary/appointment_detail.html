@@ -34,9 +34,11 @@
     <dd class="col-10">{{ object.end_time }}</dd>
   </dl>
 
-  <div class="row">
-    <div class="col">
-      <a href="{% url 'diary:confirm_appointment' object.pk %}" class="btn btn-dark"><i class="fas fa-calendar-check"></i> Confirmar agendamento</a>
+  {% if person and person.current_view != 'aluno' %}
+    <div class="row">
+      <div class="col">
+        <a href="{% url 'diary:confirm_appointment' object.pk %}" class="btn btn-dark"><i class="fas fa-calendar-check"></i> Confirmar agendamento</a>
+      </div>
     </div>
-  </div>
+  {% endif %}
 {% endblock %}

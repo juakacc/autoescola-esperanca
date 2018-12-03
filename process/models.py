@@ -10,7 +10,6 @@ class Exam(models.Model):
         (True, 'Apto'),
         (False, 'Não apto')
     )
-
     exam_medical = models.BooleanField('Exame médico', default=False, choices=APTO_CHOICES)
     exam_psychological = models.BooleanField('Exame psicológico', default=False, choices=APTO_CHOICES)
     date_exam = models.DateField('Data do exame', null=True, default=None)
@@ -43,7 +42,10 @@ class TheoreticalCourse(models.Model):
     def get_percent(self):
         ''' Percentual do curso teórico concluído '''
         total_hours = SystemSettings.objects.all()[0].hours_theoretical
-        return self.count_classes() / total_hours * 100
+        ja = self.count_classes()
+        if (ja > total_hours):
+            ja = total_hours
+        return ja / total_hours * 100
 
     def get_absolute_url(self):
         return reverse('process:theoretical_course', kwargs={'pk_process': self.process.pk})
@@ -78,7 +80,13 @@ class PracticalCourse(models.Model):
     def get_percent(self):
         ''' Percentual de curso prático concluído, 50% simulador + 50% no veículo '''
         total_hours_simulator = SystemSettings.objects.all()[0].hours_practical_simulator
-        return (self.count_classes_simulator() / total_hours_simulator * 50) + (self.count_classes_car() / self.total_hours * 50)
+        ja_simulador = self.count_classes_simulator()
+        ja_veiculo = self.count_classes_car()
+        if (ja_simulador > total_hours_simulator):
+            ja_simulador = total_hours_simulator
+        if (ja_veiculo > self.total_hours):
+            ja_veiculo = self.total_hours
+        return ( ja_simulador / total_hours_simulator * 50) + ( ja_veiculo / self.total_hours * 50)
 
     def get_absolute_url(self):
         return reverse('process:practical_course', kwargs={'pk_process': self.process.pk})
@@ -104,7 +112,10 @@ class Process(models.Model):
 
     def get_percent(self):
         '''Calcula o percentual do processo que o aluno já completou'''
-        return int(round(self.exams.get_percent() * 0.2 + self.theoretical_course.get_percent() * 0.3 + self.practical_course.get_percent() * 0.3))
+        total  = self.exams.get_percent() * 0.2
+        total += self.theoretical_course.get_percent() * 0.3
+        total += self.practical_course.get_percent() * 0.5
+        return int(round(total))
 
     def __str__(self):
         return 'Proc. #{} -> {}'.format(self.pk, self.student.__str__())
@@ -185,6 +196,7 @@ def update_status_exams(instance, **kwargs):
         instance.status = INICIADO
     else:
         instance.status = NAO_INICIADO
+    update_status_process(instance.process)
 
 def update_status_theoretical(instance, **kwargs):
     settings = SystemSettings.objects.all()[0]
@@ -197,6 +209,7 @@ def update_status_theoretical(instance, **kwargs):
     else:
         course.status = NAO_INICIADO
     course.save()
+    update_status_process(instance.theoretical_course.process)
 
 def update_status_practical(instance, **kwargs):
     settings = SystemSettings.objects.all()[0]
@@ -210,6 +223,15 @@ def update_status_practical(instance, **kwargs):
     else:
         course.status = NAO_INICIADO
     course.save()
+    update_status_process(instance.practical_course.process)
+
+def update_status_process(process):
+    if (process.exams.status == CONCLUIDO and process.theoretical_course.status == CONCLUIDO \
+        and process.practical_course.status == CONCLUIDO):
+        process.status = CONCLUIDO
+    else:
+        process.status = INICIADO
+    process.save()
 
 models.signals.post_save.connect(
     create_process, sender=Process, dispatch_uid='create_process'

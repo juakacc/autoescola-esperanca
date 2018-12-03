@@ -94,7 +94,7 @@
       {% else %}
         <a href="{% url 'accounts:update_student' object.pk %}" class="btn btn-dark"><i class="fas fa-pencil-alt"></i> Editar dados</a>
       {% endif %}
-      <a href="{% url 'inbox:register_message' object.pk %}" class="btn btn-dark"><i class="fab fa-facebook-messenger"></i> Enviar mensagem</a>
+      <a href="{% url 'inbox:register_message' object.pk %}" class="btn btn-primary"><i class="fab fa-facebook-messenger"></i> Enviar mensagem</a>
     </div>
   </div>
 {% endblock %}

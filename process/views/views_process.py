@@ -49,9 +49,26 @@ class ProcessListView(HasPermissionsMixin, ListView):
             queryset = queryset.filter(status=e)
         return queryset
 
+class ProcessListViewStudent(HasPermissionsMixin, ListView):
+    required_permission = 'student'
+    template_name = 'process/list_processes_student.html'
+    pagination_by = 10
+    context_object_name = 'processes'
+
+    def get_queryset(self):
+        queryset = Process.objects.filter(student__pk=self.request.user.pk)
+        return queryset
+
 class ProcessDetailView(DetailView):
     model = Process
     template_name = 'process/detail_process.html'
+
+    def get_object(self, **kwargs):
+        return get_object_or_404(Process, pk=self.kwargs['pk_process'])
+
+class ProcessDetailViewStudent(DetailView):
+    model = Process
+    template_name = 'process/detail_process_student.html'
 
     def get_object(self, **kwargs):
         return get_object_or_404(Process, pk=self.kwargs['pk_process'])
@@ -80,6 +97,8 @@ class ExamsUpdateView(SuccessMessageMixin, UpdateView):
 register_process = RegisterProcessView.as_view()
 update_process = UpdateProcessView.as_view()
 list_processes = ProcessListView.as_view()
+list_processes_student = ProcessListViewStudent.as_view()
 delete_process = DeleteProcessView.as_view()
 detail_process = ProcessDetailView.as_view()
+detail_process_student = ProcessDetailViewStudent.as_view()
 update_exams = ExamsUpdateView.as_view()

@@ -18,7 +18,6 @@
 {% block table_list %}
   <table class="table">
     <tr>
-      <th>Proc</th>
       <th><i class="fab fa-tumblr"></i></th>
       <th>Data</th>
       <th>Instrutor</th>
@@ -28,7 +27,6 @@
     {% block appointments_list %}
       {% for a in appointments %}
       <tr>
-        <td><a href="{% url 'process:detail_process' a.process.pk %}">#{{ a.process.pk }}</a></td>
         <td>
           {% if a.simulator %}
             <i class="fas fa-desktop"></i>
@@ -36,14 +34,12 @@
             <i class="fas fa-shuttle-van"></i>
           {% endif %}
         </td>
-        <td><a href="{% url 'diary:detail_appointment' a.pk %}">{{ a.day }}</a></td>
+        <td>{{ a.day }}</td>
         <td>{{ a.instructor }}</td>
         <td>{{ a.begin_time }}/{{ a.end_time }}</td>
         <td>
-          <a href="{% url 'diary:remove_appointment' a.pk %}" class="btn btn-danger btn-sm" title="Remover">
-            <i class="fas fa-trash-alt"></i></a>
-          <a href="{% url 'diary:confirm_appointment' a.pk %}" class="btn btn-success btn-sm" title="Confirmar">
-            <i class="fas fa-calendar-check"></i></a>
+          <a href="{% url 'inbox:register_message' a.instructor.pk a.get_slug %}" class="btn btn-primary btn-sm">
+            <i class="fab fa-facebook-messenger"></i> Mensagem</a>
         </td>
         <th></th>
       </tr>

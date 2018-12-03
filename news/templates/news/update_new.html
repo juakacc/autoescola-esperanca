@@ -3,16 +3,13 @@
 {% block breadcrumb %}
   {{ block.super }}
   <li class="breadcrumb-item"><a href="{% url 'news:list_news_edit' %}">Notícias</a></li>
-  <li class="breadcrumb-item">Editar notícia</li>
+  <li class="breadcrumb-item">Atualização de notícia</li>
 {% endblock %}
 
 {% block dashboard_title %}
-  Editar notícia
+  Atualização de notícia
 {% endblock %}
 
 {% block register_container %}
-  <form method="post">
-    {% include "_form.html" %}
-    <button type="submit" class="btn btn-dark">Salvar</button>
-  </form>
+  {% include "_form.html" %}
 {% endblock %}

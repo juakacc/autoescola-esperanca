@@ -25,11 +25,15 @@ class QuemSomosView(TemplateView):
 class EquipeView(TemplateView):
     template_name = 'templates_index/equipe.html'
 
-class localizacaoView(TemplateView):
+class LocalizacaoView(TemplateView):
     template_name = 'templates_index/localizacao.html'
+
+class FaqView(TemplateView):
+    template_name = 'templates_index/faq.html'
 
 index = IndexView.as_view()
 contact = ContactView.as_view()
 quem_somos = QuemSomosView.as_view()
 equipe = EquipeView.as_view()
-localizacao = localizacaoView.as_view()
+localizacao = LocalizacaoView.as_view()
+faq = FaqView.as_view()

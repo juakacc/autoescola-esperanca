@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item">FAQ</li>
+{% endblock %}
+
+{% block container_title %}FAQ (Perguntas frequentes){% endblock %}
+
+{% block container %}
+<div class="col">
+  <h5>Onde a autoescola fica?</h5>
+	<p>
+    Você pode acessar nossa localização clicando: <a href="{% url 'core:localizacao' %}">aqui</a>
+  </p>
+
+  <h5>Como faço para iniciar um processo?</h5>
+  <p>
+	  É apenas necessário o deslocamento do aluno até a autoescola, juntamente com
+    os documentos de identificação básicos, comprovante de residência. Com isso,
+    daremos entrada junto com ele no processo, esse realizado presencialmente no
+    DETRAN, para emissão das taxas iniciais.
+  </p>
+
+  <h5>O que é necessário para conseguir a CNH?</h5>
+  <p>
+  	O processo é dividido em três partes principais, primeiro são realizados exames
+    psicológicos e clínicos, para atestar a boa saúde do condutor, logo após confirmada
+    a aptidão nesses exames o aluno inicia o curso teórico, onde é necessário cumprir as
+    horas para realizar a prova teórica, diretamente no DETRAN, com a aprovação nesta,
+    ele passa para o curso prático, iniciando com aulas no simulador e posteriormente
+    aulas no veículo em campo, com a conclusão dessas aulas ele está apto a realização
+    da prova prática, também no DETRAN. Com a aprovação na prova prática o aluno finaliza
+    o seu processo e já pode solicitar sua CNH provisória junto ao DETRAN.
+  </p>
+
+  <h5>Quanto tempo leva para se conseguir a CNH?</h5>
+  <p>
+	  Em média, geralmente os alunos levam entre 3 e 6 meses, desde a abertura do
+    processo até a conclusão dos exames práticos, para que depois seja dada entrada
+    para emissão da CNH.
+  </p>
+
+  <h5>O que é CNH provisória?</h5>
+  <p>
+	  É a primeira CNH recebida por um novo motorista, ela é válida por um ano, tem
+    o objetivo de comprovar o bom desempenho do motorista, onde para ele receber a
+    CNH permanente não poderá cometer infrações nesse período de um ano.
+  </p>
+
+  <h5>E se eu perder alguma prova?</h5>
+  <p>
+	  Caso o aluno perca alguma prova ou não alcance o desempenho necessário, ele
+    poderá refazê-la mediante o pagamento de uma taxa, especificada pelo próprio
+    DETRAN.
+  </p>
+
+  <p>
+    Não encontrou sua resposta aqui? <a href="{% url 'core:contact' %}">Clique aqui</a>
+    e nos envie, será um prazer te responder.
+  </p>
+</div>
+{% endblock %}

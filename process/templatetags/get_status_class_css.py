@@ -1,12 +1,13 @@
 from django import template
 from process import models
+from core.constantes import *
 
 register = template.Library()
 
 @register.filter
 def get_class_css(status):
-    if status == models.NAO_INICIADO:
+    if status == NAO_INICIADO:
         return 'secondary'
-    elif status == models.INICIADO:
+    elif status == INICIADO:
         return 'info'
     return 'success'

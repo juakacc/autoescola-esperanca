@@ -4,8 +4,11 @@ from . import views
 app_name='process'
 urlpatterns = [
     path('', views.list_processes, name='list_processes'),
+    path('aluno/', views.list_processes_student, name='list_processes_student'),
 
     path('<int:pk_process>/', views.detail_process, name='detail_process'),
+    path('aluno/<int:pk_process>/', views.detail_process_student, name='detail_process_student'),
+
     path('atualizar-processo/<int:pk_process>/', views.update_process, name='update_process'),
     path('<int:pk_process>/atualizar-exames/', views.update_exams, name='update_exams'),
 

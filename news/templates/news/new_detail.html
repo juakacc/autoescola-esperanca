@@ -1,17 +1,29 @@
 {% extends "template_detail.html" %}
+{% load thumbnail %}
 
 {% block dashboard_title %}
   {{ new.title }}
 {% endblock  %}
 
 {% block detail_container %}
+  <div class="row">
+    <div class="col">
+      <span class="text-monospace">Publicado em {{ new.created_at }}</span>
+    </div>
+  </div>
 
-  <span class="text-monospace">Publicado em {{ new.created_at }}</span>
+  <div class="row">
+    <div class="col">
+      {% if new.image %}
+        <img src="{% thumbnail new.image 800x500 crop %}" alt="" />
+      {% endif %}
+    </div>
+  </div>
 
-  {% if new.image %}
-    <img src="{{ new.image }}" alt="">
-  {% endif %}
-
-  <p>{{ new.text|linebreaks }}</p>
+  <div class="row">
+    <div class="col">
+      <p>{{ new.text|linebreaks }}</p>
+    </div>
+  </div>
 
 {% endblock  %}

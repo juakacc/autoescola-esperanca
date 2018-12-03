@@ -36,7 +36,7 @@ class UpdateNewView(HasPermissionsMixin, SuccessMessageMixin, UpdateView):
     required_permission = 'secretary'
     model = New
     template_name = 'news/update_new.html'
-    fields = ['title', 'slug', 'text', 'image']
+    form_class = RegisterNewForm
     success_url = reverse_lazy('news:list_news_edit')
     success_message = 'Notícia atualizada com sucesso'
 

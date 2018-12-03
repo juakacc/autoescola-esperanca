@@ -16,5 +16,5 @@ class RegisterNewForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'slug': forms.TextInput(attrs={'class': 'form-control'}),
             'text': forms.Textarea(attrs={'class': 'form-control'}),
-            'image': forms.FileInput(attrs={'class': 'form-control'})
+            # 'image': forms.FileInput(attrs={'class': 'form-control'})
         }

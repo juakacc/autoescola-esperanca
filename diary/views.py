@@ -122,7 +122,7 @@ class ListDiariesViewStudent(HasPermissionsMixin, ListView):
     def get_queryset(self):
         begin, end = self.request.GET.get('begin', ''), self.request.GET.get('end', '')
         d = self.kwargs.get('filter', '')
-        query = Appointment.objects.filter(instructor__pk=self.request.user.pk)
+        query = Appointment.objects.filter(process__student__pk=self.request.user.pk)
         today = datetime.today()
 
         if begin and end: # Preencheu o form
@@ -229,6 +229,12 @@ class ConfirmAppointmentView(HasPermissionsMixin, SuccessMessageMixin, CreateVie
 class DetailAppointmentView(HasPermissionsMixin, DetailView):
     required_permission = 'student'
     model = Appointment
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        person = Person.objects.get(pk=self.request.user.pk)
+        context['person'] = person
+        return context
 
 list_diaries = ListDiariesView.as_view()
 list_diaries_instructor = ListDiariesViewInstructor.as_view()

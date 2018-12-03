@@ -3,7 +3,7 @@
 
 {% block breadcrumb %}
   {{ block.super }}
-  <li class="breadcrumb-item"><a href="{% url 'process:list_processes' %}">Processos</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'process:list_processes_student' %}">Processos</a></li>
   <li class="breadcrumb-item">Processo #{{ process.pk }}</li>
 {% endblock %}
 
@@ -30,11 +30,6 @@
     <strong>Data do início: </strong>{{ process.begin_date }},
     <strong>Data do término: </strong> {{ process.end_date }}<br>
   </div>
-  <div class="col-3" align="right">
-    <a href="{% url 'process:update_process' process.pk %}" class="btn btn-dark">
-      <i class="fas fa-pencil-alt"></i> Editar dados
-    </a>
-  </div>
 </div>
 
 <div class="row">
@@ -44,7 +39,7 @@
     <div class="card mb-4 bg-{{ process.exams.status|get_class_css }} text-white">
       <div class="card-header">
         <h4 class="my-0 font-weight-normal">
-          <a href="{% url 'process:update_exams' process.pk %}" class="btn btn-block btn-lg btn-dark">
+          <a class="btn btn-block btn-lg btn-dark">
             <i class="fas fa-heartbeat"></i> Exames
           </a>
         </h4>
@@ -77,7 +72,7 @@
     <div class="card mb-4 bg-{{ process.theoretical_course.status|get_class_css }} text-white">
       <div class="card-header">
         <h4 class="my-0 font-weight-normal">
-          <a href="{% url 'process:theoretical_course' process.pk %}" class="btn btn-block btn-lg btn-dark"><i class="fas fa-pen-alt"></i> Curso teórico</a>
+          <a class="btn btn-block btn-lg btn-dark"><i class="fas fa-pen-alt"></i> Curso teórico</a>
         </h4>
       </div>
       <div class="card-body">
@@ -101,7 +96,7 @@
     <div class="card mb-4 bg-{{ process.practical_course.status|get_class_css }} text-white">
       <div class="card-header">
         <h4 class="my-0 font-weight-normal">
-          <a href="{% url 'process:practical_course' process.pk %}" class="btn btn-block btn-lg btn-dark"><i class="fas fa-shuttle-van"></i> Curso prático</a>
+          <a class="btn btn-block btn-lg btn-dark"><i class="fas fa-shuttle-van"></i> Curso prático</a>
         </h4>
       </div>
       <div class="card-body">

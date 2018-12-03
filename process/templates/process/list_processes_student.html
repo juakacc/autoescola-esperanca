@@ -1,0 +1,51 @@
+{% extends "template_list_search.html" %}
+{% load pagination %}
+{% load get_status_class_css %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li class="breadcrumb-item">Processos</li>
+{% endblock %}
+
+{% block dashboard_title %}
+  Listagem de processos
+{% endblock %}
+
+{% block filters_options %}{% endblock  %}
+
+{% block table_list %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nº</th>
+        <th>Aluno</th>
+        <th>Status</th>
+        <th>Data de término</th>
+        <th>Opções</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for v in processes %}
+        <tr>
+          <td>#{{ v.pk }}</td>
+          <td>{{ v.student }}</td>
+          <td><span class="badge badge-{{ v.status|get_class_css }}">{{ v.get_status_display }}</span></td>
+          <td>{{ v.end_date }}</td>
+          <td>
+            <a href="{% url 'process:detail_process_student' v.pk %}" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i> Detalhes</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $("#q").attr("placeholder", "Aluno");
+
+  $('.dropdown a').click(function() {
+    $('#selected').text($(this).text());
+  });
+</script>
+{% endblock  %}

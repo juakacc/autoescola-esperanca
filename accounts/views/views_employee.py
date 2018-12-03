@@ -55,6 +55,12 @@ class EmployeesListView(HasPermissionsMixin, ListView):
     model = Person
     paginate_by = 10
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        person = Person.objects.get(pk=self.request.user.pk)
+        context['is_aluno'] = person.current_view == 'aluno'
+        return context
+
     def get_queryset(self):
         q = self.request.GET.get('q', '')
         queryset = Person.objects.all() # Colocar o OR
