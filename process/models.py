@@ -196,7 +196,10 @@ def update_status_exams(instance, **kwargs):
         instance.status = INICIADO
     else:
         instance.status = NAO_INICIADO
-    update_status_process(instance.process)
+    try:
+        update_status_process(instance.process)
+    except:
+        pass
 
 def update_status_theoretical(instance, **kwargs):
     settings = SystemSettings.objects.all()[0]
